@@ -4,7 +4,7 @@ export default function Description() {
   return (
     <div>
       <div className="mb-4 rounded-lg bg-egg p-4">
-        <div className="font-bold">Description</div>
+        <div className="mb-2 font-bold">Description</div>
         <p className="">
           The travelling salesman problem, also known as the travelling
           salesperson problem (TSP), asks the following question: "Given a list
@@ -22,6 +22,7 @@ export default function Description() {
           time for any algorithm for the TSP increases superpolynomially (but no
           more than exponentially) with the number of cities.
         </p>
+        <div className="h-24"></div>
       </div>
     </div>
   );

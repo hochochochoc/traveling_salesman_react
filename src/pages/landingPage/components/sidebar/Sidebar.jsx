@@ -1,15 +1,27 @@
 import React from "react";
+import UserButton from "./sidebarComponents/UserButton";
+import GitHubButton from "./sidebarComponents/GithubButton";
+import LanguagesButton from "./sidebarComponents/LanguagesButton";
+import AboutButton from "./sidebarComponents/AboutButton";
+import ContactButton from "./sidebarComponents/ContactButton";
 
 export default function Sidebar() {
   return (
-    <div className="bg-egg h-screen p-4">
-      <div className="font-bold">Sidebar</div>
-      <p className="py-2">
-        maybe I can put the option to change the language here...
-      </p>
-      <p>definitely put access to user profile here...</p>
-      <p className="py-2">the about link of course</p>
-      <p>github link I guess</p>
+    <div className="h-screen bg-egg p-4">
+      <div className="mt-1 font-bold">Sidebar</div>
+      <div className="h-10"></div>
+      <div className="space-y-1.5">
+        <AboutButton />
+        <LanguagesButton />
+        <GitHubButton />
+        <ContactButton />
+      </div>
+
+      <div className="h-40"></div>
+      <div className="h-40"></div>
+      <div className="h-40"></div>
+      <div className="h-8"></div>
+      <UserButton />
     </div>
   );
 }

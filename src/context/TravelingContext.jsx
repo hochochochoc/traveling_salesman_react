@@ -3,8 +3,8 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 const TravelingContext = createContext();
 
 const calculateZoomLevel = (area) => {
-  const m = -2.49e-7; // Slope
-  const c = 4.6245; // Y-intercept
+  const m = -2.29e-7; // Slope
+  const c = 4.4545; // Y-intercept
   const zoom = Math.max(1, Math.min(20, m * area + c)); // Clamp between 1 and 20
   console.log(`Calculating zoom level for area ${area}: ${zoom}`);
   return zoom;
@@ -18,7 +18,7 @@ const TravelingProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const selectedCountries = ["Brazil", "China", "Spain", "Guinea"];
+  const selectedCountries = ["Brazil", "China", "Spain", "Tanzania"];
 
   useEffect(() => {
     fetch("https://restcountries.com/v3.1/independent?status=true")

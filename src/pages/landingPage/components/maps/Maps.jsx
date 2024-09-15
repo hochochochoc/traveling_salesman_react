@@ -71,13 +71,13 @@ export default function Maps() {
             <p className="mx-2 my-1 font-bold">Spain</p>
           </div>
           <div className="ml-4 overflow-hidden rounded-lg bg-egg active:scale-95">
-            {countryCenters.Guinea && (
+            {countryCenters.Tanzania && (
               <MapTest
-                center={countryCenters.Guinea}
-                zoom={zoomLevels.Guinea}
+                center={countryCenters.Tanzania}
+                zoom={zoomLevels.Tanzania}
               />
             )}
-            <p className="mx-2 my-1 font-bold">Guinea</p>
+            <p className="mx-2 my-1 font-bold">Tanzania</p>
           </div>
         </div>
         <div className="flex justify-center">

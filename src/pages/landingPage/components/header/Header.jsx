@@ -14,7 +14,7 @@ export default function Header() {
               navigate("/");
             });
           }}
-          className="mr-3 flex w-24 justify-center rounded-lg border border-black py-1 active:scale-95"
+          className="mr-3 flex w-24 justify-center rounded-lg border border-black py-1 hover:bg-gray-200 active:scale-95"
         >
           Logout
         </button>
