@@ -86,3 +86,7 @@ const MapTest = ({ center, zoom }) => {
 };
 
 export default MapTest;
+
+// TODO
+// still doesn't work when loading first time...
+// rename things
