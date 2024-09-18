@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import { Play, Pause } from "lucide-react";
 
 // Simulated graph data
-const graphData = [
+const initialGraphData = [
   { id: 0, x: 150, y: 110 },
   { id: 1, x: 510, y: 230 },
   { id: 2, x: 200, y: 100 },
@@ -17,29 +17,35 @@ const graphData = [
 
 const paragraphs = [
   {
-    id: 0,
-    text: "Prim's algorithm finds the Minimum Spanning Tree (MST) of a weighted undirected graph. It starts with an arbitrary node and grows the MST one edge at a time.",
+    id: 0, // 5-1: 183 m  \\ 5-4: 214 m  // 5-3: 219 m
+    text: "How do we measure how good a solution from an algorithm is? ... The MST is defined as a collection of edges of a graph that connect all vertices, introduce no cycles or loops and also has minimum weight(cost/distance). This is a similar problem to the TSP, but finding the MST has several polynomial time algorithms. One efficient algorithm for finding the MST is called Prim's algorithm.",
   },
   {
     id: 1,
-    text: "At each step, it considers all edges connecting the tree to nodes not yet in the tree, and selects the edge with the lowest weight.",
+    text: "We start with a random vertex and at every step it considers the set of vertices as part of the tree and a set of vertices we've yet to encounter.",
   },
   {
     id: 2,
-    text: "This process continues until all nodes are included in the MST.",
+    text: "To determine the best edge to pick as first part of the tree, we simply take the minimum edge weight between these two sets.",
   },
   {
     id: 3,
-    text: "Prim's algorithm always selects the safest edge to add to the tree, making it a greedy algorithm.",
+    text: "Every time we add an edge we adjust the sets, moving the subsequent vertex accordingly.",
   },
   {
     id: 4,
-    text: "The algorithm ensures that a cycle is never formed, as it only considers edges that connect to nodes not yet in the tree.",
+    text: "By repeatedly applying this step until all vertices have been processed you are guaranteed to find the Minimum Spanning Tree.",
   },
   {
     id: 5,
-    text: "When complete, Prim's algorithm produces a Minimum Spanning Tree that connects all nodes with the minimum total edge weight.",
+    text: "Prim's Algorithm is a classic example of a greedy approach that provides the optimal solution, and an interesting result is that the MST is always a lower bound for the TSP.",
   },
+  {
+    id: 6,
+    text: '- then he starts talking about the "1-Tree"',
+  },
+  { id: 7, text: "lo que sea7" },
+  { id: 8, text: "lo que sea8" },
 ];
 
 // Function to calculate distance between two points
@@ -47,14 +53,14 @@ const distance = (a, b) => {
   return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
 };
 
-// Correct Prim's algorithm implementation
+// Prim's algorithm implementation
 const primMST = (graph) => {
   const n = graph.length;
   const mst = [];
   const visited = new Set();
   let edges = [];
 
-  // Function to add edges for a visited node
+  // Function to add edges between a visited node and unvisited nodes
   const addEdges = (nodeIndex) => {
     for (let i = 0; i < n; i++) {
       if (!visited.has(i)) {
@@ -67,26 +73,46 @@ const primMST = (graph) => {
     }
   };
 
-  // Start with the first node
-  visited.add(0);
-  addEdges(0);
+  // Initialize by considering all edges
+  const allEdges = [];
+  for (let i = 0; i < n; i++) {
+    for (let j = i + 1; j < n; j++) {
+      allEdges.push({
+        from: i,
+        to: j,
+        weight: distance(graph[i], graph[j]),
+      });
+    }
+  }
+  allEdges.sort((a, b) => a.weight - b.weight);
 
+  // Start with the smallest edge from all possible edges
+  const initialEdge = allEdges.shift();
+  visited.add(initialEdge.from);
+  visited.add(initialEdge.to);
+  mst.push([initialEdge.from, initialEdge.to]);
+
+  // Add edges from the initial nodes
+  addEdges(initialEdge.from);
+  addEdges(initialEdge.to);
+
+  // Continue with the standard Prim's algorithm
   while (visited.size < n) {
-    // Find the edge with minimum weight
     let minEdge = edges.reduce(
       (min, edge) =>
         !visited.has(edge.to) && edge.weight < min.weight ? edge : min,
       { weight: Infinity },
     );
 
-    // Add the new node to visited set
+    if (minEdge.weight === Infinity) {
+      // If no valid edge found, exit (disconnected graph)
+      break;
+    }
+
     visited.add(minEdge.to);
     mst.push([minEdge.from, minEdge.to]);
 
-    // Add new edges from the newly visited node
     addEdges(minEdge.to);
-
-    // Remove edges that would create a cycle
     edges = edges.filter((edge) => !visited.has(edge.to));
   }
 
@@ -94,22 +120,49 @@ const primMST = (graph) => {
 };
 
 const PrimsGraph = () => {
+  const [graphData, setGraphData] = useState([...initialGraphData]);
   const [currentStep, setCurrentStep] = useState(0);
   const svgRef = useRef(null);
   const [treeEdges, setTreeEdges] = useState([]);
   const timerRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [edges, setEdges] = useState([]);
 
   // Calculate MST edges
   useEffect(() => {
     const mstEdges = primMST(graphData);
     setEdges(mstEdges);
-  }, []);
+  }, [graphData]);
 
-  // Initialize the graph
+  // Initialize the graph with drag behavior
   useEffect(() => {
     const svg = d3.select(svgRef.current);
+
+    // Drag behavior
+    const drag = d3
+      .drag()
+      .on("start", (event, d) => {
+        if (currentStep === 0 && !isPlaying) {
+          d3.select(event.sourceEvent.target).raise().attr("stroke", "black");
+        }
+      })
+      .on("drag", (event, d) => {
+        if (currentStep === 0 && !isPlaying) {
+          // Update both x and y positions as the circle is dragged
+          d3.select(event.sourceEvent.target)
+            .attr("cx", (d.x = event.x)) // Update x position
+            .attr("cy", (d.y = event.y)); // Update y position
+        }
+      })
+      .on("end", (event, d) => {
+        if (currentStep === 0 && !isPlaying) {
+          // Update graphData with the new positions after dragging ends
+          const updatedGraph = graphData.map((node) =>
+            node.id === d.id ? { ...node, x: d.x, y: d.y } : node,
+          );
+          setGraphData(updatedGraph); // Save the updated positions
+        }
+      });
 
     // Create nodes (points)
     svg
@@ -120,7 +173,8 @@ const PrimsGraph = () => {
       .attr("cx", (d) => d.x)
       .attr("cy", (d) => d.y)
       .attr("r", 5)
-      .attr("fill", "orange");
+      .attr("fill", "orange")
+      .call(drag);
 
     // Add labels to the nodes
     svg
@@ -137,9 +191,9 @@ const PrimsGraph = () => {
     return () => {
       svg.selectAll("*").remove();
     };
-  }, []);
+  }, [graphData, currentStep, isPlaying]);
 
-  // Function to animate the steps
+  // Animation logic
   const playAnimation = () => {
     setIsPlaying(true);
     if (currentStep < edges.length) {
@@ -152,7 +206,6 @@ const PrimsGraph = () => {
     }
   };
 
-  // Effect to run the animation when isPlaying is true
   useEffect(() => {
     if (isPlaying && currentStep < edges.length) {
       timerRef.current = setTimeout(() => {
@@ -165,14 +218,9 @@ const PrimsGraph = () => {
     return () => clearTimeout(timerRef.current);
   }, [isPlaying, currentStep, edges]);
 
-  // Update the graph based on the current step
   useEffect(() => {
     const svg = d3.select(svgRef.current);
-
-    // Remove existing lines to redraw
     svg.selectAll("line").remove();
-
-    // Draw edges up to the current step
     treeEdges.forEach((edge) => {
       svg
         .append("line")
@@ -180,12 +228,11 @@ const PrimsGraph = () => {
         .attr("y1", graphData[edge[0]].y)
         .attr("x2", graphData[edge[1]].x)
         .attr("y2", graphData[edge[1]].y)
-        .attr("stroke", "yellow")
+        .attr("stroke", "#FFFF99")
         .attr("stroke-width", 2);
     });
   }, [treeEdges]);
 
-  // Handle clicking on a step button
   const handleStepClick = (step) => {
     setIsPlaying(false);
     const newTreeEdges = edges.slice(0, step);
@@ -193,12 +240,18 @@ const PrimsGraph = () => {
     setCurrentStep(step);
   };
 
-  // Get paragraphs to display
   const getCurrentParagraphs = () => {
-    return paragraphs.slice(0, Math.min(currentStep + 1, paragraphs.length));
+    if (currentStep === 0) {
+      // Show only the first paragraph when starting
+      return [paragraphs[0]];
+    } else if (currentStep === 1) {
+      // Show all paragraphs except the first one after step 1
+      return paragraphs.slice(1, currentStep + 1);
+    }
+    // Show paragraphs from step 2 onwards
+    return paragraphs.slice(1, currentStep + 1);
   };
 
-  // Stop the animation
   const stopAnimation = () => {
     setIsPlaying(false);
     if (timerRef.current) {
@@ -206,11 +259,11 @@ const PrimsGraph = () => {
     }
   };
 
-  // Reset the visualization
   const resetVisualization = () => {
-    setIsPlaying(true);
+    setIsPlaying(false);
     setCurrentStep(0);
     setTreeEdges([]);
+    setGraphData([...initialGraphData]);
     d3.select(svgRef.current).selectAll("line").remove();
   };
 
@@ -280,14 +333,17 @@ const PrimsGraph = () => {
         </div>
       </div>
       <div className="ml-14 mt-10 w-1/2 text-egg">
-        {getCurrentParagraphs().map((p) => (
-          <p
-            key={p.id}
-            className={currentStep >= p.id ? "text-egg" : "text-gray-400"}
-          >
-            {p.text}
-          </p>
-        ))}
+        {getCurrentParagraphs().map((p) => {
+          console.log(`Paragraph ID: ${p.id}, Current Step: ${currentStep}`);
+          return (
+            <p
+              key={p.id}
+              className={currentStep <= p.id ? "text-egg" : "text-gray-400"}
+            >
+              {p.text}
+            </p>
+          );
+        })}
       </div>
     </div>
   );

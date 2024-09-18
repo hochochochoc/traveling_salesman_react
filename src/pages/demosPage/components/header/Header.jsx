@@ -6,7 +6,7 @@ export default function Header() {
 
   return (
     <>
-      <div className="text-lg font-extrabold text-egg">Demonstration Page</div>
+      <div className="text-lg font-extrabold text-egg">Demonstrations</div>
       <div className="flex justify-end">
         <button
           onClick={() => {
@@ -14,7 +14,7 @@ export default function Header() {
               navigate("/");
             });
           }}
-          className="mr-3 flex w-24 justify-center rounded-lg border border-egg py-1 text-egg hover:bg-gray-200 hover:text-black active:scale-95"
+          className="mr-3 w-24 justify-center rounded-lg border border-egg py-1 text-egg hover:bg-gray-200 hover:text-black active:scale-95"
         >
           Logout
         </button>
