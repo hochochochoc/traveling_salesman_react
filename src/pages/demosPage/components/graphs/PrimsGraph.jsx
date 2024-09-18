@@ -313,7 +313,7 @@ const PrimsGraph = () => {
               onClick={() => handleStepClick(index)}
               className={
                 currentStep === index
-                  ? "bg-bluelight m-1.5 rounded-lg px-3 py-1 text-egg"
+                  ? "m-1.5 rounded-lg bg-bluelight px-3 py-1 text-egg"
                   : "m-1.5 rounded-lg bg-gray-300 px-3 py-1 text-egg"
               }
             >
@@ -324,7 +324,7 @@ const PrimsGraph = () => {
             onClick={() => handleStepClick(edges.length)}
             className={
               currentStep === edges.length
-                ? "bg-bluelight m-1.5 rounded-lg px-3 py-1 text-egg"
+                ? "m-1.5 rounded-lg bg-bluelight px-3 py-1 text-egg"
                 : "m-1.5 rounded-lg bg-gray-300 px-3 py-1 text-egg"
             }
           >
