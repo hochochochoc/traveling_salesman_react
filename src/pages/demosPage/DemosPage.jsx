@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import PrimsGraph from "./components/graphs/PrimsGraph";
 import Header from "./components/header/Header";
 import OneTreeGraph from "./components/graphs/OneTreeGraph";
@@ -7,8 +7,8 @@ import SidebarLayout from "../landingPage/components/sidebar/SidebarLayout";
 import { useNavigate } from "react-router-dom";
 
 export default function DemosPage() {
+  const [showPrimsGraph, setShowPrimsGraph] = useState(true);
   const navigate = useNavigate();
-
   const { toggleSidebarFunctionality } = useSidebar();
 
   useEffect(() => {
@@ -22,11 +22,22 @@ export default function DemosPage() {
         <div className="grid grid-cols-2 p-4">
           <Header />
         </div>
-
-        <div>
-          <OneTreeGraph />
-          <PrimsGraph />
+        <div className="mb-4 flex justify-center gap-4">
+          <button
+            className={`rounded-lg border p-2 ${showPrimsGraph ? "border-white" : "border-gray-500"} bg-transparent`}
+            onClick={() => setShowPrimsGraph(true)}
+          >
+            Prims Graph
+          </button>
+          <button
+            className={`rounded-lg border p-2 ${!showPrimsGraph ? "border-white" : "border-gray-500"} bg-transparent`}
+            onClick={() => setShowPrimsGraph(false)}
+          >
+            One Tree Graph
+          </button>
         </div>
+
+        <div>{showPrimsGraph ? <PrimsGraph /> : <OneTreeGraph />}</div>
         <div>
           <button
             className="text-egg"
