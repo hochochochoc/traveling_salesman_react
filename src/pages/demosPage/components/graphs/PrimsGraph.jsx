@@ -17,48 +17,81 @@ const graphData = [
 
 const paragraphs = [
   {
-    id: 0, // 5-1: 183 m  \\ 5-4: 214 m  // 5-3: 219 m
-    text: "How do we measure how good a solution from an algorithm is? ... The MST is defined as a collection of edges of a graph that connect all vertices, introduce no cycles or loops and also has minimum weight(cost/distance). This is a similar problem to the TSP, but finding the MST has several polynomial time algorithms. One efficient algorithm for finding the MST is called Prim's algorithm.",
+    id: 0,
+    text: "Prim's algorithm finds the Minimum Spanning Tree (MST) of a weighted undirected graph. It starts with an arbitrary node and grows the MST one edge at a time.",
   },
   {
     id: 1,
-    text: "We start with a random vertex and at every step it considers the set of vertices as part of the tree and a set of vertices we've yet to encounter.",
+    text: "At each step, it considers all edges connecting the tree to nodes not yet in the tree, and selects the edge with the lowest weight.",
   },
   {
     id: 2,
-    text: "To determine the best edge to pick as first part of the tree, we simply take the minimum edge weight between these two sets.",
+    text: "This process continues until all nodes are included in the MST.",
   },
   {
     id: 3,
-    text: "Every time we add an edge we adjust the sets, moving the subsequent vertex accordingly.",
+    text: "Prim's algorithm always selects the safest edge to add to the tree, making it a greedy algorithm.",
   },
   {
     id: 4,
-    text: "By repeatedly applying this step until all vertices have been processed you are guaranteed to find the Minimum Spanning Tree.",
+    text: "The algorithm ensures that a cycle is never formed, as it only considers edges that connect to nodes not yet in the tree.",
   },
   {
     id: 5,
-    text: "Prim's Algorithm is a classic example of a greedy approach that provides the optimal solution, and an interesting result is that the MST is always a lower bound for the TSP.",
+    text: "When complete, Prim's algorithm produces a Minimum Spanning Tree that connects all nodes with the minimum total edge weight.",
   },
-  {
-    id: 6,
-    text: '- then he starts talking about the "1-Tree"',
-  },
-  { id: 7, text: "lo que sea7" },
-  { id: 8, text: "lo que sea8" },
 ];
 
-// Simulated edges for Prim's algorithm
-const edges = [
-  [6, 8],
-  [8, 0],
-  [0, 2],
-  [2, 5],
-  [5, 1],
-  [1, 3],
-  [1, 4],
-  [4, 7],
-];
+// Function to calculate distance between two points
+const distance = (a, b) => {
+  return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+};
+
+// Correct Prim's algorithm implementation
+const primMST = (graph) => {
+  const n = graph.length;
+  const mst = [];
+  const visited = new Set();
+  let edges = [];
+
+  // Function to add edges for a visited node
+  const addEdges = (nodeIndex) => {
+    for (let i = 0; i < n; i++) {
+      if (!visited.has(i)) {
+        edges.push({
+          from: nodeIndex,
+          to: i,
+          weight: distance(graph[nodeIndex], graph[i]),
+        });
+      }
+    }
+  };
+
+  // Start with the first node
+  visited.add(0);
+  addEdges(0);
+
+  while (visited.size < n) {
+    // Find the edge with minimum weight
+    let minEdge = edges.reduce(
+      (min, edge) =>
+        !visited.has(edge.to) && edge.weight < min.weight ? edge : min,
+      { weight: Infinity },
+    );
+
+    // Add the new node to visited set
+    visited.add(minEdge.to);
+    mst.push([minEdge.from, minEdge.to]);
+
+    // Add new edges from the newly visited node
+    addEdges(minEdge.to);
+
+    // Remove edges that would create a cycle
+    edges = edges.filter((edge) => !visited.has(edge.to));
+  }
+
+  return mst;
+};
 
 const PrimsGraph = () => {
   const [currentStep, setCurrentStep] = useState(0);
@@ -66,6 +99,13 @@ const PrimsGraph = () => {
   const [treeEdges, setTreeEdges] = useState([]);
   const timerRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [edges, setEdges] = useState([]);
+
+  // Calculate MST edges
+  useEffect(() => {
+    const mstEdges = primMST(graphData);
+    setEdges(mstEdges);
+  }, []);
 
   // Initialize the graph
   useEffect(() => {
@@ -123,7 +163,7 @@ const PrimsGraph = () => {
       clearTimeout(timerRef.current);
     }
     return () => clearTimeout(timerRef.current);
-  }, [isPlaying, currentStep]);
+  }, [isPlaying, currentStep, edges]);
 
   // Update the graph based on the current step
   useEffect(() => {
@@ -155,15 +195,7 @@ const PrimsGraph = () => {
 
   // Get paragraphs to display
   const getCurrentParagraphs = () => {
-    if (currentStep === 0) {
-      // Show only the first paragraph when starting
-      return [paragraphs[0]];
-    } else if (currentStep === 1) {
-      // Show all paragraphs except the first one after step 1
-      return paragraphs.slice(1, currentStep + 1);
-    }
-    // Show paragraphs from step 2 onwards
-    return paragraphs.slice(1, currentStep + 1);
+    return paragraphs.slice(0, Math.min(currentStep + 1, paragraphs.length));
   };
 
   // Stop the animation
@@ -185,7 +217,7 @@ const PrimsGraph = () => {
   return (
     <div className="flex p-10">
       <div className="w-1/2">
-        <h2 className="text-white">Prim's Algorithm </h2>
+        <h2 className="text-egg">Prim's Algorithm</h2>
         <svg
           ref={svgRef}
           width="600"
@@ -196,7 +228,7 @@ const PrimsGraph = () => {
         <div className="mt-5 flex items-center space-x-3">
           <button
             onClick={resetVisualization}
-            className="rounded-lg bg-slate-400 px-3 py-2 text-white active:scale-95 active:bg-slate-500"
+            className="rounded-lg bg-slate-400 px-3 py-2 text-egg active:scale-95 active:bg-slate-500"
           >
             Reset
           </button>
@@ -206,7 +238,7 @@ const PrimsGraph = () => {
               setIsPlaying(true);
               playAnimation();
             }}
-            className="rounded-lg bg-slate-400 px-3 py-2 text-white active:scale-95 active:bg-slate-500"
+            className="rounded-lg bg-slate-400 px-3 py-2 text-egg active:scale-95 active:bg-slate-500"
           >
             <Play />
           </button>
@@ -216,7 +248,7 @@ const PrimsGraph = () => {
               setIsPlaying(false);
               clearTimeout(timerRef.current);
             }}
-            className="rounded-lg bg-slate-400 px-3 py-2 text-white active:scale-95 active:bg-slate-500"
+            className="rounded-lg bg-slate-400 px-3 py-2 text-egg active:scale-95 active:bg-slate-500"
           >
             <Pause />
           </button>
@@ -226,31 +258,32 @@ const PrimsGraph = () => {
             <button
               key={index}
               onClick={() => handleStepClick(index)}
-              className="m-1.5 rounded-lg px-3 py-1 text-white"
-              style={{
-                backgroundColor: currentStep === index ? "#007bff" : "#ccc",
-              }}
+              className={
+                currentStep === index
+                  ? "bg-bluelight m-1.5 rounded-lg px-3 py-1 text-egg"
+                  : "m-1.5 rounded-lg bg-gray-300 px-3 py-1 text-egg"
+              }
             >
               {index === 0 ? "Start" : `Step ${index}`}
             </button>
           ))}
           <button
             onClick={() => handleStepClick(edges.length)}
-            className="m-1.5 rounded-lg px-3 py-1 text-white"
-            style={{
-              backgroundColor:
-                currentStep === edges.length ? "#007bff" : "#ccc",
-            }}
+            className={
+              currentStep === edges.length
+                ? "bg-bluelight m-1.5 rounded-lg px-3 py-1 text-egg"
+                : "m-1.5 rounded-lg bg-gray-300 px-3 py-1 text-egg"
+            }
           >
             Step {edges.length}
           </button>
         </div>
       </div>
-      <div className="ml-14 mt-10 w-1/2 text-white">
+      <div className="ml-14 mt-10 w-1/2 text-egg">
         {getCurrentParagraphs().map((p) => (
           <p
             key={p.id}
-            className={currentStep === p.id ? "text-white" : "text-gray-400"}
+            className={currentStep >= p.id ? "text-egg" : "text-gray-400"}
           >
             {p.text}
           </p>
