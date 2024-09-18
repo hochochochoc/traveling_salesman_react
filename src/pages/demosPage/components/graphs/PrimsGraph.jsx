@@ -1,41 +1,49 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as d3 from "d3";
-import { Play } from "lucide-react";
-import { Pause } from "lucide-react";
+import { Play, Pause } from "lucide-react";
 
 // Simulated graph data
 const graphData = [
-  { id: 0, x: 130, y: 110 },
-  { id: 1, x: 525, y: 230 },
-  { id: 2, x: 190, y: 100 },
-  { id: 3, x: 450, y: 340 },
+  { id: 0, x: 150, y: 110 },
+  { id: 1, x: 510, y: 230 },
+  { id: 2, x: 200, y: 100 },
+  { id: 3, x: 440, y: 340 },
   { id: 4, x: 560, y: 100 },
-  { id: 5, x: 350, y: 150 },
-  { id: 6, x: 50, y: 200 },
-  { id: 7, x: 560, y: 50 },
+  { id: 5, x: 350, y: 140 },
+  { id: 6, x: 50, y: 250 },
+  { id: 7, x: 550, y: 50 },
   { id: 8, x: 70, y: 150 },
 ];
 
 const paragraphs = [
   {
-    id: 0,
-    text: "How do we measure how good a solution from an algorithm is? The question of measurement is actually quite tricky within the context of the TSP.",
+    id: 0, // 5-1: 183 m  \\ 5-4: 214 m  // 5-3: 219 m
+    text: "How do we measure how good a solution from an algorithm is? ... The MST is defined as a collection of edges of a graph that connect all vertices, introduce no cycles or loops and also has minimum weight(cost/distance). This is a similar problem to the TSP, but finding the MST has several polynomial time algorithms. One efficient algorithm for finding the MST is called Prim's algorithm.",
   },
   {
     id: 1,
-    text: "With smaller graphs we can compare the calculated distance to that of the true optimal value.",
+    text: "We start with a random vertex and at every step it considers the set of vertices as part of the tree and a set of vertices we've yet to encounter.",
   },
   {
     id: 2,
-    text: "We can evaluate the performance through the ratio between the algorithms cost to the optimal cost, which can also be converted into a percentage of the optimal value. ",
+    text: "To determine the best edge to pick as first part of the tree, we simply take the minimum edge weight between these two sets.",
   },
-  { id: 3, text: "But no workey when too many points" },
+  {
+    id: 3,
+    text: "Every time we add an edge we adjust the sets, moving the subsequent vertex accordingly.",
+  },
   {
     id: 4,
-    text: "In practice what computer scientists tend to use to baseline the solution to the TSP is instead of trying to compare it to the optimal solution to instead compare it to a lower bound. ",
+    text: "By repeatedly applying this step until all vertices have been processed you are guaranteed to find the Minimum Spanning Tree.",
   },
-  { id: 5, text: "lo que sea5" },
-  { id: 6, text: "lo que sea6" },
+  {
+    id: 5,
+    text: "Prim's Algorithm is a classic example of a greedy approach that provides the optimal solution, and an interesting result is that the MST is always a lower bound for the TSP.",
+  },
+  {
+    id: 6,
+    text: '- then he starts talking about the "1-Tree"',
+  },
   { id: 7, text: "lo que sea7" },
   { id: 8, text: "lo que sea8" },
 ];
@@ -110,7 +118,7 @@ const PrimsGraph = () => {
       timerRef.current = setTimeout(() => {
         setTreeEdges((prevEdges) => [...prevEdges, edges[currentStep]]);
         setCurrentStep((prevStep) => prevStep + 1);
-      }, 2000);
+      }, 1500);
     } else if (!isPlaying) {
       clearTimeout(timerRef.current);
     }
@@ -145,8 +153,17 @@ const PrimsGraph = () => {
     setCurrentStep(step);
   };
 
+  // Get paragraphs to display
   const getCurrentParagraphs = () => {
-    return paragraphs.filter((p) => p.id <= currentStep);
+    if (currentStep === 0) {
+      // Show only the first paragraph when starting
+      return [paragraphs[0]];
+    } else if (currentStep === 1) {
+      // Show all paragraphs except the first one after step 1
+      return paragraphs.slice(1, currentStep + 1);
+    }
+    // Show paragraphs from step 2 onwards
+    return paragraphs.slice(1, currentStep + 1);
   };
 
   // Stop the animation
@@ -157,6 +174,7 @@ const PrimsGraph = () => {
     }
   };
 
+  // Reset the visualization
   const resetVisualization = () => {
     setIsPlaying(true);
     setCurrentStep(0);
@@ -167,7 +185,7 @@ const PrimsGraph = () => {
   return (
     <div className="flex p-10">
       <div className="w-1/2">
-        <h2 className="text-white">Prim's Algorithm Visualization (D3.js)</h2>
+        <h2 className="text-white">Prim's Algorithm </h2>
         <svg
           ref={svgRef}
           width="600"
@@ -178,7 +196,7 @@ const PrimsGraph = () => {
         <div className="mt-5 flex items-center space-x-3">
           <button
             onClick={resetVisualization}
-            className="rounded-lg bg-slate-400 px-3 py-2 text-white active:scale-95"
+            className="rounded-lg bg-slate-400 px-3 py-2 text-white active:scale-95 active:bg-slate-500"
           >
             Reset
           </button>
@@ -188,7 +206,7 @@ const PrimsGraph = () => {
               setIsPlaying(true);
               playAnimation();
             }}
-            className="rounded-lg bg-slate-400 px-3 py-2 text-white active:scale-95"
+            className="rounded-lg bg-slate-400 px-3 py-2 text-white active:scale-95 active:bg-slate-500"
           >
             <Play />
           </button>
@@ -198,7 +216,7 @@ const PrimsGraph = () => {
               setIsPlaying(false);
               clearTimeout(timerRef.current);
             }}
-            className="rounded-lg bg-slate-400 px-3 py-2 text-white active:scale-95"
+            className="rounded-lg bg-slate-400 px-3 py-2 text-white active:scale-95 active:bg-slate-500"
           >
             <Pause />
           </button>
@@ -230,7 +248,12 @@ const PrimsGraph = () => {
       </div>
       <div className="ml-14 mt-10 w-1/2 text-white">
         {getCurrentParagraphs().map((p) => (
-          <p key={p.id}>{p.text}</p>
+          <p
+            key={p.id}
+            className={currentStep === p.id ? "text-white" : "text-gray-400"}
+          >
+            {p.text}
+          </p>
         ))}
       </div>
     </div>
