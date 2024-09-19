@@ -138,6 +138,12 @@ const PrimsGraph = () => {
   useEffect(() => {
     const svg = d3.select(svgRef.current);
 
+    // Clear existing content
+    svg.selectAll("*").remove();
+
+    // Set the viewBox to make the SVG responsive
+    svg.attr("viewBox", "0 0 600 400");
+
     // Drag behavior
     const drag = d3
       .drag()
@@ -150,8 +156,8 @@ const PrimsGraph = () => {
         if (currentStep === 0 && !isPlaying) {
           // Update both x and y positions as the circle is dragged
           d3.select(event.sourceEvent.target)
-            .attr("cx", (d.x = event.x)) // Update x position
-            .attr("cy", (d.y = event.y)); // Update y position
+            .attr("cx", (d.x = event.x))
+            .attr("cy", (d.y = event.y));
         }
       })
       .on("end", (event, d) => {
@@ -187,10 +193,6 @@ const PrimsGraph = () => {
       .text((d) => d.id)
       .attr("font-size", "12px")
       .attr("fill", "white");
-
-    return () => {
-      svg.selectAll("*").remove();
-    };
   }, [graphData, currentStep, isPlaying]);
 
   // Animation logic
@@ -211,7 +213,7 @@ const PrimsGraph = () => {
       timerRef.current = setTimeout(() => {
         setTreeEdges((prevEdges) => [...prevEdges, edges[currentStep]]);
         setCurrentStep((prevStep) => prevStep + 1);
-      }, 1500);
+      }, 1000);
     } else if (!isPlaying) {
       clearTimeout(timerRef.current);
     }
@@ -268,14 +270,15 @@ const PrimsGraph = () => {
   };
 
   return (
-    <div className="flex p-10">
-      <div className="w-1/2">
+    <div className="flex flex-col p-4 lg:flex-row lg:p-10">
+      <div className="w-full lg:w-1/2">
         <h2 className="text-egg">Prim's Algorithm</h2>
         <svg
           ref={svgRef}
-          width="600"
-          height="400"
+          width="100%"
+          height="auto"
           className="my-5 border border-gray-500"
+          style={{ maxHeight: "400px" }}
         ></svg>
 
         <div className="mt-5 flex items-center space-x-3">
@@ -306,7 +309,8 @@ const PrimsGraph = () => {
             <Pause />
           </button>
         </div>
-        <div className="mt-5">
+
+        <div className="mt-5 flex flex-wrap">
           {edges.map((_, index) => (
             <button
               key={index}
@@ -332,7 +336,8 @@ const PrimsGraph = () => {
           </button>
         </div>
       </div>
-      <div className="ml-14 mt-10 w-1/2 text-egg">
+
+      <div className="mt-10 w-full text-egg lg:ml-14 lg:mt-0 lg:w-1/2">
         {getCurrentParagraphs().map((p) => {
           console.log(`Paragraph ID: ${p.id}, Current Step: ${currentStep}`);
           return (

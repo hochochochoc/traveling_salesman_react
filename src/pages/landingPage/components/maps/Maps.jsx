@@ -46,7 +46,7 @@ export default function Maps() {
         Select a country to try out the algorithms.
       </div>
       <div>
-        <div className="flex justify-center">
+        <div className="justify-center md:flex">
           <div className="mb-4 overflow-hidden rounded-lg bg-egg active:scale-95">
             {countryCenters.Brazil && (
               <MapTest
@@ -56,21 +56,21 @@ export default function Maps() {
             )}
             <p className="mx-2 my-1 font-bold">Brazil</p>
           </div>
-          <div className="mb-4 ml-4 overflow-hidden rounded-lg bg-egg active:scale-95">
+          <div className="mb-4 overflow-hidden rounded-lg bg-egg active:scale-95 md:ml-4">
             {countryCenters.China && (
               <MapTest center={countryCenters.China} zoom={zoomLevels.China} />
             )}
             <p className="mx-2 my-1 font-bold">China</p>
           </div>
         </div>
-        <div className="flex justify-center">
-          <div className="overflow-hidden rounded-lg bg-egg active:scale-95">
+        <div className="justify-center md:flex">
+          <div className="mb-4 overflow-hidden rounded-lg bg-egg active:scale-95 md:mb-0">
             {countryCenters.Spain && (
               <MapTest center={countryCenters.Spain} zoom={zoomLevels.Spain} />
             )}
             <p className="mx-2 my-1 font-bold">Spain</p>
           </div>
-          <div className="ml-4 overflow-hidden rounded-lg bg-egg active:scale-95">
+          <div className="overflow-hidden rounded-lg bg-egg active:scale-95 md:ml-4">
             {countryCenters.Tanzania && (
               <MapTest
                 center={countryCenters.Tanzania}
