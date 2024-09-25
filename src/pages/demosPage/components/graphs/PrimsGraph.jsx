@@ -73,30 +73,11 @@ const primMST = (graph) => {
     }
   };
 
-  // Initialize by considering all edges
-  const allEdges = [];
-  for (let i = 0; i < n; i++) {
-    for (let j = i + 1; j < n; j++) {
-      allEdges.push({
-        from: i,
-        to: j,
-        weight: distance(graph[i], graph[j]),
-      });
-    }
-  }
-  allEdges.sort((a, b) => a.weight - b.weight);
+  // Start with a random vertex
+  const startVertex = Math.floor(Math.random() * n);
+  visited.add(startVertex);
+  addEdges(startVertex);
 
-  // Start with the smallest edge from all possible edges
-  const initialEdge = allEdges.shift();
-  visited.add(initialEdge.from);
-  visited.add(initialEdge.to);
-  mst.push([initialEdge.from, initialEdge.to]);
-
-  // Add edges from the initial nodes
-  addEdges(initialEdge.from);
-  addEdges(initialEdge.to);
-
-  // Continue with the standard Prim's algorithm
   while (visited.size < n) {
     let minEdge = edges.reduce(
       (min, edge) =>
@@ -272,7 +253,6 @@ const PrimsGraph = () => {
   return (
     <div className="flex flex-col p-4 lg:flex-row lg:p-10">
       <div className="w-full lg:w-1/2">
-        <h2 className="text-egg">Prim's Algorithm</h2>
         <svg
           ref={svgRef}
           width="100%"
@@ -355,3 +335,10 @@ const PrimsGraph = () => {
 };
 
 export default PrimsGraph;
+
+// TODO:
+// clean up to use components, context etc.
+// algorithm should work correctly, with a random vertex??
+// add visible lengths, display total cost/weight/length
+// that stupid error where it deletes the graph when pressing start...
+// optional: show how vertices move from unconnected set to connected one
