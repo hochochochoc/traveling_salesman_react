@@ -18,7 +18,7 @@ const initialGraphData = [
 const paragraphs = [
   {
     id: 0, // 5-1: 183 m  \\ 5-4: 214 m  // 5-3: 219 m
-    text: "How do we measure how good a solution from an algorithm is? ... The MST is defined as a collection of edges of a graph that connect all vertices, introduce no cycles or loops and also has minimum weight(cost/distance). This is a similar problem to the TSP, but finding the MST has several polynomial time algorithms. One efficient algorithm for finding the MST is called Prim's algorithm.",
+    text: "This is the other algorithm, Kruskal's algorithm.",
   },
   {
     id: 1,
@@ -54,53 +54,58 @@ const distance = (a, b) => {
 };
 
 // Prim's algorithm implementation
-const primMST = (graph) => {
+// Maximum Spanning One-Tree algorithm implementation
+// Kruskal's algorithm implementation
+// Kruskal's algorithm implementation
+const minSpanningOneTree = (graph) => {
+  const edges = [];
   const n = graph.length;
-  const mst = [];
-  const visited = new Set();
-  let edges = [];
 
-  // Function to add edges between a visited node and unvisited nodes
-  const addEdges = (nodeIndex) => {
-    for (let i = 0; i < n; i++) {
-      if (!visited.has(i)) {
-        edges.push({
-          from: nodeIndex,
-          to: i,
-          weight: distance(graph[nodeIndex], graph[i]),
-        });
-      }
+  // Create all edges with their weights
+  for (let i = 0; i < n; i++) {
+    for (let j = i + 1; j < n; j++) {
+      edges.push({
+        from: i,
+        to: j,
+        weight: distance(graph[i], graph[j]),
+      });
     }
+  }
+
+  // Sort edges based on weight
+  edges.sort((a, b) => a.weight - b.weight);
+
+  const mst = [];
+  const parent = Array(n).fill(-1); // -1 indicates that a node is its own parent
+
+  // Helper functions for Union-Find
+  const find = (parent, i) => {
+    if (parent[i] === -1) return i;
+    return find(parent, parent[i]);
   };
 
-  // Start with a random vertex
-  const startVertex = Math.floor(Math.random() * n);
-  visited.add(startVertex);
-  addEdges(startVertex);
+  const union = (parent, x, y) => {
+    parent[x] = y;
+  };
 
-  while (visited.size < n) {
-    let minEdge = edges.reduce(
-      (min, edge) =>
-        !visited.has(edge.to) && edge.weight < min.weight ? edge : min,
-      { weight: Infinity },
-    );
+  // Iterate over edges and build the MST
+  for (let edge of edges) {
+    const { from, to } = edge;
 
-    if (minEdge.weight === Infinity) {
-      // If no valid edge found, exit (disconnected graph)
-      break;
+    const rootFrom = find(parent, from);
+    const rootTo = find(parent, to);
+
+    // If they belong to different sets, include this edge in the MST
+    if (rootFrom !== rootTo) {
+      mst.push([from, to]);
+      union(parent, rootFrom, rootTo); // Union the sets
     }
-
-    visited.add(minEdge.to);
-    mst.push([minEdge.from, minEdge.to]);
-
-    addEdges(minEdge.to);
-    edges = edges.filter((edge) => !visited.has(edge.to));
   }
 
   return mst;
 };
 
-const PrimsGraph = () => {
+const KruskalsGraph = () => {
   const [graphData, setGraphData] = useState([...initialGraphData]);
   const [currentStep, setCurrentStep] = useState(0);
   const svgRef = useRef(null);
@@ -111,8 +116,8 @@ const PrimsGraph = () => {
 
   // Calculate MST edges
   useEffect(() => {
-    const mstEdges = primMST(graphData);
-    setEdges(mstEdges);
+    const oneTreeEdges = minSpanningOneTree(graphData);
+    setEdges(oneTreeEdges);
   }, [graphData]);
 
   // Initialize the graph with drag behavior
@@ -204,7 +209,12 @@ const PrimsGraph = () => {
   useEffect(() => {
     const svg = d3.select(svgRef.current);
     svg.selectAll("line").remove();
+
     treeEdges.forEach((edge) => {
+      const fromNode = graphData[edge[0]];
+      const toNode = graphData[edge[1]];
+      const weight = distance(fromNode, toNode).toFixed(0);
+
       svg
         .append("line")
         .attr("x1", graphData[edge[0]].x)
@@ -213,6 +223,25 @@ const PrimsGraph = () => {
         .attr("y2", graphData[edge[1]].y)
         .attr("stroke", "#FFFF99")
         .attr("stroke-width", 2);
+
+      const midX = (fromNode.x + toNode.x) / 2;
+      const midY = (fromNode.y + toNode.y) / 2;
+
+      const angle = Math.atan2(toNode.y - fromNode.y, toNode.x - fromNode.x);
+
+      // Offset to avoid overlapping (adjust these values as needed)
+      const offset = 15;
+      const textX = midX + offset * Math.cos(angle + Math.PI / 2);
+      const textY = midY + offset * Math.sin(angle + Math.PI / 2);
+
+      svg
+        .append("text")
+        .attr("x", textX)
+        .attr("y", textY)
+        .attr("fill", "#FFFF99")
+        .attr("font-size", "12px")
+        .attr("text-anchor", "middle")
+        .text(weight);
     });
   }, [treeEdges]);
 
@@ -315,7 +344,6 @@ const PrimsGraph = () => {
           </button>
         </div>
       </div>
-
       <div className="mt-10 w-full text-egg lg:ml-14 lg:mt-0 lg:w-1/2">
         {getCurrentParagraphs().map((p) => {
           console.log(`Paragraph ID: ${p.id}, Current Step: ${currentStep}`);
@@ -333,7 +361,7 @@ const PrimsGraph = () => {
   );
 };
 
-export default PrimsGraph;
+export default KruskalsGraph;
 
 // TODO:
 // clean up to use components, context etc.
