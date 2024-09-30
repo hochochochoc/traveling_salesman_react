@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import PrimsGraph from "./components/graphs/PrimsGraph";
-import KruskalsGraph from "./components/graphs/KruskalsGraph";
 import Greedy from "./components/graphs/Greedy";
 import NearestN from "./components/graphs/NearestN";
 import Christofides from "./components/graphs/Christofides";
@@ -27,7 +26,7 @@ export default function DemosPage() {
           <Header />
         </div>
 
-        <div className="mx-auto mb-4 flex max-w-max flex-col justify-center gap-2 rounded-xl bg-gray-800 p-2 shadow-lg backdrop-blur-lg backdrop-filter">
+        <div className="mx-auto flex max-w-max flex-col justify-center gap-2 rounded-xl bg-gray-800 p-2 shadow-lg backdrop-blur-lg backdrop-filter">
           <div className="flex justify-center gap-2">
             <button
               className={`rounded-lg px-6 py-3 text-sm font-medium transition-all duration-300 ${

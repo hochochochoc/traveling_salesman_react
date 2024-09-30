@@ -108,7 +108,7 @@ const kruskalsMST = (graph) => {
 const DemosContext = createContext();
 
 const DemosProvider = ({ children }) => {
-  const [activeSection, setActiveSection] = useState("algorithms");
+  const [activeSection, setActiveSection] = useState("validation");
   const [algorithmSelection, setAlgorithmSelection] = useState("Greedy");
   const [validationSelection, setValidationSelection] = useState("Prims");
 

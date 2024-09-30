@@ -6,3 +6,4 @@
         // add visible lengths, display total cost/weight/length
         // that stupid error where it deletes the graph when pressing start...
         // optional: show how vertices move from unconnected set to connected one
+        // when changing validation selection, the graph and steps should reset

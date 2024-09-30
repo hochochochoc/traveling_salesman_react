@@ -22,6 +22,12 @@ const PrimsGraph = () => {
   const timerRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [edges, setEdges] = useState([]);
+  const [stepsIsOpen, setStepsIsOpen] = useState(false);
+  const popoverRef = useRef(null);
+
+  useEffect(() => {
+    resetVisualization();
+  }, [validationSelection]);
 
   // Calculate MST edges
   useEffect(() => {
@@ -115,10 +121,12 @@ const PrimsGraph = () => {
         setTreeEdges((prevEdges) => [...prevEdges, edges[currentStep]]);
         setCurrentStep((prevStep) => prevStep + 1);
       }, 1000);
-    } else if (!isPlaying) {
-      clearTimeout(timerRef.current);
     }
-    return () => clearTimeout(timerRef.current);
+    return () => {
+      if (!isPlaying && timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
   }, [isPlaying, currentStep, edges]);
 
   useEffect(() => {
@@ -204,59 +212,111 @@ const PrimsGraph = () => {
           style={{ maxHeight: "400px", height: "100%" }}
         ></svg>
 
-        <div className="mt-5 flex items-center space-x-3">
-          <button
-            onClick={resetVisualization}
-            className="rounded-lg bg-slate-400 px-3 py-2 text-egg active:scale-95 active:bg-slate-500"
-          >
-            Reset
-          </button>
-
-          <button
-            onClick={() => {
-              setIsPlaying(true);
-              playAnimation();
-            }}
-            className="rounded-lg bg-slate-400 px-3 py-2 text-egg active:scale-95 active:bg-slate-500"
-          >
-            <Play />
-          </button>
-
-          <button
-            onClick={() => {
-              setIsPlaying(false);
-              clearTimeout(timerRef.current);
-            }}
-            className="rounded-lg bg-slate-400 px-3 py-2 text-egg active:scale-95 active:bg-slate-500"
-          >
-            <Pause />
-          </button>
-        </div>
-
-        <div className="mt-5 flex flex-wrap">
-          {edges.map((_, index) => (
+        <div className="flex items-center justify-center space-x-2 lg:space-x-10">
+          <div className="flex items-center space-x-2 lg:space-x-3">
             <button
-              key={index}
-              onClick={() => handleStepClick(index)}
-              className={
-                currentStep === index
-                  ? "m-1.5 rounded-lg bg-bluelight px-3 py-1 text-egg"
-                  : "m-1.5 rounded-lg bg-gray-300 px-3 py-1 text-egg"
-              }
+              onClick={resetVisualization}
+              className="rounded-lg bg-slate-400 px-3 py-2 text-egg active:scale-95 active:bg-slate-500"
             >
-              {index === 0 ? "Start" : `Step ${index}`}
+              Reset
             </button>
-          ))}
-          <button
-            onClick={() => handleStepClick(edges.length)}
-            className={
-              currentStep === edges.length
-                ? "m-1.5 rounded-lg bg-bluelight px-3 py-1 text-egg"
-                : "m-1.5 rounded-lg bg-gray-300 px-3 py-1 text-egg"
-            }
-          >
-            Step {edges.length}
-          </button>
+
+            <button
+              onClick={() => {
+                setIsPlaying(true);
+                playAnimation();
+              }}
+              className="rounded-lg bg-slate-400 px-3 py-2 text-egg active:scale-95 active:bg-slate-500"
+            >
+              <Play />
+            </button>
+
+            <button
+              onClick={() => {
+                setIsPlaying(false);
+              }}
+              className="rounded-lg bg-slate-400 px-3 py-2 text-egg active:scale-95 active:bg-slate-500"
+            >
+              <Pause />
+            </button>
+          </div>
+
+          <div className="flex items-center justify-center space-x-1 lg:space-x-3">
+            <button
+              disabled={currentStep === 0}
+              onClick={() => handleStepClick(currentStep - 1)}
+              className="rounded-full bg-gray-200 p-2 text-gray-600 disabled:opacity-50"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+
+            <div className="relative">
+              <button
+                onClick={() => setStepsIsOpen(!stepsIsOpen)}
+                className="rounded-md bg-slate-500 px-4 py-2 text-white"
+              >
+                Step {currentStep}
+              </button>
+
+              {stepsIsOpen && (
+                <div
+                  ref={popoverRef}
+                  className="absolute left-1/2 mt-2 -translate-x-1/2 transform rounded-full bg-egg p-2 shadow-lg"
+                >
+                  <div className="flex items-center space-x-2">
+                    {Array.from({ length: edges.length + 1 }, (_, i) => (
+                      <button
+                        key={i}
+                        onClick={() => {
+                          handleStepClick(i);
+                          setStepsIsOpen(false);
+                        }}
+                        className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium transition-colors ${
+                          i === currentStep
+                            ? "bg-slate-500 text-egg"
+                            : "bg-gray-200 text-gray-600 hover:bg-gray-300"
+                        }`}
+                      >
+                        {i}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <button
+              disabled={currentStep === edges.length}
+              onClick={() => handleStepClick(currentStep + 1)}
+              className="rounded-full bg-gray-200 p-2 text-gray-600 disabled:opacity-50"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 
