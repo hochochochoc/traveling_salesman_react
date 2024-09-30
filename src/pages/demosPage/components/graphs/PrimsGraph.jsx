@@ -44,14 +44,9 @@ const PrimsGraph = () => {
   // Initialize the graph with drag behavior
   useEffect(() => {
     const svg = d3.select(svgRef.current);
-
-    // Clear existing content
     svg.selectAll("*").remove();
-
-    // Set the viewBox to make the SVG responsive
     svg.attr("viewBox", "0 0 600 400");
 
-    // Drag behavior
     const drag = d3
       .drag()
       .on("start", (event, d) => {
@@ -61,7 +56,6 @@ const PrimsGraph = () => {
       })
       .on("drag", (event, d) => {
         if (currentStep === 0 && !isPlaying) {
-          // Update both x and y positions as the circle is dragged
           d3.select(event.sourceEvent.target)
             .attr("cx", (d.x = event.x))
             .attr("cy", (d.y = event.y));
@@ -69,11 +63,10 @@ const PrimsGraph = () => {
       })
       .on("end", (event, d) => {
         if (currentStep === 0 && !isPlaying) {
-          // Update graphData with the new positions after dragging ends
           const updatedGraph = graphData.map((node) =>
             node.id === d.id ? { ...node, x: d.x, y: d.y } : node,
           );
-          setGraphData(updatedGraph); // Save the updated positions
+          setGraphData(updatedGraph);
         }
       });
 
@@ -100,36 +93,13 @@ const PrimsGraph = () => {
       .text((d) => d.id)
       .attr("font-size", "12px")
       .attr("fill", "white");
+
+    // Update edges
+    updateEdges();
   }, [graphData, currentStep, isPlaying]);
 
-  // Animation logic
-  const playAnimation = () => {
-    setIsPlaying(true);
-    if (currentStep < edges.length) {
-      timerRef.current = setTimeout(() => {
-        setTreeEdges((prevEdges) => [...prevEdges, edges[currentStep]]);
-        setCurrentStep((prevStep) => prevStep + 1);
-      }, 1000);
-    } else {
-      stopAnimation();
-    }
-  };
-
-  useEffect(() => {
-    if (isPlaying && currentStep < edges.length) {
-      timerRef.current = setTimeout(() => {
-        setTreeEdges((prevEdges) => [...prevEdges, edges[currentStep]]);
-        setCurrentStep((prevStep) => prevStep + 1);
-      }, 1000);
-    }
-    return () => {
-      if (!isPlaying && timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-    };
-  }, [isPlaying, currentStep, edges]);
-
-  useEffect(() => {
+  // Function to update edges
+  const updateEdges = () => {
     const svg = d3.select(svgRef.current);
     svg.selectAll("line").remove();
 
@@ -140,19 +110,16 @@ const PrimsGraph = () => {
 
       svg
         .append("line")
-        .attr("x1", graphData[edge[0]].x)
-        .attr("y1", graphData[edge[0]].y)
-        .attr("x2", graphData[edge[1]].x)
-        .attr("y2", graphData[edge[1]].y)
+        .attr("x1", fromNode.x)
+        .attr("y1", fromNode.y)
+        .attr("x2", toNode.x)
+        .attr("y2", toNode.y)
         .attr("stroke", "#FFFF99")
         .attr("stroke-width", 2);
 
       const midX = (fromNode.x + toNode.x) / 2;
       const midY = (fromNode.y + toNode.y) / 2;
-
       const angle = Math.atan2(toNode.y - fromNode.y, toNode.x - fromNode.x);
-
-      // Offset to avoid overlapping (adjust these values as needed)
       const offset = 15;
       const textX = midX + offset * Math.cos(angle + Math.PI / 2);
       const textY = midY + offset * Math.sin(angle + Math.PI / 2);
@@ -166,13 +133,48 @@ const PrimsGraph = () => {
         .attr("text-anchor", "middle")
         .text(weight);
     });
+  };
+
+  // Update edges when treeEdges change
+  useEffect(() => {
+    updateEdges();
   }, [treeEdges]);
+
+  // Animation logic
+  useEffect(() => {
+    if (isPlaying && currentStep < edges.length) {
+      timerRef.current = setTimeout(() => {
+        setTreeEdges((prevEdges) => [...prevEdges, edges[currentStep]]);
+        setCurrentStep((prevStep) => prevStep + 1);
+      }, 1000);
+    }
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, [isPlaying, currentStep, edges]);
+
+  const playAnimation = () => {
+    setIsPlaying(true);
+  };
+
+  const stopAnimation = () => {
+    setIsPlaying(false);
+  };
 
   const handleStepClick = (step) => {
     setIsPlaying(false);
     const newTreeEdges = edges.slice(0, step);
     setTreeEdges(newTreeEdges);
     setCurrentStep(step);
+  };
+
+  const resetVisualization = () => {
+    setIsPlaying(false);
+    setCurrentStep(0);
+    setTreeEdges([]);
+    setGraphData([...initialGraphData]);
   };
 
   const getCurrentParagraphs = () => {
@@ -185,21 +187,6 @@ const PrimsGraph = () => {
     }
     // Show paragraphs from step 2 onwards
     return paragraphs.slice(1, currentStep + 1);
-  };
-
-  const stopAnimation = () => {
-    setIsPlaying(false);
-    if (timerRef.current) {
-      clearTimeout(timerRef.current);
-    }
-  };
-
-  const resetVisualization = () => {
-    setIsPlaying(false);
-    setCurrentStep(0);
-    setTreeEdges([]);
-    setGraphData([...initialGraphData]);
-    d3.select(svgRef.current).selectAll("line").remove();
   };
 
   return (
