@@ -98,11 +98,7 @@ export default function DemosPage() {
         <div>
           {activeSection === "algorithms" && renderAlgorithm()}
           {activeSection === "validation" &&
-            (validationSelection === "Prims" ? (
-              <PrimsGraph />
-            ) : (
-              <KruskalsGraph />
-            ))}
+            (validationSelection === "Prims" ? <PrimsGraph /> : <PrimsGraph />)}
         </div>
 
         <div>

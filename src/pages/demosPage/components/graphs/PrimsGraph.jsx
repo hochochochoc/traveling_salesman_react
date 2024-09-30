@@ -10,55 +10,9 @@ const distance = (a, b) => {
   return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
 };
 
-// Prim's algorithm implementation
-const primMST = (graph) => {
-  const n = graph.length;
-  const mst = [];
-  const visited = new Set();
-  let edges = [];
-
-  // Function to add edges between a visited node and unvisited nodes
-  const addEdges = (nodeIndex) => {
-    for (let i = 0; i < n; i++) {
-      if (!visited.has(i)) {
-        edges.push({
-          from: nodeIndex,
-          to: i,
-          weight: distance(graph[nodeIndex], graph[i]),
-        });
-      }
-    }
-  };
-
-  // Start with a random vertex
-  const startVertex = Math.floor(Math.random() * n);
-  visited.add(startVertex);
-  addEdges(startVertex);
-
-  while (visited.size < n) {
-    let minEdge = edges.reduce(
-      (min, edge) =>
-        !visited.has(edge.to) && edge.weight < min.weight ? edge : min,
-      { weight: Infinity },
-    );
-
-    if (minEdge.weight === Infinity) {
-      // If no valid edge found, exit (disconnected graph)
-      break;
-    }
-
-    visited.add(minEdge.to);
-    mst.push([minEdge.from, minEdge.to]);
-
-    addEdges(minEdge.to);
-    edges = edges.filter((edge) => !visited.has(edge.to));
-  }
-
-  return mst;
-};
-
 const PrimsGraph = () => {
-  const { initialGraphData } = useContext(DemosContext);
+  const { initialGraphData, primsMST, kruskalsMST, validationSelection } =
+    useContext(DemosContext);
   const { getParagraphs } = useContext(DemosContext);
   const paragraphs = getParagraphs();
   const [graphData, setGraphData] = useState([...initialGraphData]);
@@ -71,9 +25,15 @@ const PrimsGraph = () => {
 
   // Calculate MST edges
   useEffect(() => {
-    const mstEdges = primMST(graphData);
-    setEdges(mstEdges);
-  }, [graphData]);
+    if (validationSelection === "Prims") {
+      const mstEdges = primsMST(graphData);
+      setEdges(mstEdges);
+    }
+    if (validationSelection === "Kruskals") {
+      const mstEdges = kruskalsMST(graphData);
+      setEdges(mstEdges);
+    }
+  }, [graphData, validationSelection, primsMST, kruskalsMST]);
 
   // Initialize the graph with drag behavior
   useEffect(() => {
@@ -164,7 +124,12 @@ const PrimsGraph = () => {
   useEffect(() => {
     const svg = d3.select(svgRef.current);
     svg.selectAll("line").remove();
+
     treeEdges.forEach((edge) => {
+      const fromNode = graphData[edge[0]];
+      const toNode = graphData[edge[1]];
+      const weight = distance(fromNode, toNode).toFixed(0);
+
       svg
         .append("line")
         .attr("x1", graphData[edge[0]].x)
@@ -173,6 +138,25 @@ const PrimsGraph = () => {
         .attr("y2", graphData[edge[1]].y)
         .attr("stroke", "#FFFF99")
         .attr("stroke-width", 2);
+
+      const midX = (fromNode.x + toNode.x) / 2;
+      const midY = (fromNode.y + toNode.y) / 2;
+
+      const angle = Math.atan2(toNode.y - fromNode.y, toNode.x - fromNode.x);
+
+      // Offset to avoid overlapping (adjust these values as needed)
+      const offset = 15;
+      const textX = midX + offset * Math.cos(angle + Math.PI / 2);
+      const textY = midY + offset * Math.sin(angle + Math.PI / 2);
+
+      svg
+        .append("text")
+        .attr("x", textX)
+        .attr("y", textY)
+        .attr("fill", "#FFFF99")
+        .attr("font-size", "12px")
+        .attr("text-anchor", "middle")
+        .text(weight);
     });
   }, [treeEdges]);
 
@@ -278,7 +262,7 @@ const PrimsGraph = () => {
 
       <div className="mt-10 w-full text-egg lg:ml-14 lg:mt-0 lg:w-1/2">
         {getCurrentParagraphs().map((p) => {
-          console.log(`Paragraph ID: ${p.id}, Current Step: ${currentStep}`);
+          // console.log(`Paragraph ID: ${p.id}, Current Step: ${currentStep}`);
           return (
             <p
               key={p.id}

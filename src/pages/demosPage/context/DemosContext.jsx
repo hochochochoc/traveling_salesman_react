@@ -4,6 +4,107 @@ import Greedy from "../components/graphs/Greedy";
 import NearestN from "../components/graphs/NearestN";
 import Christofides from "../components/graphs/Christofides";
 
+// Function to calculate distance between two points
+const distance = (a, b) => {
+  return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+};
+
+// Prim's algorithm implementation
+const primsMST = (graph) => {
+  const n = graph.length;
+  const mst = [];
+  const visited = new Set();
+  let edges = [];
+
+  // Function to add edges between a visited node and unvisited nodes
+  const addEdges = (nodeIndex) => {
+    for (let i = 0; i < n; i++) {
+      if (!visited.has(i)) {
+        edges.push({
+          from: nodeIndex,
+          to: i,
+          weight: distance(graph[nodeIndex], graph[i]),
+        });
+      }
+    }
+  };
+
+  // Start with a random vertex
+  const startVertex = Math.floor(Math.random() * n);
+  visited.add(startVertex);
+  addEdges(startVertex);
+
+  while (visited.size < n) {
+    let minEdge = edges.reduce(
+      (min, edge) =>
+        !visited.has(edge.to) && edge.weight < min.weight ? edge : min,
+      { weight: Infinity },
+    );
+
+    if (minEdge.weight === Infinity) {
+      // If no valid edge found, exit (disconnected graph)
+      break;
+    }
+
+    visited.add(minEdge.to);
+    mst.push([minEdge.from, minEdge.to]);
+
+    addEdges(minEdge.to);
+    edges = edges.filter((edge) => !visited.has(edge.to));
+  }
+
+  return mst;
+};
+
+// Kruskal's algorithm implementation
+const kruskalsMST = (graph) => {
+  const edges = [];
+  const n = graph.length;
+
+  // Create all edges with their weights
+  for (let i = 0; i < n; i++) {
+    for (let j = i + 1; j < n; j++) {
+      edges.push({
+        from: i,
+        to: j,
+        weight: distance(graph[i], graph[j]),
+      });
+    }
+  }
+
+  // Sort edges based on weight
+  edges.sort((a, b) => a.weight - b.weight);
+
+  const mst = [];
+  const parent = Array(n).fill(-1); // -1 indicates that a node is its own parent
+
+  // Helper functions for Union-Find
+  const find = (parent, i) => {
+    if (parent[i] === -1) return i;
+    return find(parent, parent[i]);
+  };
+
+  const union = (parent, x, y) => {
+    parent[x] = y;
+  };
+
+  // Iterate over edges and build the MST
+  for (let edge of edges) {
+    const { from, to } = edge;
+
+    const rootFrom = find(parent, from);
+    const rootTo = find(parent, to);
+
+    // If they belong to different sets, include this edge in the MST
+    if (rootFrom !== rootTo) {
+      mst.push([from, to]);
+      union(parent, rootFrom, rootTo); // Union the sets
+    }
+  }
+
+  return mst;
+};
+
 const DemosContext = createContext();
 
 const DemosProvider = ({ children }) => {
@@ -221,6 +322,8 @@ const DemosProvider = ({ children }) => {
     renderAlgorithm,
     initialGraphData,
     getParagraphs,
+    primsMST,
+    kruskalsMST,
   };
 
   return (
