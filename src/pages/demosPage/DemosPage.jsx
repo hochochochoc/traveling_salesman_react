@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import PrimsGraph from "./components/graphs/PrimsGraph";
 import KruskalsGraph from "./components/graphs/KruskalsGraph";
 import Greedy from "./components/graphs/Greedy";
@@ -6,25 +6,19 @@ import NearestN from "./components/graphs/NearestN";
 import Christofides from "./components/graphs/Christofides";
 import Header from "./components/header/Header";
 import { useNavigate } from "react-router-dom";
+import { DemosContext } from "./context/demosContext";
 
 export default function DemosPage() {
-  const [showPrimsGraph, setShowPrimsGraph] = useState(true);
-  const [activeSection, setActiveSection] = useState("algorithms");
-  const [selectedAlgorithm, setSelectedAlgorithm] = useState("Greedy");
+  const {
+    activeSection,
+    setActiveSection,
+    algorithmSelection,
+    setAlgorithmSelection,
+    validationSelection,
+    setValidationSelection,
+    renderAlgorithm,
+  } = useContext(DemosContext);
   const navigate = useNavigate();
-
-  const renderAlgorithm = () => {
-    switch (selectedAlgorithm) {
-      case "Greedy":
-        return <Greedy />;
-      case "Nearest ":
-        return <NearestN />;
-      case "Christofides":
-        return <Christofides />;
-      default:
-        return null;
-    }
-  };
 
   return (
     <>
@@ -59,15 +53,15 @@ export default function DemosPage() {
 
           {activeSection === "algorithms" && (
             <div className="flex gap-2">
-              {["Greedy", "Nearest ", "Christofides"].map((algo) => (
+              {["Greedy", "Nearest", "Christofides"].map((algo) => (
                 <button
                   className={`rounded-lg px-6 py-3 text-sm font-medium transition-all duration-300 ${
-                    selectedAlgorithm === algo
+                    algorithmSelection === algo
                       ? "bg-quaternary text-egg shadow-md hover:bg-quinary"
                       : "bg-gray-700 text-teal-300 hover:bg-teal-500 hover:bg-opacity-20"
                   }`}
                   key={algo}
-                  onClick={() => setSelectedAlgorithm(algo)}
+                  onClick={() => setAlgorithmSelection(algo)}
                 >
                   {algo}
                 </button>
@@ -79,21 +73,21 @@ export default function DemosPage() {
             <div className="flex gap-2">
               <button
                 className={`rounded-lg px-6 py-3 text-sm font-medium transition-all duration-300 ${
-                  showPrimsGraph
+                  validationSelection === "Prims"
                     ? "bg-quaternary text-egg shadow-md hover:bg-quinary"
                     : "bg-gray-700 text-teal-300 hover:bg-teal-500 hover:bg-opacity-20"
                 }`}
-                onClick={() => setShowPrimsGraph(true)}
+                onClick={() => setValidationSelection("Prims")}
               >
                 Prim's Algorithm
               </button>
               <button
                 className={`rounded-lg px-6 py-3 text-sm font-medium transition-all duration-300 ${
-                  !showPrimsGraph
+                  validationSelection === "Kruskals"
                     ? "bg-quaternary text-egg shadow-md hover:bg-quinary"
                     : "bg-gray-700 text-teal-300 hover:bg-teal-500 hover:bg-opacity-20"
                 }`}
-                onClick={() => setShowPrimsGraph(false)}
+                onClick={() => setValidationSelection("Kruskals")}
               >
                 Kruskal's Algorithm
               </button>
@@ -104,7 +98,11 @@ export default function DemosPage() {
         <div>
           {activeSection === "algorithms" && renderAlgorithm()}
           {activeSection === "validation" &&
-            (showPrimsGraph ? <PrimsGraph /> : <KruskalsGraph />)}
+            (validationSelection === "Prims" ? (
+              <PrimsGraph />
+            ) : (
+              <KruskalsGraph />
+            ))}
         </div>
 
         <div>

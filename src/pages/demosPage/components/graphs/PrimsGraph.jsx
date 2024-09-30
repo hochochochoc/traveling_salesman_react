@@ -1,52 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import * as d3 from "d3";
 import { Play, Pause } from "lucide-react";
+import { DemosContext } from "../../context/demosContext";
 
 // Simulated graph data
-const initialGraphData = [
-  { id: 0, x: 150, y: 110 },
-  { id: 1, x: 510, y: 230 },
-  { id: 2, x: 200, y: 100 },
-  { id: 3, x: 440, y: 340 },
-  { id: 4, x: 560, y: 100 },
-  { id: 5, x: 350, y: 140 },
-  { id: 6, x: 50, y: 250 },
-  { id: 7, x: 550, y: 50 },
-  { id: 8, x: 70, y: 150 },
-];
-
-const paragraphs = [
-  {
-    id: 0, // 5-1: 183 m  \\ 5-4: 214 m  // 5-3: 219 m
-    text: "How do we measure how good a solution from an algorithm is? ... The MST is defined as a collection of edges of a graph that connect all vertices, introduce no cycles or loops and also has minimum weight(cost/distance). This is a similar problem to the TSP, but finding the MST has several polynomial time algorithms. One efficient algorithm for finding the MST is called Prim's algorithm.",
-  },
-  {
-    id: 1,
-    text: "We start with a random vertex and at every step it considers the set of vertices as part of the tree and a set of vertices we've yet to encounter.",
-  },
-  {
-    id: 2,
-    text: "To determine the best edge to pick as first part of the tree, we simply take the minimum edge weight between these two sets.",
-  },
-  {
-    id: 3,
-    text: "Every time we add an edge we adjust the sets, moving the subsequent vertex accordingly.",
-  },
-  {
-    id: 4,
-    text: "By repeatedly applying this step until all vertices have been processed you are guaranteed to find the Minimum Spanning Tree.",
-  },
-  {
-    id: 5,
-    text: "Prim's Algorithm is a classic example of a greedy approach that provides the optimal solution, and an interesting result is that the MST is always a lower bound for the TSP.",
-  },
-  {
-    id: 6,
-    text: '- then he starts talking about the "1-Tree"',
-  },
-  { id: 7, text: "lo que sea7" },
-  { id: 8, text: "lo que sea8" },
-];
 
 // Function to calculate distance between two points
 const distance = (a, b) => {
@@ -101,6 +58,9 @@ const primMST = (graph) => {
 };
 
 const PrimsGraph = () => {
+  const { initialGraphData } = useContext(DemosContext);
+  const { getParagraphs } = useContext(DemosContext);
+  const paragraphs = getParagraphs();
   const [graphData, setGraphData] = useState([...initialGraphData]);
   const [currentStep, setCurrentStep] = useState(0);
   const svgRef = useRef(null);
@@ -334,10 +294,3 @@ const PrimsGraph = () => {
 };
 
 export default PrimsGraph;
-
-// TODO:
-// clean up to use components, context etc.
-// algorithm should work correctly, with a random vertex??
-// add visible lengths, display total cost/weight/length
-// that stupid error where it deletes the graph when pressing start...
-// optional: show how vertices move from unconnected set to connected one
