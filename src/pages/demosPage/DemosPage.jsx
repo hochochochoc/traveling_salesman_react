@@ -19,7 +19,7 @@ export default function DemosPage() {
 
   return (
     <>
-      <div className="bg-bluedarkest">
+      <div className="h-screen overflow-hidden bg-bluedarkest">
         <div className="grid grid-cols-2 p-4">
           <Header />
         </div>
@@ -97,14 +97,14 @@ export default function DemosPage() {
           {activeSection === "validation" && <Graph />}
         </div>
 
-        <div>
+        <div className="flex justify-center">
           <button
-            className="mx-4 mb-2 text-egg"
+            className="mx-4 mb-2 rounded-lg border border-egg px-2 py-1 text-egg"
             onClick={() => {
               navigate("/");
             }}
           >
-            back to menu
+            Back to Menu
           </button>
         </div>
       </div>

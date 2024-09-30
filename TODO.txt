@@ -2,14 +2,16 @@
 // DEMOSPAGE
     // PrimsGraph
         // clean up to use components, context etc.
-        // make setMobile to make it responsive... buttons, vertices, numbers
         // correct the links to validation and algorithms
-        // implement text mechanism
         // add the actual algorithms of course
         // write the content of the little texts
-        // make main page responsive...
         // fix stupid sidebar
         // fix directions of text in demos
+        // change step 0 to start
+        // make total edge weight responsive
+        // fix problem with isMobile
+        // make it look halfway good in large screen too
+
         
         
         // change all the names, including prims and landingpage -- done
@@ -18,7 +20,12 @@
         // error where it deletes the graph when pressing start -- done
         // when changing validation selection, the graph and steps should reset -- done
         // replace the stupid button icons from w3 -- done
-        
+        // implement text mechanism -- done
+        // make setMobile to make it responsive... buttons, vertices, numbers -- done
+        // insert total length somewhere -- done
+
+
 
          // optional: show how vertices move from unconnected set to connected one
          // optional: make it so when I change from one algorithm to the next the changed vertices stay in the same location
+         // optional: make it so numbers and edges aren't blocking each other (mobile too)

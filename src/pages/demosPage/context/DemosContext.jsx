@@ -130,7 +130,8 @@ const DemosProvider = ({ children }) => {
     Prims: [
       {
         id: 0,
-        text: "How do we measure how good a solution from an algorithm is? ... The MST is defined as a collection of edges of a graph that connect all vertices, introduce no cycles or loops and also has minimum weight(cost/distance). This is a similar problem to the TSP, but finding the MST has several polynomial time algorithms. One efficient algorithm for finding the MST is called Prim's algorithm.",
+        text: "Just some example text for Prim's algorithm.",
+        // text: "How do we measure how good a solution from an algorithm is? ... The MST is defined as a collection of edges of a graph that connect all vertices, introduce no cycles or loops and also has minimum weight(cost/distance). This is a similar problem to the TSP, but finding the MST has several polynomial time algorithms. One efficient algorithm for finding the MST is called Prim's algorithm.",
       },
       {
         id: 1,
@@ -162,7 +163,7 @@ const DemosProvider = ({ children }) => {
     Kruskals: [
       {
         id: 0,
-        text: "what what Kruskaaaaal...! This is the other algorithm, Kruskal's algorithm.",
+        text: "Kruskal. This is the other validation algorithm, Kruskal's algorithm.",
       },
       {
         id: 1,

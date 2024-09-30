@@ -12,6 +12,7 @@ const distance = (a, b) => {
 };
 
 const Graph = () => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 450);
   const { initialGraphData, primsMST, kruskalsMST, validationSelection } =
     useContext(DemosContext);
   const { getParagraphs } = useContext(DemosContext);
@@ -26,10 +27,38 @@ const Graph = () => {
   const [stepsIsOpen, setStepsIsOpen] = useState(false);
   const popoverRef = useRef(null);
   const [direction, setDirection] = useState("left");
+  const [totalLength, setTotalLength] = useState(0);
+
+  // calculate total length
+  useEffect(() => {
+    // Calculate total length based on current step
+    const newTotalLength = treeEdges.reduce((sum, edge) => {
+      const fromNode = graphData[edge[0]];
+      const toNode = graphData[edge[1]];
+      return sum + distance(fromNode, toNode);
+    }, 0);
+
+    setTotalLength(newTotalLength);
+  }, [currentStep, treeEdges, graphData]);
+
+  // Update isMobile state based on window size
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 450);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     resetVisualization();
   }, [validationSelection]);
+
+  let vertexRadius = isMobile ? 8 : 5;
+  let graphFontSize = isMobile ? "20px" : "12px";
+  let edgeSize = isMobile ? 5 : 3;
+  let offset = isMobile ? 25 : 15;
 
   // Calculate MST edges
   useEffect(() => {
@@ -80,7 +109,7 @@ const Graph = () => {
       .append("circle")
       .attr("cx", (d) => d.x)
       .attr("cy", (d) => d.y)
-      .attr("r", 5)
+      .attr("r", vertexRadius)
       .attr("fill", "orange")
       .call(drag);
 
@@ -93,7 +122,7 @@ const Graph = () => {
       .attr("x", (d) => d.x + 10)
       .attr("y", (d) => d.y - 10)
       .text((d) => d.id)
-      .attr("font-size", "12px")
+      .attr("font-size", graphFontSize)
       .attr("fill", "white");
 
     // Update edges
@@ -117,12 +146,12 @@ const Graph = () => {
         .attr("x2", toNode.x)
         .attr("y2", toNode.y)
         .attr("stroke", "#FFFF99")
-        .attr("stroke-width", 2);
+        .attr("stroke-width", edgeSize);
 
       const midX = (fromNode.x + toNode.x) / 2;
       const midY = (fromNode.y + toNode.y) / 2;
       const angle = Math.atan2(toNode.y - fromNode.y, toNode.x - fromNode.x);
-      const offset = 15;
+
       const textX = midX + offset * Math.cos(angle + Math.PI / 2);
       const textY = midY + offset * Math.sin(angle + Math.PI / 2);
 
@@ -131,7 +160,7 @@ const Graph = () => {
         .attr("x", textX)
         .attr("y", textY)
         .attr("fill", "#FFFF99")
-        .attr("font-size", "12px")
+        .attr("font-size", graphFontSize)
         .attr("text-anchor", "middle")
         .text(weight);
     });
@@ -181,17 +210,28 @@ const Graph = () => {
   };
 
   return (
-    <div className="flex flex-col p-4 lg:flex-row lg:p-10">
-      <div className="w-full lg:w-1/2">
+    <div className="flex flex-col py-4 lg:flex-row lg:p-10 lg:px-4">
+      <div className="relative w-full lg:w-1/2">
         <svg
           ref={svgRef}
           width="100%"
-          className="my-5 border border-gray-500"
+          className="my-5 border border-gray-500 bg-gray-800 shadow-lg shadow-inherit"
           style={{ maxHeight: "400px", height: "100%" }}
         ></svg>
+        <p
+          style={{
+            position: "absolute",
+            top: "210px",
+            left: "10px",
+            color: "white",
+            fontSize: "14px",
+          }}
+        >
+          Total Edge Weight: {totalLength.toFixed(0)}
+        </p>
 
-        <div className="flex items-center justify-center space-x-2 lg:space-x-10">
-          <div className="flex items-center space-x-2 lg:space-x-3">
+        <div className="items-center justify-center lg:flex lg:space-x-10">
+          <div className="mb-2 flex items-center justify-center space-x-3 lg:mb-0">
             <button
               onClick={resetVisualization}
               className="rounded-lg bg-slate-400 px-3 py-2 text-egg active:scale-95 active:bg-slate-500"
@@ -219,7 +259,7 @@ const Graph = () => {
             </button>
           </div>
 
-          <div className="flex items-center justify-center space-x-1 lg:space-x-3">
+          <div className="flex items-center justify-center space-x-2">
             <button
               disabled={currentStep === 0}
               onClick={() => handleStepClick(currentStep - 1)}
@@ -231,7 +271,7 @@ const Graph = () => {
             <div className="relative">
               <button
                 onClick={() => setStepsIsOpen(!stepsIsOpen)}
-                className="rounded-md bg-slate-500 px-4 py-2 text-white"
+                className="rounded-md bg-slate-500 px-3 py-2 text-white"
               >
                 Step {currentStep}
               </button>
@@ -239,9 +279,9 @@ const Graph = () => {
               {stepsIsOpen && (
                 <div
                   ref={popoverRef}
-                  className="absolute left-1/2 mt-2 -translate-x-1/2 transform rounded-full bg-egg p-2 shadow-lg"
+                  className="absolute left-1/2 z-50 mt-2 -translate-x-1/2 transform rounded-full bg-egg p-1.5 shadow-lg lg:p-2"
                 >
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-1.5 lg:space-x-2">
                     {Array.from({ length: edges.length + 1 }, (_, i) => (
                       <button
                         key={i}
@@ -274,13 +314,13 @@ const Graph = () => {
         </div>
       </div>
 
-      <div className="mt-10 w-full text-egg lg:ml-14 lg:mt-0 lg:w-1/2">
-        <div className="flex flex-col items-center justify-center space-y-8">
-          <div className="relative h-20 w-full overflow-hidden">
+      <div className="mt-4 w-full text-egg lg:ml-14 lg:mt-0 lg:w-1/2">
+        <div className="flex flex-col items-center justify-center lg:space-y-8">
+          <div className="relative h-20 w-full lg:overflow-hidden">
             {paragraphs.map((paragraph, i) => (
               <p
                 key={i}
-                className={`absolute inset-0 flex items-center justify-center text-center text-xl font-medium text-egg transition-all duration-500 ease-in-out ${
+                className={`text-md absolute inset-0 flex items-start justify-center text-center font-medium text-egg transition-all duration-500 ease-in-out lg:text-lg ${
                   i === currentStep
                     ? `translate-x-0 opacity-100`
                     : i < currentStep
