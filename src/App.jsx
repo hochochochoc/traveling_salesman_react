@@ -1,5 +1,5 @@
 import React from "react";
-import LandingPage from "./pages/landingPage/LandingPage";
+import MenuPage from "./pages/landingPage/MenuPage";
 import MapPage from "./pages/mapPage/MapPage";
 import DemosPage from "./pages/demosPage/DemosPage";
 import ResultsPage from "./pages/resultsPage/ResultsPage";
@@ -13,7 +13,7 @@ function App() {
   return (
     // <AuthProvider>
     <Routes>
-      <Route path="/" element={<LandingPage />} />
+      <Route path="/" element={<MenuPage />} />
       <Route path="/map" element={<MapPage />} />
       <Route
         path="/demos"

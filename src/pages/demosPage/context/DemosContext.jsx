@@ -162,7 +162,7 @@ const DemosProvider = ({ children }) => {
     Kruskals: [
       {
         id: 0,
-        text: "Kruskaaaaal...! This is the other algorithm, Kruskal's algorithm.",
+        text: "what what Kruskaaaaal...! This is the other algorithm, Kruskal's algorithm.",
       },
       {
         id: 1,

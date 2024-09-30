@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import * as d3 from "d3";
 import { Play, Pause } from "lucide-react";
 import { DemosContext } from "../../context/demosContext";
+import { ChevronRight, ChevronLeft } from "lucide-react";
 
 // Simulated graph data
 
@@ -10,7 +11,7 @@ const distance = (a, b) => {
   return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
 };
 
-const PrimsGraph = () => {
+const Graph = () => {
   const { initialGraphData, primsMST, kruskalsMST, validationSelection } =
     useContext(DemosContext);
   const { getParagraphs } = useContext(DemosContext);
@@ -24,6 +25,7 @@ const PrimsGraph = () => {
   const [edges, setEdges] = useState([]);
   const [stepsIsOpen, setStepsIsOpen] = useState(false);
   const popoverRef = useRef(null);
+  const [direction, setDirection] = useState("left");
 
   useEffect(() => {
     resetVisualization();
@@ -163,13 +165,6 @@ const PrimsGraph = () => {
     setIsPlaying(false);
   };
 
-  const handleStepClick = (step) => {
-    setIsPlaying(false);
-    const newTreeEdges = edges.slice(0, step);
-    setTreeEdges(newTreeEdges);
-    setCurrentStep(step);
-  };
-
   const resetVisualization = () => {
     setIsPlaying(false);
     setCurrentStep(0);
@@ -177,16 +172,12 @@ const PrimsGraph = () => {
     setGraphData([...initialGraphData]);
   };
 
-  const getCurrentParagraphs = () => {
-    if (currentStep === 0) {
-      // Show only the first paragraph when starting
-      return [paragraphs[0]];
-    } else if (currentStep === 1) {
-      // Show all paragraphs except the first one after step 1
-      return paragraphs.slice(1, currentStep + 1);
-    }
-    // Show paragraphs from step 2 onwards
-    return paragraphs.slice(1, currentStep + 1);
+  const handleStepClick = (step) => {
+    setIsPlaying(false);
+    setDirection(step > currentStep ? "left" : "right");
+    const newTreeEdges = edges.slice(0, step);
+    setTreeEdges(newTreeEdges);
+    setCurrentStep(step);
   };
 
   return (
@@ -234,19 +225,7 @@ const PrimsGraph = () => {
               onClick={() => handleStepClick(currentStep - 1)}
               className="rounded-full bg-gray-200 p-2 text-gray-600 disabled:opacity-50"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <polyline points="15 18 9 12 15 6"></polyline>
-              </svg>
+              <ChevronLeft />
             </button>
 
             <div className="relative">
@@ -289,39 +268,34 @@ const PrimsGraph = () => {
               onClick={() => handleStepClick(currentStep + 1)}
               className="rounded-full bg-gray-200 p-2 text-gray-600 disabled:opacity-50"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
+              <ChevronRight />
             </button>
           </div>
         </div>
       </div>
 
       <div className="mt-10 w-full text-egg lg:ml-14 lg:mt-0 lg:w-1/2">
-        {getCurrentParagraphs().map((p) => {
-          // console.log(`Paragraph ID: ${p.id}, Current Step: ${currentStep}`);
-          return (
-            <p
-              key={p.id}
-              className={currentStep <= p.id ? "text-egg" : "text-gray-400"}
-            >
-              {p.text}
-            </p>
-          );
-        })}
+        <div className="flex flex-col items-center justify-center space-y-8">
+          <div className="relative h-20 w-full overflow-hidden">
+            {paragraphs.map((paragraph, i) => (
+              <p
+                key={i}
+                className={`absolute inset-0 flex items-center justify-center text-center text-xl font-medium text-egg transition-all duration-500 ease-in-out ${
+                  i === currentStep
+                    ? `translate-x-0 opacity-100`
+                    : i < currentStep
+                      ? `${direction === "left" ? "-translate-x-full" : "translate-x-full"} opacity-0`
+                      : `${direction === "left" ? "translate-x-full" : "-translate-x-full"} opacity-0`
+                }`}
+              >
+                {paragraph.text}
+              </p>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default PrimsGraph;
+export default Graph;

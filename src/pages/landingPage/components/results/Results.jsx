@@ -1,9 +1,9 @@
 import React from "react";
 
-export default function History() {
+export default function Results() {
   return (
     <div className="ml-2 mt-4 h-48 rounded-lg bg-egg p-4">
-      <div className="font-bold">History</div>
+      <div className="font-bold">Results</div>
     </div>
   );
 }

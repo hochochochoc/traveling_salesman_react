@@ -2,8 +2,23 @@
 // DEMOSPAGE
     // PrimsGraph
         // clean up to use components, context etc.
-        // algorithm should work correctly, with a random vertex??
-        // add visible lengths, display total cost/weight/length
-        // that stupid error where it deletes the graph when pressing start...
-        // optional: show how vertices move from unconnected set to connected one
-        // when changing validation selection, the graph and steps should reset
+        // make setMobile to make it responsive... buttons, vertices, numbers
+        // correct the links to validation and algorithms
+        // implement text mechanism
+        // add the actual algorithms of course
+        // write the content of the little texts
+        // make main page responsive...
+        // fix stupid sidebar
+        // fix directions of text in demos
+        
+        
+        // change all the names, including prims and landingpage -- done
+        // algorithm should work correctly, with a random vertex?? -- done
+        // add visible lengths, display total cost/weight/length -- done
+        // error where it deletes the graph when pressing start -- done
+        // when changing validation selection, the graph and steps should reset -- done
+        // replace the stupid button icons from w3 -- done
+        
+
+         // optional: show how vertices move from unconnected set to connected one
+         // optional: make it so when I change from one algorithm to the next the changed vertices stay in the same location

@@ -1,8 +1,6 @@
 import React, { useContext } from "react";
-import PrimsGraph from "./components/graphs/PrimsGraph";
-import Greedy from "./components/graphs/Greedy";
-import NearestN from "./components/graphs/NearestN";
-import Christofides from "./components/graphs/Christofides";
+import Graph from "./components/graphs/Graph";
+
 import Header from "./components/header/Header";
 import { useNavigate } from "react-router-dom";
 import { DemosContext } from "./context/demosContext";
@@ -96,8 +94,7 @@ export default function DemosPage() {
 
         <div>
           {activeSection === "algorithms" && renderAlgorithm()}
-          {activeSection === "validation" &&
-            (validationSelection === "Prims" ? <PrimsGraph /> : <PrimsGraph />)}
+          {activeSection === "validation" && <Graph />}
         </div>
 
         <div>
