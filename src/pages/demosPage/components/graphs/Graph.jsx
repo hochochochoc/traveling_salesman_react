@@ -246,7 +246,7 @@ const Graph = () => {
 
   const handleStepClick = (step) => {
     setIsPlaying(false);
-    setDirection(step > currentStep ? "left" : "right");
+
     const newTreeEdges = edges.slice(0, step);
     setTreeEdges(newTreeEdges);
     setCurrentStep(step);
@@ -373,6 +373,9 @@ const Graph = () => {
                         : `${direction === "left" ? "translate-x-full" : "-translate-x-full"} opacity-0`
                   }`}
                 >
+                  {console.log(
+                    `Direction: ${direction}, Current Step: ${currentStep}`,
+                  )}
                   {paragraph.text}
                 </p>
               ))}

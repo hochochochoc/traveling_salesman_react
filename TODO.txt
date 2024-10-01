@@ -1,14 +1,6 @@
 
 // DEMOSPAGE
-    // PrimsGraph
-        
-        // fix texts not appearing for algorithms
-        // fix directions of text in demos
-        
-
-
-
-
+    // PrimsGraph      
         // clean up to use components, context etc.
         // add the algorithm for christofides
         // write the content of the little texts
@@ -37,6 +29,8 @@
         // fix bug when saving -- done
         // responsify total edge weight in graph -- done
         // fix greedy algorithm -- done
+        // fix texts not appearing for algorithms -- done
+        // fix directions of text in demos -- done
 
 
 

@@ -420,11 +420,9 @@ const DemosProvider = ({ children }) => {
 
   const getParagraphs = () => {
     if (activeSection === "validation") {
-      console.log("active section is validation");
       return paragraphs[validationSelection];
     }
     if (activeSection === "algorithms") {
-      console.log("active section is algorithm");
       return paragraphs[algorithmSelection];
     }
     return [];

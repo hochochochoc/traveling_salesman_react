@@ -19,7 +19,7 @@ export default function Demos() {
         }}
         className="mb-3 mt-2 rounded-lg border border-black bg-black py-2 text-white active:scale-95"
       >
-        Algorithms what
+        Algorithms
       </button>
       <button
         onClick={() => {
