@@ -3,6 +3,13 @@ import * as d3 from "d3";
 import { Play, Pause } from "lucide-react";
 import { DemosContext } from "../../context/DemosContext";
 import { ChevronRight, ChevronLeft } from "lucide-react";
+import { RotateCcw } from "lucide-react";
+
+if (import.meta.hot) {
+  import.meta.hot.accept(() => {
+    window.location.reload(); // Forces a full reload
+  });
+}
 
 // Simulated graph data
 
@@ -18,6 +25,7 @@ const Graph = () => {
     primsMST,
     kruskalsMST,
     nearestNeighborTSP,
+    christofidesTSP,
     cheapestInsertionTSP,
     validationSelection,
     algorithmSelection,
@@ -71,12 +79,16 @@ const Graph = () => {
   // Calculate MST edges
   useEffect(() => {
     if (activeSection === "algorithms") {
-      console.log("active section algorithm correctly detected");
+      // console.log("active section algorithm correctly detected");
       if (algorithmSelection === "Nearest") {
         const mstEdges = nearestNeighborTSP(graphData);
         setEdges(mstEdges);
       }
       if (algorithmSelection === "Greedy") {
+        const mstEdges = cheapestInsertionTSP(graphData);
+        setEdges(mstEdges);
+      }
+      if (algorithmSelection === "Christofides") {
         const mstEdges = cheapestInsertionTSP(graphData);
         setEdges(mstEdges);
       }
@@ -99,6 +111,7 @@ const Graph = () => {
     primsMST,
     kruskalsMST,
     nearestNeighborTSP,
+    christofidesTSP,
     cheapestInsertionTSP,
   ]);
 
@@ -245,16 +258,16 @@ const Graph = () => {
         <svg
           ref={svgRef}
           width="100%"
-          className="my-5 border border-gray-500 bg-gray-800 shadow-lg shadow-inherit"
+          className="my-5 border border-gray-500 bg-gray-800 shadow-lg shadow-inherit lg:my-0 lg:mb-5"
           style={{ maxHeight: "400px", height: "100%" }}
         ></svg>
         <p
           style={{
             position: "absolute",
-            top: "228px",
             left: "10px",
             color: "white",
-            fontSize: "14px",
+            fontSize: window.innerWidth > 1024 ? "20px" : "14px",
+            top: window.innerWidth > 1024 ? "365px" : "250px",
           }}
         >
           Total Edge Weight: {totalLength.toFixed(0)}
@@ -303,7 +316,7 @@ const Graph = () => {
                 onClick={() => setStepsIsOpen(!stepsIsOpen)}
                 className="rounded-md bg-slate-500 px-3 py-2 text-white"
               >
-                Step {currentStep}
+                {currentStep === 0 ? "Start" : `Step ${currentStep}`}
               </button>
 
               {stepsIsOpen && (
@@ -325,7 +338,7 @@ const Graph = () => {
                             : "bg-gray-200 text-gray-600 hover:bg-gray-300"
                         }`}
                       >
-                        {i}
+                        {i === 0 ? <RotateCcw className="h-5 w-5" /> : i}
                       </button>
                     ))}
                   </div>
@@ -346,21 +359,23 @@ const Graph = () => {
 
       <div className="mt-4 w-full text-egg lg:ml-14 lg:mt-0 lg:w-1/2">
         <div className="flex flex-col items-center justify-center lg:space-y-8">
-          <div className="relative h-20 w-full lg:overflow-hidden">
-            {paragraphs.map((paragraph, i) => (
-              <p
-                key={i}
-                className={`text-md absolute inset-0 flex items-start justify-center text-center font-medium text-egg transition-all duration-500 ease-in-out lg:text-lg ${
-                  i === currentStep
-                    ? `translate-x-0 opacity-100`
-                    : i < currentStep
-                      ? `${direction === "left" ? "-translate-x-full" : "translate-x-full"} opacity-0`
-                      : `${direction === "left" ? "translate-x-full" : "-translate-x-full"} opacity-0`
-                }`}
-              >
-                {paragraph.text}
-              </p>
-            ))}
+          <div className="relative h-32 w-full lg:overflow-hidden">
+            {(activeSection === "algorithms" ||
+              activeSection === "validation") &&
+              paragraphs.map((paragraph, i) => (
+                <p
+                  key={i}
+                  className={`text-md absolute inset-0 flex items-start justify-center text-center font-medium text-egg transition-all duration-500 ease-in-out lg:text-lg ${
+                    i === currentStep
+                      ? `translate-x-0 opacity-100`
+                      : i < currentStep
+                        ? `${direction === "left" ? "-translate-x-full" : "translate-x-full"} opacity-0`
+                        : `${direction === "left" ? "translate-x-full" : "-translate-x-full"} opacity-0`
+                  }`}
+                >
+                  {paragraph.text}
+                </p>
+              ))}
           </div>
         </div>
       </div>

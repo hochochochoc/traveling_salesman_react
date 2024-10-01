@@ -1,13 +1,175 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-
-import Christofides from "../components/graphs/Christofides";
 import Graph from "../components/graphs/Graph";
+import blossom from "edmonds-blossom";
+
+if (import.meta.hot) {
+  import.meta.hot.accept(() => {
+    window.location.reload(); // Forces a full reload
+  });
+}
 
 // Function to calculate distance between two points
 const distance = (a, b) => {
   return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
 };
 
+// Function for Christofides Algorithm
+const christofidesTSP = (graph) => {
+  const n = graph.length;
+
+  // Compute minimum spanning tree
+  const mst = computeMST(graph);
+
+  // Find odd-degree vertices
+  const oddVertices = findOddDegreeVertices(mst);
+
+  // Compute minimum-weight perfect matching on odd-degree vertices using Blossom algorithm
+  const matching = minimumWeightPerfectMatching(oddVertices, graph);
+
+  // Combine MST and matching to form a multigraph
+  const multigraph = [...mst, ...matching];
+
+  // Compute Eulerian circuit
+  const eulerianCircuit = computeEulerianCircuit(multigraph);
+
+  // Form a Hamiltonian circuit by skipping repeated vertices
+  const hamiltonianCircuit = [];
+  const visited = new Set();
+
+  for (const vertex of eulerianCircuit) {
+    if (!visited.has(vertex)) {
+      hamiltonianCircuit.push(vertex);
+      visited.add(vertex);
+    }
+  }
+
+  // Convert Hamiltonian circuit to edges
+  const edges = [];
+  for (let i = 0; i < hamiltonianCircuit.length; i++) {
+    const from = hamiltonianCircuit[i];
+    const to = hamiltonianCircuit[(i + 1) % hamiltonianCircuit.length];
+    edges.push([from, to]);
+  }
+
+  return edges;
+};
+
+// Helper function to compute Minimum Spanning Tree using Kruskal's algorithm
+const computeMST = (graph) => {
+  const n = graph.length;
+  const edges = [];
+
+  for (let i = 0; i < n; i++) {
+    for (let j = i + 1; j < n; j++) {
+      edges.push({ from: i, to: j, weight: distance(graph[i], graph[j]) });
+    }
+  }
+
+  edges.sort((a, b) => a.weight - b.weight);
+
+  const parent = Array.from({ length: n }, (_, i) => i);
+  const find = (x) => {
+    if (parent[x] !== x) parent[x] = find(parent[x]);
+    return parent[x];
+  };
+  const union = (x, y) => {
+    parent[find(x)] = find(y);
+  };
+
+  const mst = [];
+  for (const { from, to } of edges) {
+    if (find(from) !== find(to)) {
+      mst.push([from, to]);
+      union(from, to);
+    }
+    if (mst.length === n - 1) break;
+  }
+
+  return mst;
+};
+
+// Helper function to find odd-degree vertices
+const findOddDegreeVertices = (mst, graph) => {
+  const degree = new Array(graph.length).fill(0);
+  for (const [from, to] of mst) {
+    degree[from]++;
+    degree[to]++;
+  }
+  return degree.reduce((acc, d, i) => (d % 2 === 1 ? [...acc, i] : acc), []);
+};
+
+// Proper minimum-weight perfect matching using Blossom algorithm
+const minimumWeightPerfectMatching = (vertices, graph) => {
+  const n = vertices.length;
+  const edges = [];
+
+  // Create edge list with distances
+  for (let i = 0; i < n; i++) {
+    for (let j = i + 1; j < n; j++) {
+      edges.push({
+        from: vertices[i],
+        to: vertices[j],
+        weight: distance(graph[vertices[i]], graph[vertices[j]]),
+      });
+    }
+  }
+
+  // Use the Blossom algorithm to get minimum weight perfect matching
+  return blossomAlgorithm(edges, vertices);
+};
+
+// Helper function for Blossom algorithm using edmonds-blossom
+const blossomAlgorithm = (edges, vertices) => {
+  // Convert edges into the format required by edmonds-blossom
+  const formattedEdges = edges.map(({ from, to, weight }) => [
+    from,
+    to,
+    weight,
+  ]);
+
+  // Use the edmonds-blossom function to find the minimum weight perfect matching
+  const result = blossom(formattedEdges);
+
+  // Convert the result back into a readable format
+  const matching = [];
+  for (let i = 0; i < result.length; i++) {
+    if (result[i] !== -1 && i < result[i]) {
+      matching.push([i, result[i]]);
+    }
+  }
+
+  return matching;
+};
+
+// Helper function to compute Eulerian circuit
+const computeEulerianCircuit = (multigraph) => {
+  const adjacencyList = {};
+  for (const [from, to] of multigraph) {
+    if (!adjacencyList[from]) adjacencyList[from] = [];
+    if (!adjacencyList[to]) adjacencyList[to] = [];
+    adjacencyList[from].push(to);
+    adjacencyList[to].push(from);
+  }
+
+  const circuit = [];
+  const stack = [Object.keys(adjacencyList)[0]];
+
+  while (stack.length > 0) {
+    const v = stack[stack.length - 1];
+    if (adjacencyList[v].length === 0) {
+      circuit.push(parseInt(v));
+      stack.pop();
+    } else {
+      const u = adjacencyList[v].pop();
+      adjacencyList[u] = adjacencyList[u].filter((x) => x !== v);
+      stack.push(u);
+    }
+  }
+
+  return circuit.reverse();
+};
+
+// Function for greedy algorithm
 const cheapestInsertionTSP = (graph) => {
   const n = graph.length;
   const edges = [];
@@ -28,9 +190,36 @@ const cheapestInsertionTSP = (graph) => {
   // Sort edges by distance (shortest first)
   allEdges.sort((a, b) => a.distance - b.distance);
 
+  // Function to check if adding an edge creates a loop
+  const createsLoop = (edge) => {
+    if (edges.length < 2) return false;
+
+    const visited = new Set();
+    const stack = [edge.from];
+
+    while (stack.length > 0) {
+      const node = stack.pop();
+      if (node === edge.to) return true;
+
+      if (!visited.has(node)) {
+        visited.add(node);
+        for (const [a, b] of edges) {
+          if (a === node) stack.push(b);
+          if (b === node) stack.push(a);
+        }
+      }
+    }
+
+    return false;
+  };
+
   // Greedy edge selection
   for (const edge of allEdges) {
-    if (edgeCount[edge.from] < 2 && edgeCount[edge.to] < 2) {
+    if (
+      edgeCount[edge.from] < 2 &&
+      edgeCount[edge.to] < 2 &&
+      !createsLoop(edge)
+    ) {
       edges.push([edge.from, edge.to]);
       edgeCount[edge.from]++;
       edgeCount[edge.to]++;
@@ -55,6 +244,7 @@ const cheapestInsertionTSP = (graph) => {
 
 // Nearest Neighbor TSP implementation
 const nearestNeighborTSP = (graph) => {
+  console.log("chose nearest neighbor");
   const n = graph.length;
   const visited = new Set();
   const tour = [];
@@ -217,11 +407,12 @@ const DemosProvider = ({ children }) => {
   const renderAlgorithm = () => {
     switch (algorithmSelection) {
       case "Greedy":
+        console.log(algorithmSelection);
         return <Graph />;
       case "Nearest":
         return <Graph />;
       case "Christofides":
-        return <Christofides />;
+        return <Graph />;
       default:
         return null;
     }
@@ -229,9 +420,11 @@ const DemosProvider = ({ children }) => {
 
   const getParagraphs = () => {
     if (activeSection === "validation") {
+      console.log("active section is validation");
       return paragraphs[validationSelection];
     }
-    if (activeSection === "algorithm") {
+    if (activeSection === "algorithms") {
+      console.log("active section is algorithm");
       return paragraphs[algorithmSelection];
     }
     return [];
@@ -336,7 +529,7 @@ const DemosProvider = ({ children }) => {
       { id: 7, text: "lo que sea7" },
       { id: 8, text: "lo que sea8" },
     ],
-    NearestN: [
+    Nearest: [
       {
         id: 0,
         text: "Nearest neighbor example text.",
@@ -415,6 +608,7 @@ const DemosProvider = ({ children }) => {
     primsMST,
     kruskalsMST,
     nearestNeighborTSP,
+    christofidesTSP,
     cheapestInsertionTSP,
   };
 

@@ -1,8 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Graph from "./components/graphs/Graph";
-
 import Header from "./components/header/Header";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { DemosContext } from "./context/DemosContext";
 
 export default function DemosPage() {
@@ -15,7 +14,22 @@ export default function DemosPage() {
     setValidationSelection,
     renderAlgorithm,
   } = useContext(DemosContext);
+
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state) {
+      setActiveSection(location.state.activeSection);
+      setAlgorithmSelection(location.state.algorithmSelection);
+      setValidationSelection(location.state.validationSelection);
+    }
+  }, [
+    location.state,
+    setActiveSection,
+    setAlgorithmSelection,
+    setValidationSelection,
+  ]);
 
   return (
     <>
@@ -96,17 +110,6 @@ export default function DemosPage() {
           {activeSection === "algorithms" && renderAlgorithm()}
 
           {activeSection === "validation" && <Graph />}
-        </div>
-
-        <div className="flex justify-center sm:hidden lg:block">
-          <button
-            className="mx-4 mb-2 rounded-lg border border-egg px-2 py-1 text-egg"
-            onClick={() => {
-              navigate("/");
-            }}
-          >
-            Back to Menu
-          </button>
         </div>
       </div>
     </>

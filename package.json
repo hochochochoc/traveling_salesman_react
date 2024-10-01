@@ -13,6 +13,7 @@
     "animate.css": "^4.1.1",
     "autoprefixer": "^10.4.20",
     "d3": "^7.9.0",
+    "edmonds-blossom": "^1.0.0",
     "lucide-react": "^0.441.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",

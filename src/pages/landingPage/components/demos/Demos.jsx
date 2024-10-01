@@ -9,15 +9,27 @@ export default function Demos() {
       <p className="ml-2">Try algorithms or validation.</p>
       <button
         onClick={() => {
-          navigate("/demos");
+          navigate("/demos", {
+            state: {
+              activeSection: "algorithms",
+              algorithmSelection: "Greedy",
+              validationSelection: "Prims",
+            },
+          });
         }}
         className="mb-3 mt-2 rounded-lg border border-black bg-black py-2 text-white active:scale-95"
       >
-        Algorithms
+        Algorithms what
       </button>
       <button
         onClick={() => {
-          navigate("/demos");
+          navigate("/demos", {
+            state: {
+              activeSection: "validation",
+              algorithmSelection: "Greedy",
+              validationSelection: "Prims",
+            },
+          });
         }}
         className="rounded-lg border border-black py-2 active:scale-95"
       >

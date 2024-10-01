@@ -1,20 +1,26 @@
 
 // DEMOSPAGE
     // PrimsGraph
+        
+        // fix texts not appearing for algorithms
+        // fix directions of text in demos
+        
+
+
+
+
         // clean up to use components, context etc.
-        // correct the links to validation and algorithms
-        // add the actual algorithms of course
+        // add the algorithm for christofides
         // write the content of the little texts
         // fix stupid sidebar
-        // fix directions of text in demos
-        // change step 0 to start
-        // make total edge weight responsive
-        // fix problem with isMobile
+        // fix loading problem with isMobile
         // make it look halfway good in large screen too
         // adapt a bit to apps e.g. glovo with sliding menu option
-        // responsify total edge weight in graph 
-        
-        
+        // probably add a selection menu at the bottom? like in hellofresh; Home, Algorithms, Validation      
+        // fix christofides
+
+
+
         // change all the names, including prims and landingpage -- done
         // algorithm should work correctly, with a random vertex?? -- done
         // add visible lengths, display total cost/weight/length -- done
@@ -24,12 +30,22 @@
         // implement text mechanism -- done
         // make setMobile to make it responsive... buttons, vertices, numbers -- done
         // insert total length somewhere -- done
+        // implement greedy and nearest neighbor algorithms -- done
+        // change step 0 to start -- done
+        // correct the links to validation and algorithms -- done
+        // replace St with something better -- done
+        // fix bug when saving -- done
+        // responsify total edge weight in graph -- done
+        // fix greedy algorithm -- done
+
 
 
 
          // optional: show how vertices move from unconnected set to connected one
          // optional: make it so when I change from one algorithm to the next the changed vertices stay in the same location
          // optional: make it so numbers and edges aren't blocking each other (mobile too)
+        // optional: look up import.meta.hot in graph and demoscontext again
+        // optional: when moving the vertices: [Intervention] Ignored attempt to cancel a touchmove event with cancelable=false, for example because scrolling is in progress and cannot be interrupted.
 
 // MISCELLANEOUS
     // add a cookies warning
