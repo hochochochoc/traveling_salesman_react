@@ -13,8 +13,15 @@ const distance = (a, b) => {
 
 const Graph = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 450);
-  const { initialGraphData, primsMST, kruskalsMST, validationSelection } =
-    useContext(DemosContext);
+  const {
+    initialGraphData,
+    primsMST,
+    kruskalsMST,
+    nearestNeighborTSP,
+    validationSelection,
+    algorithmSelection,
+    activeSection,
+  } = useContext(DemosContext);
   const { getParagraphs } = useContext(DemosContext);
   const paragraphs = getParagraphs();
   const [graphData, setGraphData] = useState([...initialGraphData]);
@@ -53,7 +60,7 @@ const Graph = () => {
 
   useEffect(() => {
     resetVisualization();
-  }, [validationSelection]);
+  }, [validationSelection, algorithmSelection]);
 
   let vertexRadius = isMobile ? 8 : 5;
   let graphFontSize = isMobile ? "20px" : "12px";
@@ -62,15 +69,33 @@ const Graph = () => {
 
   // Calculate MST edges
   useEffect(() => {
-    if (validationSelection === "Prims") {
-      const mstEdges = primsMST(graphData);
-      setEdges(mstEdges);
+    if (activeSection === "algorithms") {
+      console.log("active section algorithm correctly detected");
+      if (algorithmSelection === "Nearest") {
+        console.log("NN correctly sent to graph");
+        const mstEdges = nearestNeighborTSP(graphData);
+        setEdges(mstEdges);
+      }
     }
-    if (validationSelection === "Kruskals") {
-      const mstEdges = kruskalsMST(graphData);
-      setEdges(mstEdges);
+
+    if (activeSection === "validation") {
+      if (validationSelection === "Prims") {
+        const mstEdges = primsMST(graphData);
+        setEdges(mstEdges);
+      }
+      if (validationSelection === "Kruskals") {
+        const mstEdges = kruskalsMST(graphData);
+        setEdges(mstEdges);
+      }
     }
-  }, [graphData, validationSelection, primsMST, kruskalsMST]);
+  }, [
+    graphData,
+    validationSelection,
+    algorithmSelection,
+    primsMST,
+    kruskalsMST,
+    nearestNeighborTSP,
+  ]);
 
   // Initialize the graph with drag behavior
   useEffect(() => {
@@ -221,7 +246,7 @@ const Graph = () => {
         <p
           style={{
             position: "absolute",
-            top: "210px",
+            top: "228px",
             left: "10px",
             color: "white",
             fontSize: "14px",

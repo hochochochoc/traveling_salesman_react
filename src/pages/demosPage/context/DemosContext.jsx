@@ -1,12 +1,57 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-
 import Greedy from "../components/graphs/Greedy";
 import NearestN from "../components/graphs/NearestN";
 import Christofides from "../components/graphs/Christofides";
+import Graph from "../components/graphs/Graph";
 
 // Function to calculate distance between two points
 const distance = (a, b) => {
   return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+};
+
+// Nearest Neighbor TSP implementation
+const nearestNeighborTSP = (graph) => {
+  const n = graph.length;
+  const visited = new Set();
+  const tour = [];
+  let currentNode = Math.floor(Math.random() * n); // Start with the first node
+
+  visited.add(currentNode);
+  tour.push(currentNode);
+
+  while (visited.size < n) {
+    let nearestNode = null;
+    let nearestDistance = Infinity;
+
+    // Find the nearest unvisited neighbor
+    for (let i = 0; i < n; i++) {
+      if (!visited.has(i)) {
+        const dist = distance(graph[currentNode], graph[i]);
+        if (dist < nearestDistance) {
+          nearestNode = i;
+          nearestDistance = dist;
+        }
+      }
+    }
+
+    // If a nearest node is found, visit it
+    if (nearestNode !== null) {
+      visited.add(nearestNode);
+      tour.push(nearestNode);
+      currentNode = nearestNode;
+    }
+  }
+
+  // Return to the starting point to complete the cycle
+  tour.push(tour[0]);
+
+  // Convert the tour to edge format
+  const edges = [];
+  for (let i = 0; i < tour.length - 1; i++) {
+    edges.push([tour[i], tour[i + 1]]);
+  }
+
+  return edges;
 };
 
 // Prim's algorithm implementation
@@ -124,6 +169,30 @@ const DemosProvider = ({ children }) => {
     { id: 7, x: 550, y: 50 },
     { id: 8, x: 70, y: 150 },
   ];
+
+  const renderAlgorithm = () => {
+    switch (algorithmSelection) {
+      case "Greedy":
+        return <Greedy />;
+      case "Nearest":
+        console.log("rendered Nearest");
+        return <Graph />;
+      case "Christofides":
+        return <Christofides />;
+      default:
+        return null;
+    }
+  };
+
+  const getParagraphs = () => {
+    if (activeSection === "validation") {
+      return paragraphs[validationSelection];
+    }
+    if (activeSection === "algorithm") {
+      return paragraphs[algorithmSelection];
+    }
+    return [];
+  };
 
   // Paragraphs data
   const paragraphs = {
@@ -290,29 +359,6 @@ const DemosProvider = ({ children }) => {
     ],
   };
 
-  const renderAlgorithm = () => {
-    switch (algorithmSelection) {
-      case "Greedy":
-        return <Greedy />;
-      case "Nearest":
-        return <NearestN />;
-      case "Christofides":
-        return <Christofides />;
-      default:
-        return null;
-    }
-  };
-
-  const getParagraphs = () => {
-    if (activeSection === "validation") {
-      return paragraphs[validationSelection];
-    }
-    if (activeSection === "algorithm") {
-      return paragraphs[algorithmSelection];
-    }
-    return [];
-  };
-
   const value = {
     activeSection,
     setActiveSection,
@@ -325,6 +371,7 @@ const DemosProvider = ({ children }) => {
     getParagraphs,
     primsMST,
     kruskalsMST,
+    nearestNeighborTSP,
   };
 
   return (

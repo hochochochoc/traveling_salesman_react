@@ -20,7 +20,7 @@ export default function DemosPage() {
   return (
     <>
       <div className="h-screen overflow-hidden bg-bluedarkest">
-        <div className="grid grid-cols-2 p-4">
+        <div className="flex flex-row justify-between p-4">
           <Header />
         </div>
 
@@ -94,6 +94,7 @@ export default function DemosPage() {
 
         <div>
           {activeSection === "algorithms" && renderAlgorithm()}
+
           {activeSection === "validation" && <Graph />}
         </div>
 
