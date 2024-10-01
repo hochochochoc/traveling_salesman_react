@@ -3,7 +3,7 @@ import Graph from "./components/graphs/Graph";
 
 import Header from "./components/header/Header";
 import { useNavigate } from "react-router-dom";
-import { DemosContext } from "./context/demosContext";
+import { DemosContext } from "./context/DemosContext";
 
 export default function DemosPage() {
   const {
@@ -97,7 +97,7 @@ export default function DemosPage() {
           {activeSection === "validation" && <Graph />}
         </div>
 
-        <div className="flex justify-center">
+        <div className="flex justify-center sm:hidden lg:block">
           <button
             className="mx-4 mb-2 rounded-lg border border-egg px-2 py-1 text-egg"
             onClick={() => {
