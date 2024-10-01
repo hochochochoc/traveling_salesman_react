@@ -30,3 +30,7 @@
          // optional: show how vertices move from unconnected set to connected one
          // optional: make it so when I change from one algorithm to the next the changed vertices stay in the same location
          // optional: make it so numbers and edges aren't blocking each other (mobile too)
+
+// MISCELLANEOUS
+    // add a cookies warning
+    // add ads

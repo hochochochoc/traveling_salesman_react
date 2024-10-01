@@ -1,12 +1,56 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import Greedy from "../components/graphs/Greedy";
-import NearestN from "../components/graphs/NearestN";
+
 import Christofides from "../components/graphs/Christofides";
 import Graph from "../components/graphs/Graph";
 
 // Function to calculate distance between two points
 const distance = (a, b) => {
   return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+};
+
+const cheapestInsertionTSP = (graph) => {
+  const n = graph.length;
+  const edges = [];
+  const edgeCount = new Array(n).fill(0);
+
+  // Create a list of all possible edges
+  const allEdges = [];
+  for (let i = 0; i < n; i++) {
+    for (let j = i + 1; j < n; j++) {
+      allEdges.push({
+        from: i,
+        to: j,
+        distance: distance(graph[i], graph[j]),
+      });
+    }
+  }
+
+  // Sort edges by distance (shortest first)
+  allEdges.sort((a, b) => a.distance - b.distance);
+
+  // Greedy edge selection
+  for (const edge of allEdges) {
+    if (edgeCount[edge.from] < 2 && edgeCount[edge.to] < 2) {
+      edges.push([edge.from, edge.to]);
+      edgeCount[edge.from]++;
+      edgeCount[edge.to]++;
+    }
+
+    // Check if we have a complete tour
+    if (edges.length === n) break;
+  }
+
+  // If we don't have a complete tour, try to close it
+  if (edges.length < n) {
+    const unconnected = edgeCount
+      .map((count, index) => (count < 2 ? index : -1))
+      .filter((index) => index !== -1);
+    if (unconnected.length === 2) {
+      edges.push(unconnected);
+    }
+  }
+
+  return edges;
 };
 
 // Nearest Neighbor TSP implementation
@@ -173,9 +217,8 @@ const DemosProvider = ({ children }) => {
   const renderAlgorithm = () => {
     switch (algorithmSelection) {
       case "Greedy":
-        return <Greedy />;
+        return <Graph />;
       case "Nearest":
-        console.log("rendered Nearest");
         return <Graph />;
       case "Christofides":
         return <Christofides />;
@@ -372,6 +415,7 @@ const DemosProvider = ({ children }) => {
     primsMST,
     kruskalsMST,
     nearestNeighborTSP,
+    cheapestInsertionTSP,
   };
 
   return (

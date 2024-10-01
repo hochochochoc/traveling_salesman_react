@@ -18,6 +18,7 @@ const Graph = () => {
     primsMST,
     kruskalsMST,
     nearestNeighborTSP,
+    cheapestInsertionTSP,
     validationSelection,
     algorithmSelection,
     activeSection,
@@ -72,8 +73,11 @@ const Graph = () => {
     if (activeSection === "algorithms") {
       console.log("active section algorithm correctly detected");
       if (algorithmSelection === "Nearest") {
-        console.log("NN correctly sent to graph");
         const mstEdges = nearestNeighborTSP(graphData);
+        setEdges(mstEdges);
+      }
+      if (algorithmSelection === "Greedy") {
+        const mstEdges = cheapestInsertionTSP(graphData);
         setEdges(mstEdges);
       }
     }
@@ -95,6 +99,7 @@ const Graph = () => {
     primsMST,
     kruskalsMST,
     nearestNeighborTSP,
+    cheapestInsertionTSP,
   ]);
 
   // Initialize the graph with drag behavior
