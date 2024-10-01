@@ -4,7 +4,7 @@ import MapPage from "./pages/mapPage/MapPage";
 import DemosPage from "./pages/demosPage/DemosPage";
 import ResultsPage from "./pages/resultsPage/ResultsPage";
 import { Route, Routes } from "react-router-dom";
-import { DemosProvider } from "./pages/demosPage/context/demosContext";
+import { DemosProvider } from "./pages/demosPage/context/DemosContext";
 // import { AuthProvider } from "./context/authContext";
 import "./index.css";
 // import ProtectedRoute from "./components/utils/ProtectedRoute.jsx";
