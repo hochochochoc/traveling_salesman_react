@@ -365,7 +365,7 @@ const Graph = () => {
               paragraphs.map((paragraph, i) => (
                 <p
                   key={i}
-                  className={`text-md absolute inset-0 flex items-start justify-center text-center font-medium text-egg transition-all duration-500 ease-in-out lg:text-lg ${
+                  className={`text-md absolute inset-0 mx-4 flex items-start justify-center text-center font-medium text-egg transition-all duration-500 ease-in-out lg:text-lg ${
                     i === currentStep
                       ? `translate-x-0 opacity-100`
                       : i < currentStep

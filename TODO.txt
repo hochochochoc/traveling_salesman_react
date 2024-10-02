@@ -1,17 +1,13 @@
 
 // DEMOSPAGE
-    // PrimsGraph      
+    // PrimsGraph            
         // clean up to use components, context etc.
-        // add the algorithm for christofides
-        // write the content of the little texts
         // fix stupid sidebar
         // fix loading problem with isMobile
-        // make it look halfway good in large screen too
+        // make it look halfway decent in large screen too
         // adapt a bit to apps e.g. glovo with sliding menu option
         // probably add a selection menu at the bottom? like in hellofresh; Home, Algorithms, Validation      
         // fix christofides
-
-
 
         // change all the names, including prims and landingpage -- done
         // algorithm should work correctly, with a random vertex?? -- done
@@ -31,7 +27,8 @@
         // fix greedy algorithm -- done
         // fix texts not appearing for algorithms -- done
         // fix directions of text in demos -- done
-
+        // add the algorithm for christofides -- done
+        // write the content of the little texts -- done
 
 
 
