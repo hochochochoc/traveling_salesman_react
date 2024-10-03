@@ -6,7 +6,7 @@ const calculateZoomLevel = (area) => {
   const m = -2.29e-7; // Slope
   const c = 4.4545; // Y-intercept
   const zoom = Math.max(1, Math.min(20, m * area + c)); // Clamp between 1 and 20
-  console.log(`Calculating zoom level for area ${area}: ${zoom}`);
+  // console.log(`Calculating zoom level for area ${area}: ${zoom}`);
   return zoom;
 };
 
@@ -34,9 +34,9 @@ const TravelingProvider = ({ children }) => {
             };
             const zoom = calculateZoomLevel(country.area);
             zooms[country.name.common] = zoom;
-            console.log(
-              `Country: ${country.name.common}, Area: ${country.area}, Zoom: ${zoom}`,
-            ); // Log each country's zoom level
+            // console.log(
+            //   `Country: ${country.name.common}, Area: ${country.area}, Zoom: ${zoom}`,
+            // ); // Log each country's zoom level
           }
         });
 
@@ -45,7 +45,7 @@ const TravelingProvider = ({ children }) => {
         setLoading(false);
       })
       .catch((error) => {
-        console.error("Error fetching country data:", error);
+        // console.error("Error fetching country data:", error);
         setError(error);
         setLoading(false);
       });

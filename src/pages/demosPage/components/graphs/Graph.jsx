@@ -26,6 +26,7 @@ const Graph = () => {
     kruskalsMST,
     nearestNeighborTSP,
     christofidesTSP,
+    twoOptTSP,
     cheapestInsertionTSP,
     validationSelection,
     algorithmSelection,
@@ -44,6 +45,7 @@ const Graph = () => {
   const popoverRef = useRef(null);
   const [direction, setDirection] = useState("left");
   const [totalLength, setTotalLength] = useState(0);
+  const [executionTime, setExecutionTime] = useState(0);
 
   // calculate total length
   useEffect(() => {
@@ -81,27 +83,39 @@ const Graph = () => {
     if (activeSection === "algorithms") {
       // console.log("active section algorithm correctly detected");
       if (algorithmSelection === "Nearest") {
-        const mstEdges = nearestNeighborTSP(graphData);
+        const { edges: mstEdges, executionTime } =
+          nearestNeighborTSP(graphData);
         setEdges(mstEdges);
+        setExecutionTime(executionTime);
       }
       if (algorithmSelection === "Greedy") {
-        const mstEdges = cheapestInsertionTSP(graphData);
+        const { edges: mstEdges, executionTime } =
+          cheapestInsertionTSP(graphData);
         setEdges(mstEdges);
+        setExecutionTime(executionTime);
       }
       if (algorithmSelection === "Christofides") {
-        const mstEdges = cheapestInsertionTSP(graphData);
+        const { edges: mstEdges, executionTime } = christofidesTSP(graphData);
         setEdges(mstEdges);
+        setExecutionTime(executionTime);
+      }
+      if (algorithmSelection === "TwoOpt") {
+        const { edges: mstEdges, executionTime } = twoOptTSP(graphData);
+        setEdges(mstEdges);
+        setExecutionTime(executionTime);
       }
     }
 
     if (activeSection === "validation") {
       if (validationSelection === "Prims") {
-        const mstEdges = primsMST(graphData);
+        const { mst: mstEdges, executionTime } = primsMST(graphData);
         setEdges(mstEdges);
+        setExecutionTime(executionTime);
       }
       if (validationSelection === "Kruskals") {
-        const mstEdges = kruskalsMST(graphData);
+        const { mst: mstEdges, executionTime } = kruskalsMST(graphData);
         setEdges(mstEdges);
+        setExecutionTime(executionTime);
       }
     }
   }, [
@@ -112,6 +126,7 @@ const Graph = () => {
     kruskalsMST,
     nearestNeighborTSP,
     christofidesTSP,
+    twoOptTSP,
     cheapestInsertionTSP,
   ]);
 
@@ -273,6 +288,20 @@ const Graph = () => {
           Total Edge Weight: {totalLength.toFixed(0)}
         </p>
 
+        {currentStep === edges.length && (
+          <p
+            style={{
+              position: "absolute",
+              left: "10px",
+              color: "white",
+              fontSize: window.innerWidth > 1024 ? "20px" : "14px",
+              top: window.innerWidth > 1024 ? "345px" : "220px",
+            }}
+          >
+            Time: {executionTime.toFixed(3)} ms
+          </p>
+        )}
+
         <div className="items-center justify-center lg:flex lg:space-x-10">
           <div className="mb-2 flex items-center justify-center space-x-3 lg:mb-0">
             <button
@@ -373,9 +402,6 @@ const Graph = () => {
                         : `${direction === "left" ? "translate-x-full" : "-translate-x-full"} opacity-0`
                   }`}
                 >
-                  {console.log(
-                    `Direction: ${direction}, Current Step: ${currentStep}`,
-                  )}
                   {paragraph.text}
                 </p>
               ))}

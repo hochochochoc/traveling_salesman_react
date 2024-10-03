@@ -15,13 +15,14 @@ const distance = (a, b) => {
 
 // Function for Christofides Algorithm
 const christofidesTSP = (graph) => {
+  const startTime = performance.now();
   const n = graph.length;
 
   // Compute minimum spanning tree
   const mst = computeMST(graph);
 
   // Find odd-degree vertices
-  const oddVertices = findOddDegreeVertices(mst);
+  const oddVertices = findOddDegreeVertices(mst, n);
 
   // Compute minimum-weight perfect matching on odd-degree vertices using Blossom algorithm
   const matching = minimumWeightPerfectMatching(oddVertices, graph);
@@ -30,28 +31,23 @@ const christofidesTSP = (graph) => {
   const multigraph = [...mst, ...matching];
 
   // Compute Eulerian circuit
-  const eulerianCircuit = computeEulerianCircuit(multigraph);
+  const eulerianCircuit = computeEulerianCircuit(multigraph, n);
 
-  // Form a Hamiltonian circuit by skipping repeated vertices
-  const hamiltonianCircuit = [];
-  const visited = new Set();
+  // Convert Eulerian circuit to Hamiltonian circuit more effectively
+  const tour = convertEulerianToHamiltonian(eulerianCircuit);
 
-  for (const vertex of eulerianCircuit) {
-    if (!visited.has(vertex)) {
-      hamiltonianCircuit.push(vertex);
-      visited.add(vertex);
-    }
-  }
-
-  // Convert Hamiltonian circuit to edges
+  // Convert tour to edges
   const edges = [];
-  for (let i = 0; i < hamiltonianCircuit.length; i++) {
-    const from = hamiltonianCircuit[i];
-    const to = hamiltonianCircuit[(i + 1) % hamiltonianCircuit.length];
+  for (let i = 0; i < tour.length; i++) {
+    const from = tour[i];
+    const to = tour[(i + 1) % tour.length];
     edges.push([from, to]);
   }
 
-  return edges;
+  const endTime = performance.now();
+  const executionTime = endTime - startTime;
+
+  return { edges, executionTime };
 };
 
 // Helper function to compute Minimum Spanning Tree using Kruskal's algorithm
@@ -89,8 +85,8 @@ const computeMST = (graph) => {
 };
 
 // Helper function to find odd-degree vertices
-const findOddDegreeVertices = (mst, graph) => {
-  const degree = new Array(graph.length).fill(0);
+const findOddDegreeVertices = (mst, n) => {
+  const degree = new Array(n).fill(0);
   for (const [from, to] of mst) {
     degree[from]++;
     degree[to]++;
@@ -98,79 +94,178 @@ const findOddDegreeVertices = (mst, graph) => {
   return degree.reduce((acc, d, i) => (d % 2 === 1 ? [...acc, i] : acc), []);
 };
 
-// Proper minimum-weight perfect matching using Blossom algorithm
+// Minimum-weight perfect matching using Blossom algorithm
 const minimumWeightPerfectMatching = (vertices, graph) => {
   const n = vertices.length;
   const edges = [];
 
-  // Create edge list with distances
   for (let i = 0; i < n; i++) {
     for (let j = i + 1; j < n; j++) {
-      edges.push({
-        from: vertices[i],
-        to: vertices[j],
-        weight: distance(graph[vertices[i]], graph[vertices[j]]),
-      });
+      const weight = Math.round(
+        distance(graph[vertices[i]], graph[vertices[j]]) * 1000,
+      );
+      edges.push([vertices[i], vertices[j], weight]); // Include vertices in the edge
     }
   }
 
-  // Use the Blossom algorithm to get minimum weight perfect matching
-  return blossomAlgorithm(edges, vertices);
-};
+  const matching = blossom(edges, true);
 
-// Helper function for Blossom algorithm using edmonds-blossom
-const blossomAlgorithm = (edges, vertices) => {
-  // Convert edges into the format required by edmonds-blossom
-  const formattedEdges = edges.map(({ from, to, weight }) => [
-    from,
-    to,
-    weight,
-  ]);
-
-  // Use the edmonds-blossom function to find the minimum weight perfect matching
-  const result = blossom(formattedEdges);
-
-  // Convert the result back into a readable format
-  const matching = [];
-  for (let i = 0; i < result.length; i++) {
-    if (result[i] !== -1 && i < result[i]) {
-      matching.push([i, result[i]]);
-    }
+  if (!matching) {
+    console.error("Matching failed or returned undefined");
+    return [];
   }
 
-  return matching;
+  return matching.reduce((acc, match, index) => {
+    if (match !== -1 && index < match) {
+      acc.push([vertices[index], vertices[match]]);
+    }
+    return acc;
+  }, []);
 };
 
 // Helper function to compute Eulerian circuit
-const computeEulerianCircuit = (multigraph) => {
-  const adjacencyList = {};
+const computeEulerianCircuit = (multigraph, n) => {
+  const adjacencyList = Array.from({ length: n }, () => []);
   for (const [from, to] of multigraph) {
-    if (!adjacencyList[from]) adjacencyList[from] = [];
-    if (!adjacencyList[to]) adjacencyList[to] = [];
-    adjacencyList[from].push(to);
-    adjacencyList[to].push(from);
+    if (from < n && to < n) {
+      adjacencyList[from].push(to);
+      adjacencyList[to].push(from);
+    } else {
+      console.error(`Invalid edge in multigraph: [${from}, ${to}]`);
+    }
   }
 
   const circuit = [];
-  const stack = [Object.keys(adjacencyList)[0]];
+  const stack = [0];
 
   while (stack.length > 0) {
     const v = stack[stack.length - 1];
-    if (adjacencyList[v].length === 0) {
-      circuit.push(parseInt(v));
-      stack.pop();
+    if (v >= 0 && v < n) {
+      // Check if v is valid
+      if (adjacencyList[v].length === 0) {
+        circuit.push(v);
+        stack.pop();
+      } else {
+        const u = adjacencyList[v].pop();
+        adjacencyList[u] = adjacencyList[u].filter((x) => x !== v);
+        stack.push(u);
+      }
     } else {
-      const u = adjacencyList[v].pop();
-      adjacencyList[u] = adjacencyList[u].filter((x) => x !== v);
-      stack.push(u);
+      console.error(`Invalid vertex in stack: ${v}`);
+      stack.pop(); // Exit the loop to avoid infinite looping
     }
   }
 
   return circuit.reverse();
 };
 
+// New function to convert Eulerian circuit to Hamiltonian circuit more effectively
+const convertEulerianToHamiltonian = (eulerianCircuit) => {
+  const visited = new Set();
+  const tour = [];
+
+  for (const vertex of eulerianCircuit) {
+    if (!visited.has(vertex)) {
+      tour.push(vertex);
+      visited.add(vertex);
+    }
+  }
+
+  return tour;
+};
+
+//
+//
+// Function for 2-Opt method
+const twoOptTSP = (graph, maxIterations = 2000) => {
+  const startTime = performance.now();
+  console.log("Performing 2-opt optimization");
+  const n = graph.length;
+
+  // Create a map of id to node for quick lookup
+  const nodeMap = new Map(graph.map((node) => [node.id, node]));
+
+  // Calculate the distance between two points
+  const distance = (a, b) => {
+    return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
+  };
+
+  // Calculate the total distance of the tour
+  const calculateTourDistance = (tour) => {
+    let totalDistance = 0;
+    for (let i = 0; i < tour.length; i++) {
+      const nodeA = nodeMap.get(tour[i][0]);
+      const nodeB = nodeMap.get(tour[(i + 1) % tour.length][0]); // Wrap around
+
+      if (!nodeA || !nodeB) {
+        return Infinity; // Invalid nodes
+      }
+
+      totalDistance += distance(nodeA, nodeB);
+    }
+    return totalDistance;
+  };
+
+  // Swap two edges in the tour
+  const twoOptSwap = (tour, i, k) => {
+    return [
+      ...tour.slice(0, i),
+      ...tour.slice(i, k + 1).reverse(),
+      ...tour.slice(k + 1),
+    ];
+  };
+
+  // Generate initial tour using nearest neighbor
+  let tour = nearestNeighborTSP(graph);
+
+  // Ensure the tour uses node IDs directly
+  if (
+    tour.length > 0 &&
+    Array.isArray(tour[0]) &&
+    typeof tour[0][0] === "number"
+  ) {
+    tour = tour.map((node) => node[0]); // Extract the first element if it's an array
+  }
+
+  let improved = true;
+
+  // Perform 2-opt optimization
+  while (improved) {
+    improved = false;
+
+    for (let i = 0; i < n - 1; i++) {
+      for (let k = i + 1; k < n; k++) {
+        // Skip adjacent edges and the last wrap-around edge
+        if (k - i === 1 || (i === 0 && k === n - 1)) continue;
+
+        const newTour = twoOptSwap(tour, i, k);
+        const currentDistance = calculateTourDistance(tour);
+        const newDistance = calculateTourDistance(newTour);
+
+        // If the new tour is shorter, accept the new tour
+        if (newDistance < currentDistance) {
+          tour = newTour;
+          improved = true;
+        }
+      }
+    }
+  }
+
+  // Convert the tour to edge format, ensuring it wraps back to the start
+  const edges = [];
+  for (let i = 0; i < tour.length; i++) {
+    edges.push([tour[i], tour[(i + 1) % tour.length]]); // Wrap around
+  }
+
+  const endTime = performance.now();
+  const executionTime = endTime - startTime;
+
+  return { edges, executionTime };
+};
+
 // Function for greedy algorithm
 const cheapestInsertionTSP = (graph) => {
+  const startTime = performance.now();
   const n = graph.length;
   const edges = [];
   const edgeCount = new Array(n).fill(0);
@@ -239,12 +334,16 @@ const cheapestInsertionTSP = (graph) => {
     }
   }
 
-  return edges;
+  const endTime = performance.now();
+  const executionTime = endTime - startTime;
+
+  return { edges, executionTime };
 };
 
 // Nearest Neighbor TSP implementation
 const nearestNeighborTSP = (graph) => {
-  console.log("chose nearest neighbor");
+  const startTime = performance.now();
+  // console.log("chose nearest neighbor");
   const n = graph.length;
   const visited = new Set();
   const tour = [];
@@ -285,11 +384,15 @@ const nearestNeighborTSP = (graph) => {
     edges.push([tour[i], tour[i + 1]]);
   }
 
-  return edges;
+  const endTime = performance.now();
+  const executionTime = endTime - startTime;
+
+  return { edges, executionTime };
 };
 
 // Prim's algorithm implementation
 const primsMST = (graph) => {
+  const startTime = performance.now();
   const n = graph.length;
   const mst = [];
   const visited = new Set();
@@ -332,11 +435,15 @@ const primsMST = (graph) => {
     edges = edges.filter((edge) => !visited.has(edge.to));
   }
 
-  return mst;
+  const endTime = performance.now();
+  const executionTime = endTime - startTime;
+
+  return { mst, executionTime };
 };
 
 // Kruskal's algorithm implementation
 const kruskalsMST = (graph) => {
+  const startTime = performance.now();
   const edges = [];
   const n = graph.length;
 
@@ -381,7 +488,10 @@ const kruskalsMST = (graph) => {
     }
   }
 
-  return mst;
+  const endTime = performance.now();
+  const executionTime = endTime - startTime;
+
+  return { mst, executionTime };
 };
 
 const DemosContext = createContext();
@@ -412,6 +522,8 @@ const DemosProvider = ({ children }) => {
       case "Nearest":
         return <Graph />;
       case "Christofides":
+        return <Graph />;
+      case "TwoOpt":
         return <Graph />;
       default:
         return null;
@@ -633,6 +745,48 @@ const DemosProvider = ({ children }) => {
         text: "Christofides' algorithm offers a practical approach for approximating TSP solutions, with a proven performance ratio. While not always optimal, it's effective for large-scale problems.",
       },
     ],
+    TwoOpt: [
+      {
+        id: 0,
+        text: "Christofides' algorithm is a heuristic for solving the traveling salesman problem (TSP). It guarantees an approximation within 1.5 times the optimal tour length, making it efficient for large graphs.",
+      },
+      {
+        id: 1,
+        text: "The algorithm begins by constructing a minimum spanning tree (MST) of the graph using either Prim’s or Kruskal’s algorithm. This tree connects all vertices with the smallest total edge weight.",
+      },
+      {
+        id: 2,
+        text: "Next, it identifies the vertices with odd degrees in the MST. These odd-degree vertices will later be matched to form an Eulerian graph, crucial for finding an optimal TSP route.",
+      },
+      {
+        id: 3,
+        text: "A minimum-weight perfect matching is computed for the odd-degree vertices. This step adds the smallest possible edges to pair up all odd-degree vertices without creating cycles.",
+      },
+      {
+        id: 4,
+        text: "By combining the minimum spanning tree and the perfect matching, an Eulerian multigraph is formed. This means every vertex has an even degree, allowing for an Eulerian circuit.",
+      },
+      {
+        id: 5,
+        text: "The Eulerian circuit is then constructed by tracing through the edges of the multigraph. In this circuit, every edge is visited exactly once, ensuring no redundant paths.",
+      },
+      {
+        id: 6,
+        text: "The next step involves converting the Eulerian circuit into a Hamiltonian circuit, which requires visiting each vertex exactly once. This is done using a shortcutting technique.",
+      },
+      {
+        id: 7,
+        text: "Shortcutting eliminates repeated visits to vertices while preserving the order of the Eulerian circuit. The result is a Hamiltonian cycle, which serves as the solution to the TSP.",
+      },
+      {
+        id: 8,
+        text: "The total weight of this Hamiltonian cycle is guaranteed to be within 1.5 times the optimal solution. Christofides' algorithm ensures a good balance between efficiency and accuracy.",
+      },
+      {
+        id: 9,
+        text: "Christofides' algorithm offers a practical approach for approximating TSP solutions, with a proven performance ratio. While not always optimal, it's effective for large-scale problems.",
+      },
+    ],
   };
 
   const value = {
@@ -650,6 +804,7 @@ const DemosProvider = ({ children }) => {
     nearestNeighborTSP,
     christofidesTSP,
     cheapestInsertionTSP,
+    twoOptTSP,
   };
 
   return (

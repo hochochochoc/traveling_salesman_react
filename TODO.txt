@@ -1,6 +1,6 @@
-
 // DEMOSPAGE
     // PrimsGraph            
+        // secondary edges, or actually show all the steps
         // clean up to use components, context etc.
         // fix stupid sidebar
         // fix loading problem with isMobile
@@ -8,6 +8,8 @@
         // adapt a bit to apps e.g. glovo with sliding menu option
         // probably add a selection menu at the bottom? like in hellofresh; Home, Algorithms, Validation      
         // fix christofides
+        // fix 2-opt...
+        // renderAlgorithm superfluous
 
         // change all the names, including prims and landingpage -- done
         // algorithm should work correctly, with a random vertex?? -- done
@@ -29,7 +31,7 @@
         // fix directions of text in demos -- done
         // add the algorithm for christofides -- done
         // write the content of the little texts -- done
-
+        // show total time with last step -- done
 
 
          // optional: show how vertices move from unconnected set to connected one
