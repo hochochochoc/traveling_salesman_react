@@ -13,22 +13,29 @@ const distance = (a, b) => {
   return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
 };
 
+//
+//
 // Function for Christofides Algorithm
 const christofidesTSP = (graph) => {
+  console.log("Input Graph:", graph);
   const startTime = performance.now();
   const n = graph.length;
 
   // Compute minimum spanning tree
   const mst = computeMST(graph);
+  console.log("Minimum Spanning Tree:", mst);
 
   // Find odd-degree vertices
   const oddVertices = findOddDegreeVertices(mst, n);
+  console.log("Odd Degree Vertices:", oddVertices);
 
   // Compute minimum-weight perfect matching on odd-degree vertices using Blossom algorithm
   const matching = minimumWeightPerfectMatching(oddVertices, graph);
+  console.log("Minimum Weight Perfect Matching:", matching);
 
   // Combine MST and matching to form a multigraph
   const multigraph = [...mst, ...matching];
+  console.log("Multigraph:", multigraph);
 
   // Compute Eulerian circuit
   const eulerianCircuit = computeEulerianCircuit(multigraph, n);
@@ -56,6 +63,7 @@ const christofidesTSP = (graph) => {
   const executionTime = endTime - startTime;
   return { edges, executionTime };
 };
+
 // Helper function to compute Minimum Spanning Tree using Kruskal's algorithm
 const computeMST = (graph) => {
   const n = graph.length;
@@ -127,11 +135,23 @@ const minimumWeightPerfectMatching = (vertices, graph) => {
 
 // Helper function to compute Eulerian circuit
 const computeEulerianCircuit = (multigraph, n) => {
-  const adjacencyList = Array.from({ length: n }, () => []);
-  for (const [from, to] of multigraph) {
-    adjacencyList[from].push(to);
-    adjacencyList[to].push(from);
+  if (multigraph.length === 0) {
+    console.error("Multigraph is empty. Cannot compute Eulerian circuit.");
+    return [];
   }
+
+  const adjacencyList = Array.from({ length: n }, () => []);
+  console.log("Initialized Adjacency List:", adjacencyList);
+
+  for (const [from, to] of multigraph) {
+    if (from !== undefined && to !== undefined) {
+      // Check for undefined values
+      adjacencyList[from].push(to);
+      adjacencyList[to].push(from);
+    }
+  }
+
+  console.log("Adjacency List:", adjacencyList); // Log adjacency list
 
   const circuit = [];
   let startVertex = 0;
@@ -149,8 +169,12 @@ const computeEulerianCircuit = (multigraph, n) => {
   while (stack.length > 0) {
     const v = stack[stack.length - 1];
 
+    console.log("Current Vertex:", v); // Log current vertex
+    console.log("Stack:", stack); // Log current stack
+
     if (adjacencyList[v].length === 0) {
       circuit.push(v);
+      console.log("Circuit after pushing:", circuit); // Log circuit after pushing
       stack.pop();
     } else {
       const u = adjacencyList[v].pop();
@@ -175,85 +199,135 @@ const computeEulerianCircuit = (multigraph, n) => {
 //
 //
 // Function for 2-Opt method
-const twoOptTSP = (graph, maxIterations = 2000) => {
+const twoOptTSP = (graph) => {
   const startTime = performance.now();
-  console.log("Performing 2-opt optimization");
-  const n = graph.length;
+  console.log("Starting Two-Opt TSP Crossing Removal optimization");
 
-  // Create a map of id to node for quick lookup
-  const nodeMap = new Map(graph.map((node) => [node.id, node]));
-
-  // Calculate the distance between two points
+  // Helper function to calculate distance between two points
   const distance = (a, b) => {
     return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
   };
 
-  // Calculate the total distance of the tour
+  // Helper function to calculate total tour distance
   const calculateTourDistance = (tour) => {
     let totalDistance = 0;
-    for (let i = 0; i < tour.length; i++) {
-      const nodeA = nodeMap.get(tour[i][0]);
-      const nodeB = nodeMap.get(tour[(i + 1) % tour.length][0]); // Wrap around
-
-      if (!nodeA || !nodeB) {
-        return Infinity; // Invalid nodes
-      }
-
-      totalDistance += distance(nodeA, nodeB);
+    for (let i = 0; i < tour.length - 1; i++) {
+      totalDistance += distance(graph[tour[i]], graph[tour[i + 1]]);
     }
+    totalDistance += distance(graph[tour[tour.length - 1]], graph[tour[0]]); // Complete the loop
     return totalDistance;
   };
 
-  // Swap two edges in the tour
-  const twoOptSwap = (tour, i, k) => {
-    return [
-      ...tour.slice(0, i),
-      ...tour.slice(i, k + 1).reverse(),
-      ...tour.slice(k + 1),
-    ];
+  // Function to check if two line segments intersect
+  const doIntersect = (p1, q1, p2, q2) => {
+    const orientation = (p, q, r) => {
+      const val = (q.y - p.y) * (r.x - q.x) - (q.x - p.x) * (r.y - q.y);
+      if (val === 0) return 0; // Collinear
+      return val > 0 ? 1 : 2; // Clockwise or counterclockwise
+    };
+
+    const onSegment = (p, q, r) => {
+      return (
+        q.x <= Math.max(p.x, r.x) &&
+        q.x >= Math.min(p.x, r.x) &&
+        q.y <= Math.max(p.y, r.y) &&
+        q.y >= Math.min(p.y, r.y)
+      );
+    };
+
+    const o1 = orientation(p1, q1, p2);
+    const o2 = orientation(p1, q1, q2);
+    const o3 = orientation(p2, q2, p1);
+    const o4 = orientation(p2, q2, q1);
+
+    if (o1 !== o2 && o3 !== o4) return true;
+    if (o1 === 0 && onSegment(p1, p2, q1)) return true;
+    if (o2 === 0 && onSegment(p1, q2, q1)) return true;
+    if (o3 === 0 && onSegment(p2, p1, q2)) return true;
+    if (o4 === 0 && onSegment(p2, q1, q2)) return true;
+
+    return false;
   };
 
-  // Generate initial tour using nearest neighbor
-  let tour = nearestNeighborTSP(graph);
+  // Get initial tour from nearest neighbor
+  const { edges: initialEdges } = nearestNeighborTSP(graph);
+  let tour = initialEdges.map((edge) => edge[0]);
+  console.log("Initial tour:", tour);
+  console.log("Initial tour distance:", calculateTourDistance(tour));
 
-  // Ensure the tour uses node IDs directly
-  if (
-    tour.length > 0 &&
-    Array.isArray(tour[0]) &&
-    typeof tour[0][0] === "number"
-  ) {
-    tour = tour.map((node) => node[0]); // Extract the first element if it's an array
-  }
+  // 2-opt swap function
+  const twoOptSwap = (tour, i, k) => {
+    const newTour = [...tour];
+    while (i < k) {
+      [newTour[i], newTour[k]] = [newTour[k], newTour[i]];
+      i++;
+      k--;
+    }
+    return newTour;
+  };
 
-  let improved = true;
+  let crossingsRemoved;
+  let iterationCount = 0;
+  const maxIterations = 1000; // Set iteration limit
 
-  // Perform 2-opt optimization
-  while (improved) {
-    improved = false;
+  do {
+    crossingsRemoved = false;
+    iterationCount++;
+    console.log(`\nIteration: ${iterationCount}, Checking for crossings...`);
 
-    for (let i = 0; i < n - 1; i++) {
-      for (let k = i + 1; k < n; k++) {
-        // Skip adjacent edges and the last wrap-around edge
-        if (k - i === 1 || (i === 0 && k === n - 1)) continue;
+    for (let i = 0; i < tour.length - 1; i++) {
+      for (let k = i + 2; k < tour.length; k++) {
+        // Ignore adjacent edges and wrap around
+        if (k === (i + 1) % tour.length) continue;
 
-        const newTour = twoOptSwap(tour, i, k);
-        const currentDistance = calculateTourDistance(tour);
-        const newDistance = calculateTourDistance(newTour);
+        const a = graph[tour[i]];
+        const b = graph[tour[(i + 1) % tour.length]];
+        const c = graph[tour[k]];
+        const d = graph[tour[(k + 1) % tour.length]];
 
-        // If the new tour is shorter, accept the new tour
-        if (newDistance < currentDistance) {
-          tour = newTour;
-          improved = true;
+        if (doIntersect(a, b, c, d)) {
+          const newTour = twoOptSwap(tour, i + 1, k);
+          const newDistance = calculateTourDistance(newTour);
+
+          // Check if the new tour is an improvement
+          if (newDistance < calculateTourDistance(tour)) {
+            tour = newTour;
+            crossingsRemoved = true;
+
+            console.log(`  Crossing detected and removed: i=${i}, k=${k}`);
+            console.log(`    New tour: ${tour}`);
+            console.log(`    New distance: ${newDistance}`);
+
+            // Restart checking from the beginning
+            i = -1;
+            break;
+          }
         }
       }
+      if (crossingsRemoved) break;
     }
+
+    // Break if the iteration limit is reached
+    if (iterationCount >= maxIterations) {
+      console.log(`Iteration limit of ${maxIterations} reached.`);
+      break;
+    }
+  } while (crossingsRemoved);
+
+  if (crossingsRemoved) {
+    console.log("Final tour is crossing-free!");
+  } else {
+    console.warn("Reached iteration limit without fully optimizing the tour.");
   }
 
-  // Convert the tour to edge format, ensuring it wraps back to the start
-  const edges = [];
-  for (let i = 0; i < tour.length; i++) {
-    edges.push([tour[i], tour[(i + 1) % tour.length]]); // Wrap around
-  }
+  // Convert the optimized tour back to edge format
+  const edges = tour.map((node, index) => [
+    node,
+    tour[(index + 1) % tour.length],
+  ]);
+
+  console.log("\nFinal tour:", tour);
+  console.log("Final tour distance:", calculateTourDistance(tour));
 
   const endTime = performance.now();
   const executionTime = endTime - startTime;
@@ -261,6 +335,9 @@ const twoOptTSP = (graph, maxIterations = 2000) => {
   return { edges, executionTime };
 };
 
+//
+//
+//
 // Function for greedy algorithm
 const cheapestInsertionTSP = (graph) => {
   const startTime = performance.now();
@@ -515,7 +592,6 @@ const DemosProvider = ({ children }) => {
   const renderAlgorithm = () => {
     switch (algorithmSelection) {
       case "Greedy":
-        console.log(algorithmSelection);
         return <Graph />;
       case "Nearest":
         return <Graph />;

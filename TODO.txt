@@ -1,10 +1,10 @@
 // DEMOSPAGE
     // PrimsGraph            
         // priorities:
-            // make all algorithms work
+            // make all algorithms work -- done
             // secondary edges for first two
             // change the ui to something better
-        
+            // actually apply react component logic
         
         
         // secondary edges, or actually show all the steps
@@ -14,8 +14,7 @@
         // make it look halfway decent in large screen too
         // adapt a bit to apps e.g. glovo with sliding menu option
         // add a selection menu at the bottom? like in hellofresh; Home, Algorithms, Validation      
-        // fix christofides
-        // fix 2-opt...
+        // fix christofides so it works perfectly
         // renderAlgorithm superfluous
         // put the paragraphs somewhere else
         // don't have the time appear for a milisecond when switching algorithms
@@ -41,6 +40,7 @@
         // add the algorithm for christofides -- done
         // write the content of the little texts -- done
         // show total time with last step -- done
+        // fix 2-opt... -- done
 
 
          // optional: show how vertices move from unconnected set to connected one
