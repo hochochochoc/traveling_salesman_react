@@ -4,7 +4,7 @@ import MapPage from "./pages/mapPage/MapPage";
 import DemosPage from "./pages/demosPage/DemosPage";
 import ResultsPage from "./pages/resultsPage/ResultsPage";
 import { Route, Routes } from "react-router-dom";
-import { DemosProvider } from "./pages/demosPage/context/DemosContextTemp";
+import { DemosProvider } from "./pages/demosPage/context/DemosContext";
 import "./index.css";
 
 // import { AuthProvider } from "./context/authContext";

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import * as d3 from "d3";
 import { Play, Pause } from "lucide-react";
-import { DemosContext } from "../../context/DemosContextTemp";
+import { DemosContext } from "../../context/DemosContext";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import { RotateCcw } from "lucide-react";
 

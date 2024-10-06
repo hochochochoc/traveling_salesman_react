@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import Graph from "./components/graphs/Graph";
 import Header from "./components/header/Header";
 import { useNavigate, useLocation } from "react-router-dom";
-import { DemosContext } from "./context/DemosContextTemp";
+import { DemosContext } from "./context/DemosContext";
 
 export default function DemosPage() {
   const {
