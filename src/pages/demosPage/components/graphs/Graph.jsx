@@ -303,12 +303,12 @@ const Graph = () => {
   };
 
   return (
-    <div className="flex flex-col py-4 lg:flex-row lg:p-10 lg:px-4">
+    <div className="flex flex-col lg:flex-row lg:p-10 lg:px-4">
       <div className="relative w-full lg:w-1/2">
         <svg
           ref={svgRef}
           width="100%"
-          className="my-5 border border-gray-500 bg-gray-800 shadow-lg shadow-inherit lg:my-0 lg:mb-5"
+          className="mb-5 border border-gray-500 bg-gray-800 shadow-lg shadow-inherit lg:my-0 lg:mb-5"
           style={{ maxHeight: "400px", height: "100%" }}
         ></svg>
         <p
@@ -317,7 +317,7 @@ const Graph = () => {
             left: "10px",
             color: "white",
             fontSize: window.innerWidth > 1024 ? "20px" : "14px",
-            top: window.innerWidth > 1024 ? "365px" : "250px",
+            top: window.innerWidth > 1024 ? "365px" : "230px",
           }}
         >
           Total Edge Weight: {totalLength.toFixed(0)}
@@ -330,7 +330,7 @@ const Graph = () => {
               left: "10px",
               color: "white",
               fontSize: window.innerWidth > 1024 ? "20px" : "14px",
-              top: window.innerWidth > 1024 ? "345px" : "220px",
+              top: window.innerWidth > 1024 ? "345px" : "210px",
             }}
           >
             Time: {executionTime.toFixed(3)} ms
