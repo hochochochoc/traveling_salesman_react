@@ -12,7 +12,7 @@ export default function Demos() {
           navigate("/demos", {
             state: {
               activeSection: "algorithms",
-              algorithmSelection: "Greedy",
+              algorithmSelection: "Nearest",
               validationSelection: "Prims",
             },
           });

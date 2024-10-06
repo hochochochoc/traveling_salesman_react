@@ -2,7 +2,8 @@
     // PrimsGraph            
         // priorities:
             // make all algorithms work -- done
-            // secondary edges for first two
+            // secondary edges for first nearest -- done
+            // new paragraphs for twoOpt -- done
             // change the ui to something better
             // actually apply react component logic
         
