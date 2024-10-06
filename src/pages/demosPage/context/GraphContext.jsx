@@ -418,20 +418,20 @@ const cheapestInsertionTSP = (graph) => {
 // Nearest Neighbor TSP implementation
 const nearestNeighborTSP = (graph) => {
   const startTime = performance.now();
-  // console.log("chose nearest neighbor");
   const n = graph.length;
   const visited = new Set();
   const tour = [];
-  let currentNode = Math.floor(Math.random() * n); // Start with the first node
-
+  let currentNode = Math.floor(Math.random() * n);
   visited.add(currentNode);
   tour.push(currentNode);
+
+  // Store potential edges and distances
+  const potentialEdges = [];
 
   while (visited.size < n) {
     let nearestNode = null;
     let nearestDistance = Infinity;
 
-    // Find the nearest unvisited neighbor
     for (let i = 0; i < n; i++) {
       if (!visited.has(i)) {
         const dist = distance(graph[currentNode], graph[i]);
@@ -439,10 +439,11 @@ const nearestNeighborTSP = (graph) => {
           nearestNode = i;
           nearestDistance = dist;
         }
+        // Store potential next edge
+        potentialEdges.push({ from: currentNode, to: i, distance: dist });
       }
     }
 
-    // If a nearest node is found, visit it
     if (nearestNode !== null) {
       visited.add(nearestNode);
       tour.push(nearestNode);
@@ -450,10 +451,8 @@ const nearestNeighborTSP = (graph) => {
     }
   }
 
-  // Return to the starting point to complete the cycle
   tour.push(tour[0]);
 
-  // Convert the tour to edge format
   const edges = [];
   for (let i = 0; i < tour.length - 1; i++) {
     edges.push([tour[i], tour[i + 1]]);
@@ -462,7 +461,7 @@ const nearestNeighborTSP = (graph) => {
   const endTime = performance.now();
   const executionTime = endTime - startTime;
 
-  return { edges, executionTime };
+  return { edges, potentialEdges, executionTime }; // Return potential edges
 };
 
 // Prim's algorithm implementation

@@ -46,6 +46,15 @@ const Graph = () => {
   const [direction, setDirection] = useState("left");
   const [totalLength, setTotalLength] = useState(0);
   const [executionTime, setExecutionTime] = useState(0);
+  const [potentialEdges, setPotentialEdges] = useState([]);
+  const [allPotentialEdges, setAllPotentialEdges] = useState([]);
+
+  // Update potential edges only when new edges are added
+  useEffect(() => {
+    if (currentStep < edges.length) {
+      setAllPotentialEdges((prev) => [...prev, ...potentialEdges]);
+    }
+  }, [currentStep, edges, potentialEdges]);
 
   // calculate total length
   useEffect(() => {
@@ -83,9 +92,13 @@ const Graph = () => {
     if (activeSection === "algorithms") {
       // console.log("active section algorithm correctly detected");
       if (algorithmSelection === "Nearest") {
-        const { edges: mstEdges, executionTime } =
-          nearestNeighborTSP(graphData);
+        const {
+          edges: mstEdges,
+          potentialEdges: nextEdges,
+          executionTime,
+        } = nearestNeighborTSP(graphData);
         setEdges(mstEdges);
+        setPotentialEdges(nextEdges); // Set potential edges
         setExecutionTime(executionTime);
       }
       if (algorithmSelection === "Greedy") {
@@ -192,6 +205,7 @@ const Graph = () => {
     const svg = d3.select(svgRef.current);
     svg.selectAll("line").remove();
 
+    // Draw the main tree edges
     treeEdges.forEach((edge) => {
       const fromNode = graphData[edge[0]];
       const toNode = graphData[edge[1]];
@@ -222,6 +236,31 @@ const Graph = () => {
         .attr("text-anchor", "middle")
         .text(weight);
     });
+
+    // Draw potential edges from the last added node
+    if (currentStep < edges.length && algorithmSelection === "Nearest") {
+      const currentEdge = edges[currentStep];
+      const currentFromNode = currentEdge[0]; // This is the node from which potential edges are being drawn
+
+      // Find potential edges from the current node to remaining nodes
+      if (currentStep > 0) {
+        potentialEdges.forEach(({ from, to, distance }) => {
+          if (from === currentFromNode) {
+            const fromNode = graphData[currentFromNode];
+            const toNode = graphData[to];
+
+            svg
+              .append("line")
+              .attr("x1", fromNode.x)
+              .attr("y1", fromNode.y)
+              .attr("x2", toNode.x)
+              .attr("y2", toNode.y)
+              .attr("stroke", "lightgray") // Lighter color for potential edges
+              .attr("stroke-width", edgeSize - 2); // Thinner line for potential edges
+          }
+        });
+      }
+    }
   };
 
   // Update edges when treeEdges change

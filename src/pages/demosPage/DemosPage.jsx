@@ -64,7 +64,7 @@ export default function DemosPage() {
 
           {activeSection === "algorithms" && (
             <div className="flex gap-2">
-              {["Greedy", "Nearest", "TwoOpt", "Christofides"].map((algo) => (
+              {["Nearest", "Greedy", "TwoOpt", "Christofides"].map((algo) => (
                 <button
                   className={`rounded-lg px-6 py-3 text-sm font-medium transition-all duration-300 ${
                     algorithmSelection === algo
