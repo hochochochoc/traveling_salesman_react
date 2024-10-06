@@ -1,15 +1,24 @@
 // DEMOSPAGE
     // PrimsGraph            
+        // priorities:
+            // make all algorithms work
+            // secondary edges for first two
+            // change the ui to something better
+        
+        
+        
         // secondary edges, or actually show all the steps
         // clean up to use components, context etc.
         // fix stupid sidebar
         // fix loading problem with isMobile
         // make it look halfway decent in large screen too
         // adapt a bit to apps e.g. glovo with sliding menu option
-        // probably add a selection menu at the bottom? like in hellofresh; Home, Algorithms, Validation      
+        // add a selection menu at the bottom? like in hellofresh; Home, Algorithms, Validation      
         // fix christofides
         // fix 2-opt...
         // renderAlgorithm superfluous
+        // put the paragraphs somewhere else
+        // don't have the time appear for a milisecond when switching algorithms
 
         // change all the names, including prims and landingpage -- done
         // algorithm should work correctly, with a random vertex?? -- done

@@ -33,23 +33,29 @@ const christofidesTSP = (graph) => {
   // Compute Eulerian circuit
   const eulerianCircuit = computeEulerianCircuit(multigraph, n);
 
-  // Convert Eulerian circuit to Hamiltonian circuit more effectively
-  const tour = convertEulerianToHamiltonian(eulerianCircuit);
+  // Form a Hamiltonian circuit by skipping repeated vertices
+  const hamiltonianCircuit = [];
+  const visited = new Set();
 
-  // Convert tour to edges
+  for (const vertex of eulerianCircuit) {
+    if (!visited.has(vertex)) {
+      hamiltonianCircuit.push(vertex);
+      visited.add(vertex);
+    }
+  }
+  hamiltonianCircuit.push(hamiltonianCircuit[0]); // Complete the circuit
+
+  // Convert Hamiltonian circuit to edges
   const edges = [];
-  for (let i = 0; i < tour.length; i++) {
-    const from = tour[i];
-    const to = tour[(i + 1) % tour.length];
+  for (let i = 0; i < hamiltonianCircuit.length - 1; i++) {
+    const from = hamiltonianCircuit[i];
+    const to = hamiltonianCircuit[i + 1];
     edges.push([from, to]);
   }
-
   const endTime = performance.now();
   const executionTime = endTime - startTime;
-
   return { edges, executionTime };
 };
-
 // Helper function to compute Minimum Spanning Tree using Kruskal's algorithm
 const computeMST = (graph) => {
   const n = graph.length;
@@ -101,19 +107,15 @@ const minimumWeightPerfectMatching = (vertices, graph) => {
 
   for (let i = 0; i < n; i++) {
     for (let j = i + 1; j < n; j++) {
-      const weight = Math.round(
-        distance(graph[vertices[i]], graph[vertices[j]]) * 1000,
-      );
-      edges.push([vertices[i], vertices[j], weight]); // Include vertices in the edge
+      edges.push([
+        vertices[i],
+        vertices[j],
+        Math.round(distance(graph[vertices[i]], graph[vertices[j]]) * 1000), // Scale and round the weight
+      ]);
     }
   }
 
   const matching = blossom(edges, true);
-
-  if (!matching) {
-    console.error("Matching failed or returned undefined");
-    return [];
-  }
 
   return matching.reduce((acc, match, index) => {
     if (match !== -1 && index < match) {
@@ -127,51 +129,47 @@ const minimumWeightPerfectMatching = (vertices, graph) => {
 const computeEulerianCircuit = (multigraph, n) => {
   const adjacencyList = Array.from({ length: n }, () => []);
   for (const [from, to] of multigraph) {
-    if (from < n && to < n) {
-      adjacencyList[from].push(to);
-      adjacencyList[to].push(from);
-    } else {
-      console.error(`Invalid edge in multigraph: [${from}, ${to}]`);
-    }
+    adjacencyList[from].push(to);
+    adjacencyList[to].push(from);
   }
 
   const circuit = [];
-  const stack = [0];
+  let startVertex = 0;
+
+  // Find a vertex with odd degree, if exists
+  for (let i = 0; i < n; i++) {
+    if (adjacencyList[i].length % 2 !== 0) {
+      startVertex = i;
+      break;
+    }
+  }
+
+  const stack = [startVertex];
 
   while (stack.length > 0) {
     const v = stack[stack.length - 1];
-    if (v >= 0 && v < n) {
-      // Check if v is valid
-      if (adjacencyList[v].length === 0) {
-        circuit.push(v);
-        stack.pop();
-      } else {
-        const u = adjacencyList[v].pop();
-        adjacencyList[u] = adjacencyList[u].filter((x) => x !== v);
-        stack.push(u);
-      }
+
+    if (adjacencyList[v].length === 0) {
+      circuit.push(v);
+      stack.pop();
     } else {
-      console.error(`Invalid vertex in stack: ${v}`);
-      stack.pop(); // Exit the loop to avoid infinite looping
+      const u = adjacencyList[v].pop();
+      stack.push(u);
+
+      // Remove the edge in both directions
+      adjacencyList[u] = adjacencyList[u].filter((x) => x !== v);
     }
   }
 
-  return circuit.reverse();
-};
-
-// New function to convert Eulerian circuit to Hamiltonian circuit more effectively
-const convertEulerianToHamiltonian = (eulerianCircuit) => {
-  const visited = new Set();
-  const tour = [];
-
-  for (const vertex of eulerianCircuit) {
-    if (!visited.has(vertex)) {
-      tour.push(vertex);
-      visited.add(vertex);
+  // If the circuit doesn't include all vertices, add missing ones
+  const visited = new Set(circuit);
+  for (let i = 0; i < n; i++) {
+    if (!visited.has(i)) {
+      circuit.push(i);
     }
   }
 
-  return tour;
+  return circuit;
 };
 
 //

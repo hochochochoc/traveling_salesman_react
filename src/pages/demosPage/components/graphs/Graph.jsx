@@ -248,10 +248,6 @@ const Graph = () => {
     setIsPlaying(true);
   };
 
-  const stopAnimation = () => {
-    setIsPlaying(false);
-  };
-
   const resetVisualization = () => {
     setIsPlaying(false);
     setCurrentStep(0);
