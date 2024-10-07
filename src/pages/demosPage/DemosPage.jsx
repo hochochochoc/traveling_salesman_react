@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef } from "react";
 import Graph from "./components/graphs/Graph";
 import Header from "./components/header/Header";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { DemosContext } from "./context/GraphContext";
 
 export default function DemosPage() {
@@ -12,10 +12,8 @@ export default function DemosPage() {
     setAlgorithmSelection,
     validationSelection,
     setValidationSelection,
-    renderAlgorithm,
   } = useContext(DemosContext);
 
-  const navigate = useNavigate();
   const location = useLocation();
   const scrollContainerRef = useRef(null);
 
@@ -129,7 +127,7 @@ export default function DemosPage() {
       </div>
 
       <div className="mt-4">
-        {activeSection === "algorithms" && renderAlgorithm()}
+        {activeSection === "algorithms" && <Graph />}
         {activeSection === "validation" && <Graph />}
       </div>
     </div>

@@ -4,6 +4,8 @@ import { Play, Pause } from "lucide-react";
 import { DemosContext } from "../../context/GraphContext";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import { RotateCcw } from "lucide-react";
+import { paragraphs } from "../../data/paragraphs";
+import { initialGraphData } from "../../data/graphData";
 
 if (import.meta.hot) {
   import.meta.hot.accept(() => {
@@ -12,7 +14,6 @@ if (import.meta.hot) {
 }
 
 // Simulated graph data
-
 // Function to calculate distance between two points
 const distance = (a, b) => {
   return Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2));
@@ -21,7 +22,6 @@ const distance = (a, b) => {
 const Graph = () => {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 450);
   const {
-    initialGraphData,
     primsMST,
     kruskalsMST,
     nearestNeighborTSP,
@@ -32,8 +32,7 @@ const Graph = () => {
     algorithmSelection,
     activeSection,
   } = useContext(DemosContext);
-  const { getParagraphs } = useContext(DemosContext);
-  const paragraphs = getParagraphs();
+
   const [graphData, setGraphData] = useState([...initialGraphData]);
   const [currentStep, setCurrentStep] = useState(0);
   const svgRef = useRef(null);
@@ -388,7 +387,7 @@ const Graph = () => {
                   ref={popoverRef}
                   className="absolute left-1/2 z-50 mt-2 -translate-x-1/2 transform rounded-full bg-egg p-1.5 shadow-lg lg:p-2"
                 >
-                  <div className="flex items-center space-x-1.5 lg:space-x-2">
+                  <div className="flex items-center space-x-0.5 lg:space-x-2">
                     {Array.from({ length: edges.length + 1 }, (_, i) => (
                       <button
                         key={i}
@@ -426,7 +425,7 @@ const Graph = () => {
           <div className="relative h-32 w-full lg:overflow-hidden">
             {(activeSection === "algorithms" ||
               activeSection === "validation") &&
-              paragraphs.map((paragraph, i) => (
+              paragraphs[algorithmSelection].map((paragraph, i) => (
                 <p
                   key={i}
                   className={`absolute inset-0 mx-4 flex items-start justify-center text-center text-sm font-medium text-egg transition-all duration-500 ease-in-out lg:text-sm ${
