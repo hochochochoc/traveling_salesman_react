@@ -1,12 +1,49 @@
-import React, { useState, useEffect } from "react";
-import NiceButtons from "./niceButtons/NiceButtons";
+import React, { useState, useRef, useEffect } from "react";
 import MapTest from "../maptest/MapTest";
 import { useTravelingData } from "../../../../context/TravelingContext";
 
-const countryNames = ["Brazil", "China", "Spain", "Guinea"];
+const countryNames = ["Brazil", "China", "Spain", "Tanzania"];
 
-export default function Maps() {
+export default function CountryMapsCarousel() {
   const { countryCenters, zoomLevels, loading, error } = useTravelingData();
+  const carouselRef = useRef(null);
+  const [startX, setStartX] = useState(0);
+  const [isSwiping, setIsSwiping] = useState(false);
+  const [slidePosition, setSlidePosition] = useState(0);
+
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+
+    const handleTouchStart = (e) => {
+      setStartX(e.touches[0].clientX);
+      setIsSwiping(true);
+    };
+
+    const handleTouchMove = (e) => {
+      if (!isSwiping) return;
+      const x = e.touches[0].clientX;
+      const diff = startX - x;
+      const newPosition = slidePosition - diff;
+      const maxPosition = -(carousel.scrollWidth - carousel.clientWidth);
+      setSlidePosition(Math.max(Math.min(newPosition, 0), maxPosition));
+      setStartX(x);
+    };
+
+    const handleTouchEnd = () => {
+      setIsSwiping(false);
+    };
+
+    carousel.addEventListener("touchstart", handleTouchStart);
+    carousel.addEventListener("touchmove", handleTouchMove);
+    carousel.addEventListener("touchend", handleTouchEnd);
+
+    return () => {
+      carousel.removeEventListener("touchstart", handleTouchStart);
+      carousel.removeEventListener("touchmove", handleTouchMove);
+      carousel.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [isSwiping, startX, slidePosition]);
 
   if (loading) {
     return <div>Loading country data...</div>;
@@ -22,45 +59,35 @@ export default function Maps() {
       <div className="ml-2 pb-4 text-sm">
         Select a country to try out the algorithms.
       </div>
-      <div>
-        <div className="justify-center md:flex">
-          <div className="mb-4 overflow-hidden rounded-lg bg-egg active:scale-95">
-            {countryCenters.Brazil && (
-              <MapTest
-                center={countryCenters.Brazil}
-                zoom={zoomLevels.Brazil}
-              />
-            )}
-            <p className="mx-2 my-1 font-bold">Brazil</p>
-          </div>
-          <div className="mb-4 overflow-hidden rounded-lg bg-egg active:scale-95 md:ml-4">
-            {countryCenters.China && (
-              <MapTest center={countryCenters.China} zoom={zoomLevels.China} />
-            )}
-            <p className="mx-2 my-1 font-bold">China</p>
-          </div>
-        </div>
-        <div className="justify-center md:flex">
-          <div className="mb-4 overflow-hidden rounded-lg bg-egg active:scale-95 md:mb-0">
-            {countryCenters.Spain && (
-              <MapTest center={countryCenters.Spain} zoom={zoomLevels.Spain} />
-            )}
-            <p className="mx-2 my-1 font-bold">Spain</p>
-          </div>
-          <div className="overflow-hidden rounded-lg bg-egg active:scale-95 md:ml-4">
-            {countryCenters.Tanzania && (
-              <MapTest
-                center={countryCenters.Tanzania}
-                zoom={zoomLevels.Tanzania}
-              />
-            )}
-            <p className="mx-2 my-1 font-bold">Tanzania</p>
-          </div>
-        </div>
-        <div className="flex justify-center">
-          <NiceButtons />
+      <div
+        ref={carouselRef}
+        className="mx-auto w-full max-w-xs overflow-hidden"
+        style={{ touchAction: "pan-y" }}
+      >
+        <div
+          className="flex space-x-3"
+          style={{
+            width: `${countryNames.length * 100}%`,
+            transform: `translateX(${slidePosition}px)`,
+            transition: isSwiping ? "none" : "transform 0.3s ease-out",
+          }}
+        >
+          {countryNames.map((country) => (
+            <div key={country}>
+              <div className="w-auto overflow-hidden rounded-lg bg-egg active:scale-95">
+                {countryCenters[country] && (
+                  <MapTest
+                    center={countryCenters[country]}
+                    zoom={zoomLevels[country]}
+                  />
+                )}
+                <p className="mx-2 my-1 font-bold">{country}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
+      <div className="mt-4 flex justify-center"></div>
     </div>
   );
 }

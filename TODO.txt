@@ -1,19 +1,23 @@
 // DEMOSPAGE
     // Menu
         // URGENT: disable auto-load of maps -- done
-        // if possible, prevent loading maps in sandbox automatically too while testing
-        // make it a minimum of mobile friendly
-        // copy crewlineapp for landing page minimum
-        // also for sidebar/menu
-        // slick slider country choice??? Maybe with an image api it would work better actually, don't have to worry about console calls so much...
+        // make menu a minimum of mobile friendly -- done
+        // implement the sidebar...
+        // sidebar/menu from crewlineapp
+        // slider for countries -- done
+        // fix space between country cards
+        // uniformizing the borders would improve visuals by a lot
+        // issue where scrolling through maps doesn't work when loading that page but it does when coming from other page...
 
+
+    // Landing
+        // copy crewlineapp for landing page minimum
+
+    // Map
+        // if possible, prevent loading maps in sandbox automatically too while testing
 
     // Graph            
         // priorities:
-            // make all algorithms work -- done
-            // secondary edges for first nearest -- done
-            // new paragraphs for twoOpt -- done
-            // change the ui to something better -- done
             // actually apply react component logic
             // maybe just try to adjust the chriftofides by secretly applying the twoOpt in the end...
             // should probably keep any changes made to the vertices when changing algorithms
@@ -52,6 +56,10 @@
         // write the content of the little texts -- done
         // show total time with last step -- done
         // fix 2-opt... -- done
+        // make all algorithms work -- done
+        // secondary edges for first nearest -- done
+        // new paragraphs for twoOpt -- done
+        // change the ui to something better -- done
 
 
          // optional: show how vertices move from unconnected set to connected one

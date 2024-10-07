@@ -9,28 +9,19 @@ import Description from "./components/description/Description";
 
 export default function MenuPage() {
   return (
-    <div className="flex">
-      <div className="w-5/6 bg-primary px-4">
-        <div className="grid grid-cols-2 p-4">
-          <Header />
-        </div>
-        <div className="flex">
-          <div className="m-4 w-1/2">
-            <Description />
-            <Algorithms />
-          </div>
-          <div className="m-4 w-1/2">
-            <Maps />
-            <div className="flex">
-              <div className="w-1/2">
-                <Demos />
-              </div>
-              <div className="w-1/2">
-                <Results />
-              </div>
-            </div>
-          </div>
-        </div>
+    <div className="flex w-auto flex-col bg-primary">
+      <div className="flex w-max flex-row space-x-1 p-4">
+        <Header />
+      </div>
+      <div className="mb-3 flex flex-col space-y-3">
+        {/* <Description /> */}
+        <Demos />
+
+        <Maps />
+
+        <Algorithms />
+
+        <Results />
       </div>
     </div>
   );
