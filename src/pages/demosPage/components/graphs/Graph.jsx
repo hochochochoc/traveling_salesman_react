@@ -82,8 +82,8 @@ const Graph = () => {
     resetVisualization();
   }, [validationSelection, algorithmSelection]);
 
-  let vertexRadius = isMobile ? 8 : 5;
-  let graphFontSize = isMobile ? "20px" : "12px";
+  let vertexRadius = isMobile ? 6 : 5;
+  let graphFontSize = isMobile ? "18px" : "12px";
   let edgeSize = isMobile ? 5 : 3;
   let offset = isMobile ? 25 : 15;
 
@@ -317,7 +317,7 @@ const Graph = () => {
             left: "10px",
             color: "white",
             fontSize: window.innerWidth > 1024 ? "20px" : "14px",
-            top: window.innerWidth > 1024 ? "365px" : "230px",
+            top: window.innerWidth > 1024 ? "365px" : "210px",
           }}
         >
           Total Edge Weight: {totalLength.toFixed(0)}
@@ -330,7 +330,7 @@ const Graph = () => {
               left: "10px",
               color: "white",
               fontSize: window.innerWidth > 1024 ? "20px" : "14px",
-              top: window.innerWidth > 1024 ? "345px" : "210px",
+              top: window.innerWidth > 1024 ? "345px" : "190px",
             }}
           >
             Time: {executionTime.toFixed(3)} ms
@@ -429,7 +429,7 @@ const Graph = () => {
               paragraphs.map((paragraph, i) => (
                 <p
                   key={i}
-                  className={`text-md absolute inset-0 mx-4 flex items-start justify-center text-center font-medium text-egg transition-all duration-500 ease-in-out lg:text-lg ${
+                  className={`absolute inset-0 mx-4 flex items-start justify-center text-center text-sm font-medium text-egg transition-all duration-500 ease-in-out lg:text-sm ${
                     i === currentStep
                       ? `translate-x-0 opacity-100`
                       : i < currentStep

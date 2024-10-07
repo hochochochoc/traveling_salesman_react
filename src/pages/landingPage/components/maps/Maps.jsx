@@ -5,29 +5,6 @@ import { useTravelingData } from "../../../../context/TravelingContext";
 
 const countryNames = ["Brazil", "China", "Spain", "Guinea"];
 
-const loadGoogleMapsScript = (callback) => {
-  if (window.google && window.google.maps) {
-    callback();
-    return;
-  }
-
-  const existingScript = document.getElementById("googleMapsScript");
-  if (!existingScript) {
-    const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyByE64wA61IlqrLScEBn6dUig4zx8liL44&libraries=places`;
-    script.id = "googleMapsScript";
-    script.async = true;
-    script.defer = true;
-    document.body.appendChild(script);
-
-    script.onload = () => {
-      if (callback) callback();
-    };
-  } else if (callback) {
-    callback();
-  }
-};
-
 export default function Maps() {
   const { countryCenters, zoomLevels, loading, error } = useTravelingData();
 

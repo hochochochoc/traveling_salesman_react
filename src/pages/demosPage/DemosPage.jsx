@@ -44,11 +44,12 @@ export default function DemosPage() {
   const renderOptions = (items, activeItem, setActiveItem) => (
     <div
       ref={scrollContainerRef}
-      className="hide-scrollbar mt-2 flex overflow-x-auto"
+      className="hide-scrollbar mt-2 flex overflow-x-auto md:overflow-x-scroll"
       style={{
         scrollSnapType: "x mandatory",
         msOverflowStyle: "none",
         scrollbarWidth: "none",
+        overflow: "auto",
       }}
     >
       {items.map((item) => (
@@ -62,7 +63,7 @@ export default function DemosPage() {
           onClick={() => setActiveItem(item)}
           style={{
             scrollSnapAlign: "center",
-            width: "100px",
+            minWidth: "100px",
             height: "100px",
           }}
         >

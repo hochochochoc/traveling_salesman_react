@@ -1,12 +1,22 @@
 // DEMOSPAGE
-    // PrimsGraph            
+    // Menu
+        // URGENT: disable auto-load of maps -- done
+        // if possible, prevent loading maps in sandbox automatically too while testing
+        // make it a minimum of mobile friendly
+        // copy crewlineapp for landing page minimum
+        // also for sidebar/menu
+        // slick slider country choice??? Maybe with an image api it would work better actually, don't have to worry about console calls so much...
+
+
+    // Graph            
         // priorities:
             // make all algorithms work -- done
             // secondary edges for first nearest -- done
             // new paragraphs for twoOpt -- done
-            // change the ui to something better
+            // change the ui to something better -- done
             // actually apply react component logic
-        
+            // maybe just try to adjust the chriftofides by secretly applying the twoOpt in the end...
+            // should probably keep any changes made to the vertices when changing algorithms
         
         // secondary edges, or actually show all the steps
         // clean up to use components, context etc.

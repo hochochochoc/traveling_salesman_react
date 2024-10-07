@@ -18,7 +18,8 @@ const TravelingProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const selectedCountries = ["Brazil", "China", "Spain", "Tanzania"];
+  const selectedCountries = [];
+  // "Brazil", "China", "Spain", "Tanzania"
 
   useEffect(() => {
     fetch("https://restcountries.com/v3.1/independent?status=true")
