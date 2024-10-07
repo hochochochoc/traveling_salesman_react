@@ -75,7 +75,7 @@ const MapTest = ({ center, zoom }) => {
   }, [mapLoaded, center, zoom]);
 
   return (
-    <div className="relative h-40 w-56 overflow-hidden">
+    <div className="relative h-36 w-56 overflow-hidden">
       <div
         ref={mapRef}
         className="absolute inset-[-50px]"

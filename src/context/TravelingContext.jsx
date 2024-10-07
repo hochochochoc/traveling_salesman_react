@@ -4,7 +4,7 @@ const TravelingContext = createContext();
 
 const calculateZoomLevel = (area) => {
   const m = -2.29e-7; // Slope
-  const c = 4.4545; // Y-intercept
+  const c = 4.4; // Y-intercept
   const zoom = Math.max(1, Math.min(20, m * area + c)); // Clamp between 1 and 20
   // console.log(`Calculating zoom level for area ${area}: ${zoom}`);
   return zoom;
@@ -15,17 +15,20 @@ const useTravelingData = () => useContext(TravelingContext);
 const TravelingProvider = ({ children }) => {
   const [countryCenters, setCountryCenters] = useState({});
   const [zoomLevels, setZoomLevels] = useState({});
+  const [countryFlags, setCountryFlags] = useState({});
+  const [countryAreas, setCountryAreas] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const selectedCountries = ["Brazil", "China", "Spain", "Tanzania"];
-
+  const selectedCountries = ["Brazil"];
+  //"China", "Spain", "Egypt"
   useEffect(() => {
     fetch("https://restcountries.com/v3.1/independent?status=true")
       .then((response) => response.json())
       .then((data) => {
         const centers = {};
         const zooms = {};
+        const flags = {};
         data.forEach((country) => {
           if (selectedCountries.includes(country.name.common)) {
             centers[country.name.common] = {
@@ -34,14 +37,15 @@ const TravelingProvider = ({ children }) => {
             };
             const zoom = calculateZoomLevel(country.area);
             zooms[country.name.common] = zoom;
-            // console.log(
-            //   `Country: ${country.name.common}, Area: ${country.area}, Zoom: ${zoom}`,
-            // ); // Log each country's zoom level
+            flags[country.name.common] = country.flags.png;
+            countryAreas[country.name.common] = country.area.toLocaleString();
           }
         });
 
         setCountryCenters(centers);
         setZoomLevels(zooms);
+        setCountryFlags(flags);
+        setCountryAreas(countryAreas);
         setLoading(false);
       })
       .catch((error) => {
@@ -53,7 +57,14 @@ const TravelingProvider = ({ children }) => {
 
   return (
     <TravelingContext.Provider
-      value={{ countryCenters, zoomLevels, loading, error }}
+      value={{
+        countryCenters,
+        zoomLevels,
+        countryFlags,
+        countryAreas,
+        loading,
+        error,
+      }}
     >
       {children}
     </TravelingContext.Provider>
