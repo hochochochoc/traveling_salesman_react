@@ -26,7 +26,7 @@ const LanguagesButton = ({ onLanguageChange }) => {
         className="flex w-full items-center rounded-md p-2 text-gray-700 transition-colors duration-200 hover:bg-gray-200 hover:text-gray-900"
       >
         <Languages size={20} className="mr-3" />
-        <span className="text-sm font-medium">{selectedLanguage.name}</span>
+        <span className="text-lg font-bold">{selectedLanguage.name}</span>
       </button>
       {isOpen && (
         <div className="absolute left-0 mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">

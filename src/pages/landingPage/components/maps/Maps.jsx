@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import MapTest from "../maptest/MapTest";
 import { useTravelingData } from "../../../../context/TravelingContext";
+import { useNavigate } from "react-router-dom";
 
 export default function CountryMapsCarousel() {
   const {
@@ -16,6 +17,7 @@ export default function CountryMapsCarousel() {
   const [startX, setStartX] = useState(0);
   const [isSwiping, setIsSwiping] = useState(false);
   const [slidePosition, setSlidePosition] = useState(0);
+  const navigate = useNavigate();
 
   const countryNames = selectedCountries;
 
@@ -88,7 +90,10 @@ export default function CountryMapsCarousel() {
           }}
         >
           {countryNames.map((country) => (
-            <div key={country}>
+            <div
+              key={country}
+              onClick={() => navigate(`/map?country=${country}`)}
+            >
               <div className="mb-3 overflow-hidden rounded-lg border border-gray-800 bg-white shadow-md transition-all duration-300 hover:shadow-lg active:scale-95">
                 {countryCenters[country] && (
                   <MapTest

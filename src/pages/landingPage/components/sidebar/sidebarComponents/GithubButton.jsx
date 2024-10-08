@@ -10,7 +10,7 @@ const GitHubButton = ({ href }) => {
       className="flex items-center rounded-md p-2 text-gray-700 transition-colors duration-200 hover:bg-gray-200 hover:text-gray-900"
     >
       <Github size={20} className="mr-3" />
-      <span className="text-sm font-medium">GitHub</span>
+      <span className="text-lg font-bold">GitHub</span>
     </a>
   );
 };

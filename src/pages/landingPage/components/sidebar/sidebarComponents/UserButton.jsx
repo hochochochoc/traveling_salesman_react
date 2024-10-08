@@ -7,7 +7,7 @@ export default function UserButton() {
       <div className="h-8 w-8 overflow-hidden rounded-full bg-gray-300">
         <img className="h-full w-full object-cover" />
       </div>
-      <span className="flex-grow text-left">User </span>
+      <span className="flex-grow text-left text-lg font-bold">User </span>
       <button className="h-8 w-8 rounded-full text-gray-600 hover:bg-gray-600 hover:text-gray-300">
         <Settings className="h-full w-full p-1" />
       </button>

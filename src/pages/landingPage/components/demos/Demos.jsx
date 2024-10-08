@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function Demos() {
   const navigate = useNavigate();
   return (
-    <div className="mt-4 flex flex-col rounded-lg bg-bluedarkest p-4 text-egg">
+    <div className="flex flex-col rounded-lg bg-bluedarkest p-4 text-egg">
       <p className="ml-2 font-bold">How it works</p>
       <p className="ml-2">Try algorithms or validation.</p>
       <button

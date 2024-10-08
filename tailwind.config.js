@@ -16,6 +16,7 @@ export default {
         bluelight: "#7A9BB8",
         bluemedium: "#8BA9C2",
         bluedarkest: "#2C3E50",
+        mapsblue: "#6CD2E7",
 
         quaternary: "#D4C5A8",
         quinary: "#C9B997",

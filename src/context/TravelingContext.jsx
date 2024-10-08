@@ -26,14 +26,18 @@ const TravelingProvider = ({ children }) => {
     Bangladesh: { zoom: 4.8, center: { lat: 23.675, lng: 90.3253 } },
     Chad: { zoom: 3.53, center: { lat: 15.7617, lng: 18.7954 } },
     China: { zoom: 2.25, center: { lat: 35.8617, lng: 104.1954 } },
+    "DR Congo": { zoom: 3.4, center: { lat: -4.0383, lng: 21.754 } },
     Egypt: { zoom: 4.1, center: { lat: 26.8217, lng: 30.7954 } },
     Indonesia: { zoom: 2.67, center: { lat: -0.7617, lng: 117.3954 } },
+    Mexico: { zoom: 3.25, center: { lat: 23.617, lng: -102.5554 } },
+    Mongolia: { zoom: 3.23, center: { lat: 46.8617, lng: 103.7954 } },
     Spain: { zoom: 4.2, center: { lat: 39.9937, lng: -3.0492 } },
     Vietnam: { zoom: 3.67, center: { lat: 16.0617, lng: 105.3954 } },
   };
 
-  const selectedCountries = ["Bangladesh"];
+  const selectedCountries = ["Denmark", "Brazil"];
   //"China", "Spain", "Indonesia"
+  // "Brazil", "China", "Spain",
   useEffect(() => {
     fetch("https://restcountries.com/v3.1/independent?status=true")
       .then((response) => response.json())

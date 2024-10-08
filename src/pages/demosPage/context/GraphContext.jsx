@@ -32,7 +32,6 @@ const DemosProvider = ({ children }) => {
     setAlgorithmSelection,
     validationSelection,
     setValidationSelection,
-
     primsMST: (graph) => primsMST(graph, distance),
     kruskalsMST: (graph) => kruskalsMST(graph, distance),
     nearestNeighborTSP: (graph) => nearestNeighborTSP(graph, distance),
