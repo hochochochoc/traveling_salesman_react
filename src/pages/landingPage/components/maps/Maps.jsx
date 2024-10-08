@@ -2,14 +2,13 @@ import React, { useState, useRef, useEffect } from "react";
 import MapTest from "../maptest/MapTest";
 import { useTravelingData } from "../../../../context/TravelingContext";
 
-const countryNames = ["Brazil", "China", "Spain", "Indonesia"];
-
 export default function CountryMapsCarousel() {
   const {
     countryCenters,
     zoomLevels,
     countryFlags,
     countryAreas,
+    selectedCountries,
     loading,
     error,
   } = useTravelingData();
@@ -17,6 +16,8 @@ export default function CountryMapsCarousel() {
   const [startX, setStartX] = useState(0);
   const [isSwiping, setIsSwiping] = useState(false);
   const [slidePosition, setSlidePosition] = useState(0);
+
+  const countryNames = selectedCountries;
 
   useEffect(() => {
     const carousel = carouselRef.current;

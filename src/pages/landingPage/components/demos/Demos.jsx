@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 export default function Demos() {
   const navigate = useNavigate();
   return (
-    <div className="mt-4 flex flex-col rounded-lg bg-bluedarkest p-4 text-white">
-      <p className="mb-2 ml-2 font-bold">How it works</p>
+    <div className="mt-4 flex flex-col rounded-lg bg-bluedarkest p-4 text-egg">
+      <p className="ml-2 font-bold">How it works</p>
       <p className="ml-2">Try algorithms or validation.</p>
       <button
         onClick={() => {
@@ -17,7 +17,7 @@ export default function Demos() {
             },
           });
         }}
-        className="mb-3 mt-2 rounded-lg border border-black bg-gray-800 py-2 text-white active:scale-95"
+        className="mb-3 mt-2 rounded-lg border border-black bg-gray-800 py-2 text-egg active:scale-95"
       >
         Algorithms
       </button>

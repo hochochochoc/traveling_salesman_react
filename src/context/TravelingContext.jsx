@@ -20,8 +20,20 @@ const TravelingProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const selectedCountries = ["Brazil"];
-  //"China", "Spain", "Egypt"
+  const fixedValues = {
+    Argentina: { zoom: 2.13, center: { lat: -40.7617, lng: -63.7954 } },
+    Brazil: { zoom: 2.36, center: { lat: -14.235, lng: -51.9253 } },
+    Bangladesh: { zoom: 4.8, center: { lat: 23.675, lng: 90.3253 } },
+    Chad: { zoom: 3.53, center: { lat: 15.7617, lng: 18.7954 } },
+    China: { zoom: 2.25, center: { lat: 35.8617, lng: 104.1954 } },
+    Egypt: { zoom: 4.1, center: { lat: 26.8217, lng: 30.7954 } },
+    Indonesia: { zoom: 2.67, center: { lat: -0.7617, lng: 117.3954 } },
+    Spain: { zoom: 4.2, center: { lat: 39.9937, lng: -3.0492 } },
+    Vietnam: { zoom: 3.67, center: { lat: 16.0617, lng: 105.3954 } },
+  };
+
+  const selectedCountries = ["Bangladesh"];
+  //"China", "Spain", "Indonesia"
   useEffect(() => {
     fetch("https://restcountries.com/v3.1/independent?status=true")
       .then((response) => response.json())
@@ -31,13 +43,23 @@ const TravelingProvider = ({ children }) => {
         const flags = {};
         data.forEach((country) => {
           if (selectedCountries.includes(country.name.common)) {
-            centers[country.name.common] = {
-              lat: country.latlng[0],
-              lng: country.latlng[1],
-            };
-            const zoom = calculateZoomLevel(country.area);
-            zooms[country.name.common] = zoom;
+            // Check if the country has fixed values
+            if (fixedValues[country.name.common]) {
+              centers[country.name.common] =
+                fixedValues[country.name.common].center;
+              zooms[country.name.common] =
+                fixedValues[country.name.common].zoom;
+            } else {
+              // Calculate for countries without fixed values
+              centers[country.name.common] = {
+                lat: country.latlng[0],
+                lng: country.latlng[1],
+              };
+              zooms[country.name.common] = calculateZoomLevel(country.area);
+            }
+
             flags[country.name.common] = country.flags.png;
+            // Correct the variable here:
             countryAreas[country.name.common] = country.area.toLocaleString();
           }
         });
@@ -62,6 +84,7 @@ const TravelingProvider = ({ children }) => {
         zoomLevels,
         countryFlags,
         countryAreas,
+        selectedCountries,
         loading,
         error,
       }}

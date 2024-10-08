@@ -1,10 +1,10 @@
 // DEMOSPAGE
     // Menu
         // sidebar/menu from crewlineapp
-        // search function
-        // sort by continent
+        // search function for maps
+        // sort by continent 
         // issue where scrolling through maps doesn't work when loading that page but it does when coming from other page...
-        // enable possibility of custom zooms too, implement at least for my 4 countries
+       
 
         // disable auto-load of maps -- done
         // make menu a minimum of mobile friendly -- done
@@ -13,7 +13,7 @@
         // slider for countries -- done
         // fix space between country cards -- done
         // add information to the cards, what idk like area, continent -- done
-
+        // custom zoom, coordinates -- done
 
     // Landing
         // copy crewlineapp for landing page minimum

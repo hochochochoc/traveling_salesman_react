@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 const loadGoogleMapsScript = (callback) => {
   if (window.google && window.google.maps) {
-    console.log("Google Maps already loaded.");
+    // console.log("Google Maps already loaded.");
     callback();
     return;
   }
@@ -35,14 +35,14 @@ const MapTest = ({ center, zoom }) => {
 
   useEffect(() => {
     loadGoogleMapsScript(() => {
-      console.log("Map loading initiated.");
+      // console.log("Map loading initiated.");
       setMapLoaded(true);
     });
   }, []);
 
   useEffect(() => {
     if (mapLoaded && window.google && mapRef.current) {
-      console.log(`Loading map with zoom level: ${zoom}`);
+      // console.log(`Loading map with zoom level: ${zoom}`);
       const { Map } = window.google.maps;
       new Map(mapRef.current, {
         center,
