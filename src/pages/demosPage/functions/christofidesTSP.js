@@ -1,5 +1,6 @@
 // Function for Christofides Algorithm
 import blossom from "edmonds-blossom";
+import { twoOptTSP } from "./twoOptTSP";
 
 export const christofidesTSP = (graph, distance) => {
   console.log("Input Graph:", graph);
@@ -44,9 +45,13 @@ export const christofidesTSP = (graph, distance) => {
     const to = hamiltonianCircuit[i + 1];
     edges.push([from, to]);
   }
+
+  // Apply Two-Opt to optimize the Hamiltonian circuit
+  const optimizedResult = twoOptTSP(graph, distance);
+
   const endTime = performance.now();
   const executionTime = endTime - startTime;
-  return { edges, executionTime };
+  return { edges: optimizedResult.edges, executionTime };
 };
 
 // Helper function to compute Minimum Spanning Tree using Kruskal's algorithm

@@ -25,8 +25,7 @@
     // Graph            
         // priorities:
             // actually apply react component logic
-            // maybe just try to adjust the chriftofides by secretly applying the twoOpt in the end...
-            // should probably keep any changes made to the vertices when changing algorithms
+            // fix christofides bug when moving vertices
         
         // secondary edges, or actually show all the steps
         // clean up to use components, context etc.
@@ -66,6 +65,9 @@
         // secondary edges for first nearest -- done
         // new paragraphs for twoOpt -- done
         // change the ui to something better -- done
+        // maybe just try to adjust the chriftofides by secretly applying the twoOpt in the end -- done
+        // should probably keep any changes made to the vertices when changing algorithms -- done
+
 
 
          // optional: show how vertices move from unconnected set to connected one
