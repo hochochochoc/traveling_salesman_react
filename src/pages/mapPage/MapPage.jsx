@@ -46,8 +46,6 @@ export default function MapPage() {
 
   // 2. Function to display cities if already in the CSV
   const displayCities = (cities, citiesToBeAdded) => {
-    console.log(citiesToBeAdded);
-
     // Randomly shuffle the cities array
     const shuffledCities = cities.sort(() => 0.5 - Math.random());
 
@@ -79,7 +77,7 @@ export default function MapPage() {
       let totalCalls = 0;
       let offset = 0;
 
-      while (currentCount < 30 && totalCalls < 4) {
+      while (currentCount < 30 && totalCalls < 5) {
         // Step 1: Fetch country code using Rest Countries API
         const countryResponse = await fetch(
           `https://restcountries.com/v3.1/name/${country}`,
@@ -92,7 +90,7 @@ export default function MapPage() {
         const geoDbApiKey =
           "7767b21710mshcd08efc5bb4012ap1f54b7jsndcc3fc53b913";
         const cityResponse = await fetch(
-          `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?countryIds=${countryCode}&limit=10&offset=${offset}&minPopulation=40000&types=CITY&sort=-population`,
+          `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?countryIds=${countryCode}&limit=10&offset=${offset}&minPopulation=20000&types=CITY&sort=-population`,
           {
             method: "GET",
             headers: {
@@ -139,11 +137,13 @@ export default function MapPage() {
         offset += 10; // Move to the next batch of 10 cities
 
         // Add a delay of 1 second between API calls to avoid rate limiting
-        await delay(1500);
+        await delay(1100);
       }
 
       if (currentCount >= 30) {
         console.log("Enough cities added.");
+        const updatedCities = await getCitiesFromCSV(country);
+        displayCities(updatedCities, citiesToBeAdded);
       } else {
         console.log("Reached maximum API calls or no more cities to fetch.");
       }
@@ -281,3 +281,9 @@ export default function MapPage() {
     </div>
   );
 }
+
+// TODO:
+// why cities not working for e.g. Spain? something wrong with cities count, increase limit to 10?
+// edge case china/taipei
+// when it can't load enough cities it should just say so.
+// I only want to add the cities once, or at least just replace the current ones on repeat click
