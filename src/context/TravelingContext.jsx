@@ -36,7 +36,7 @@ const TravelingProvider = ({ children }) => {
     Vietnam: { zoom: 3.67, center: { lat: 16.0617, lng: 105.3954 } },
   };
 
-  const selectedCountries = ["Spain"];
+  const selectedCountries = ["United Kingdom"];
   //"China", "Spain", "Indonesia"
   // "Brazil", "China", "Spain",
   useEffect(() => {

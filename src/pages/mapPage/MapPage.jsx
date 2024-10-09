@@ -20,64 +20,135 @@ export default function MapPage() {
   }, []);
 
   const fetchCities = async (country, citiesToBeAdded) => {
+    const citiesFromCSV = await getCitiesFromCSV(country);
+
+    if (citiesFromCSV.length >= 30) {
+      displayCities(citiesFromCSV, citiesToBeAdded);
+    } else {
+      await addNewCities(country, citiesFromCSV.length, citiesToBeAdded);
+    }
+  };
+
+  // 1. Function to read cities from CSV for the given country
+  const getCitiesFromCSV = async (country) => {
     try {
-      // Step 1: Fetch the cca2 code using Rest Countries API
-      const countryResponse = await fetch(
-        `https://restcountries.com/v3.1/name/${country}`,
-      );
-
-      if (!countryResponse.ok) {
-        throw new Error(`Country fetch failed: ${countryResponse.status}`);
-      }
-
-      const countryData = await countryResponse.json();
-      const countryCode = countryData[0].cca2; // Get the cca2 code
-      const countryName = countryData[0].name.common; // Get the common country name
-
-      // Step 2: Fetch the cities using GeoDB Cities API and the cca2 country code
-      const geoDbApiKey = "7767b21710mshcd08efc5bb4012ap1f54b7jsndcc3fc53b913"; // Use your GeoDB API key here
-
-      const cityResponse = await fetch(
-        `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?countryIds=${countryCode}&limit=${citiesToBeAdded}&minPopulation=40000&types=CITY&sort=-population`,
-        {
-          method: "GET",
-          headers: {
-            "x-rapidapi-host": "wft-geo-db.p.rapidapi.com",
-            "x-rapidapi-key": geoDbApiKey,
-          },
-        },
-      );
-
-      if (!cityResponse.ok) {
-        throw new Error(`Cities fetch failed: ${cityResponse.status}`);
-      }
-
-      const cityData = await cityResponse.json();
-      const cities = cityData.data.map((city) => ({
-        name: city.name,
-        latitude: city.latitude,
-        longitude: city.longitude,
-        countryName: countryName,
-        region: city.region,
-        population: city.population,
-      }));
-
-      // Send data to the backend to write to CSV
-      const response = await fetch("http://localhost:5000/api/write-cities", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ cities }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to write to CSV");
-      }
-
-      console.log("Cities data written to CSV");
+      const response = await fetch("/countryData/countries.csv");
+      const csvData = await response.text();
+      const rows = csvData.split("\n").slice(1); // Skip header
+      return rows
+        .map((row) => row.split(","))
+        .filter((city) => city[3]?.trim() === country); // Filter by country
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error("Error reading CSV:", error);
+      return [];
+    }
+  };
+
+  // 2. Function to display cities if already in the CSV
+  const displayCities = (cities, citiesToBeAdded) => {
+    console.log(citiesToBeAdded);
+
+    // Randomly shuffle the cities array
+    const shuffledCities = cities.sort(() => 0.5 - Math.random());
+
+    // Select the first numCities from the shuffled array
+    const selectedCities = shuffledCities.slice(0, citiesToBeAdded);
+
+    // Create paragraphs for the selected cities
+    const cityParagraphs = selectedCities
+      .map((city) => `<p>${city[0]}</p>`) // Display city name
+      .join("");
+
+    // Select the div with class "h-80 bg-mapsblue"
+    const cityContainer = document.querySelector(".h-80.bg-mapsblue");
+
+    // Write the paragraphs inside the selected div
+    if (cityContainer) {
+      cityContainer.innerHTML = cityParagraphs;
+    } else {
+      console.error("City container not found.");
+    }
+  };
+
+  // 3.0 Utility function to create a delay
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  // 3. Function to call the API to fetch new cities if fewer than 30 are found
+  const addNewCities = async (country, currentCount, citiesToBeAdded) => {
+    try {
+      let totalCalls = 0;
+      let offset = 0;
+
+      while (currentCount < 30 && totalCalls < 4) {
+        // Step 1: Fetch country code using Rest Countries API
+        const countryResponse = await fetch(
+          `https://restcountries.com/v3.1/name/${country}`,
+        );
+        const countryData = await countryResponse.json();
+        const countryCode = countryData[0].cca2;
+        const countryName = countryData[0].name.common;
+
+        // Step 2: Fetch cities from GeoDB Cities API (pagination with offset)
+        const geoDbApiKey =
+          "7767b21710mshcd08efc5bb4012ap1f54b7jsndcc3fc53b913";
+        const cityResponse = await fetch(
+          `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?countryIds=${countryCode}&limit=10&offset=${offset}&minPopulation=40000&types=CITY&sort=-population`,
+          {
+            method: "GET",
+            headers: {
+              "x-rapidapi-host": "wft-geo-db.p.rapidapi.com",
+              "x-rapidapi-key": geoDbApiKey,
+            },
+          },
+        );
+
+        if (!cityResponse.ok) {
+          throw new Error(`Error fetching cities: ${cityResponse.status}`);
+        }
+
+        const cityData = await cityResponse.json();
+        const cities = cityData.data.map((city) => ({
+          name: city.name,
+          latitude: city.latitude,
+          longitude: city.longitude,
+          countryName: countryName,
+          region: city.region,
+          population: city.population,
+        }));
+
+        if (cities.length === 0) {
+          console.log("No more cities available.");
+          break;
+        }
+
+        // Send new cities to backend to write them to CSV
+        const response = await fetch("http://localhost:5000/api/write-cities", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ cities }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to write to CSV");
+        }
+
+        currentCount += cities.length;
+        totalCalls++;
+        offset += 10; // Move to the next batch of 10 cities
+
+        // Add a delay of 1 second between API calls to avoid rate limiting
+        await delay(1500);
+      }
+
+      if (currentCount >= 30) {
+        console.log("Enough cities added.");
+      } else {
+        console.log("Reached maximum API calls or no more cities to fetch.");
+      }
+    } catch (error) {
+      console.error("Error fetching or writing cities:", error);
     }
   };
 

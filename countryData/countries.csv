@@ -1,10 +1,32 @@
-City Name,Latitude,Longitude,Country Name,Region,Population
-Madrid,40.416944444,-3.703333333,Spain,Community of Madrid,3332035
-Madrid city,40.4165,-3.70256,Spain,Community of Madrid,3255944
-Barcelona,41.3825,2.176944444,Spain,Catalonia,1660122City Name,Latitude,Longitude,Country Name,Region,Population
-Madrid,40.416944444,-3.703333333,Spain,Community of Madrid,3332035
-Madrid city,40.4165,-3.70256,Spain,Community of Madrid,3255944
-Barcelona,41.3825,2.176944444,Spain,Catalonia,1660122City Name,Latitude,Longitude,Country Name,Region,Population
-Madrid,40.416944444,-3.703333333,Spain,Community of Madrid,3332035
-Madrid city,40.4165,-3.70256,Spain,Community of Madrid,3255944
-Barcelona,41.3825,2.176944444,Spain,Catalonia,1660122
+City Name,Latitude,Longitude,CountryName,Region,Population
+Madrid,40.416944444,-3.703333333,,Community of Madrid,3332035
+London,51.507222222,-0.1275,United Kingdom,England,8799728Birmingham,52.48,-1.9025,United Kingdom,Birmingham,1137100
+Birmingham,52.48,-1.9025,United Kingdom,Birmingham,1137100
+Leeds,53.7975,-1.543611111,United Kingdom,Leeds,789194
+Tyneside,54.98333,-1.5,United Kingdom,England,774891
+Glasgow,55.861111111,-4.25,United Kingdom,Scotland,635640
+Sheffield,53.38297,-1.4659,United Kingdom,Sheffield,577800
+Manchester,53.466666666,-2.233333333,United Kingdom,Manchester,547627
+Liverpool,53.407222222,-2.991666666,United Kingdom,Liverpool,513441
+Edinburgh,55.953333333,-3.189166666,United Kingdom,Scotland,488050
+Bristol,51.45523,-2.59665,United Kingdom,City of Bristol,472465
+Leicester,52.636111111,-1.133055555,United Kingdom,England,464395
+Coventry,52.416666666,-1.516666666,United Kingdom,Coventry,366785
+Teesside,54.56667,-1.23333,United Kingdom,England,365323
+Cardiff,51.481666666,-3.179166666,United Kingdom,Wales,361469
+Belfast,54.596388888,-5.93,United Kingdom,Northern Ireland,345006
+Newcastle upon Tyne,54.977777777,-1.613333333,United Kingdom,Northumberland,300196
+Stockport,53.408333333,-2.149444444,United Kingdom,Stockport,294773
+Bradford,53.794,-1.751,United Kingdom,Bradford,293277
+Nottingham,52.955,-1.149166666,United Kingdom,Nottinghamshire,289301
+Bolton,53.578333333,-2.43,United Kingdom,Bolton,285372
+Brighton and Hove,50.827777777,-0.152777777,United Kingdom,East Sussex,277965
+Sunderland,54.9,-1.380277777,United Kingdom,Sunderland,277417
+Southampton,50.906666666,-1.404444444,United Kingdom,Hampshire,271173
+Plymouth,50.371388888,-4.142222222,United Kingdom,Devon,267918
+Milton Keynes,52.033333333,-0.766666666,United Kingdom,City of Milton Keynes,264349
+Kingston upon Hull,53.7446,-0.33525,United Kingdom,City of Kingston upon Hull,260200
+Derby,52.921666666,-1.476666666,United Kingdom,Derbyshire,255394
+Wolverhampton,52.584166666,-2.125277777,United Kingdom,City of Wolverhampton,250970
+Stoke-on-Trent,53,-2.183333333,United Kingdom,Staffordshire,249008
+Portsmouth,50.805833333,-1.087222222,United Kingdom,Hampshire,248440
