@@ -18,12 +18,21 @@ export default function CountryMapsCarousel() {
   const [isSwiping, setIsSwiping] = useState(false);
   const [slidePosition, setSlidePosition] = useState(0);
   const navigate = useNavigate();
+  const [cardWidth, setCardWidth] = useState(200);
 
   const countryNames = selectedCountries;
 
   useEffect(() => {
     const carousel = carouselRef.current;
-    if (!carousel) return;
+    const singleCard = carousel?.querySelector(".card");
+    if (singleCard) {
+      setCardWidth(singleCard.offsetWidth);
+    }
+  }, [countryNames.length, countryCenters, zoomLevels]);
+
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!carousel || cardWidth === 0) return;
 
     const handleTouchStart = (e) => {
       setStartX(e.touches[0].clientX);
@@ -38,7 +47,10 @@ export default function CountryMapsCarousel() {
       let newPosition = slidePosition - diff;
 
       // Calculate maximum slide position (can't scroll further than the last card)
-      const maxPosition = -635;
+      const maxPosition = -(
+        countryNames.length * (cardWidth + 12) -
+        carousel.offsetWidth
+      );
 
       // Ensure the new position is within bounds (0 for first slide, maxPosition for last)
       newPosition = Math.max(Math.min(newPosition, 0), maxPosition);
@@ -60,7 +72,7 @@ export default function CountryMapsCarousel() {
       carousel.removeEventListener("touchmove", handleTouchMove);
       carousel.removeEventListener("touchend", handleTouchEnd);
     };
-  }, [isSwiping, startX, slidePosition]);
+  }, [isSwiping, startX, slidePosition, cardWidth]);
 
   if (loading) {
     return <div>Loading country data...</div>;
@@ -93,6 +105,7 @@ export default function CountryMapsCarousel() {
             <div
               key={country}
               onClick={() => navigate(`/map?country=${country}`)}
+              className="card"
             >
               <div className="mb-3 overflow-hidden rounded-lg border border-gray-800 bg-white shadow-md transition-all duration-300 hover:shadow-lg active:scale-95">
                 {countryCenters[country] && (
