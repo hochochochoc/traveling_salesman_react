@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, Menu, MapPin } from "lucide-react";
-import { MousePointerClick } from "lucide-react";
+import { MousePointerClick, Globe, RefreshCcw } from "lucide-react";
 
 export default function MapPage() {
   const [searchParams] = useSearchParams();
@@ -19,13 +19,7 @@ export default function MapPage() {
     }
   }, []);
 
-  useEffect(() => {
-    if (country) {
-      fetchCities(country);
-    }
-  }, [country]);
-
-  const fetchCities = async (country) => {
+  const fetchCities = async (country, citiesToBeAdded) => {
     try {
       // Step 1: Fetch the cca2 code using Rest Countries API
       const countryResponse = await fetch(
@@ -38,10 +32,20 @@ export default function MapPage() {
 
       const countryData = await countryResponse.json();
       const countryCode = countryData[0].cca2; // Get the cca2 code
+      const countryName = countryData[0].name.common; // Get the common country name
 
-      // Step 2: Fetch the cities using the country code
+      // Step 2: Fetch the cities using GeoDB Cities API and the cca2 country code
+      const geoDbApiKey = "7767b21710mshcd08efc5bb4012ap1f54b7jsndcc3fc53b913"; // Use your GeoDB API key here
+
       const cityResponse = await fetch(
-        `http://api.geonames.org/searchJSON?country=${countryCode}&minPopulation=10000&maxRows=20&username=hochochoc`,
+        `https://wft-geo-db.p.rapidapi.com/v1/geo/cities?countryIds=${countryCode}&limit=${citiesToBeAdded}&minPopulation=40000&types=CITY&sort=-population`,
+        {
+          method: "GET",
+          headers: {
+            "x-rapidapi-host": "wft-geo-db.p.rapidapi.com",
+            "x-rapidapi-key": geoDbApiKey,
+          },
+        },
       );
 
       if (!cityResponse.ok) {
@@ -49,8 +53,29 @@ export default function MapPage() {
       }
 
       const cityData = await cityResponse.json();
-      const cities = cityData.geonames;
-      console.log("Cities:", cities);
+      const cities = cityData.data.map((city) => ({
+        name: city.name,
+        latitude: city.latitude,
+        longitude: city.longitude,
+        countryName: countryName,
+        region: city.region,
+        population: city.population,
+      }));
+
+      // Send data to the backend to write to CSV
+      const response = await fetch("http://localhost:5000/api/write-cities", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ cities }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to write to CSV");
+      }
+
+      console.log("Cities data written to CSV");
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -135,7 +160,10 @@ export default function MapPage() {
               className="absolute left-0 top-0 h-4 w-full cursor-pointer opacity-0"
             />
             <div className="flex justify-center">
-              <button className="mt-4 flex w-max items-center justify-center rounded-full bg-blue-400 px-3 py-2 font-light text-white transition-colors duration-200">
+              <button
+                onClick={() => fetchCities(country, citiesToBeAdded)}
+                className="mt-4 flex w-max items-center justify-center rounded-full bg-blue-500 px-3 py-2 font-light text-white transition-colors duration-200"
+              >
                 <MapPin className="mr-2 h-4 w-4" />
                 Add Cities to Map
               </button>
@@ -143,36 +171,39 @@ export default function MapPage() {
           </div>
         </div>
 
-        <div className="m-3 flex items-center rounded-lg bg-gray-50 p-4">
-          <button className="flex flex-col items-center rounded-lg bg-blue-400 px-3 py-2 text-white">
-            <div className="flex items-center space-x-1">
-              <MousePointerClick />
-              <span>Try it yourself</span>
-            </div>
+        <div className="m-3 flex flex-col items-center rounded-lg bg-gray-50 p-4">
+          <button className="flex w-full items-center justify-center space-x-3 rounded-xl bg-blue-500 px-4 py-3 text-white shadow-md transition duration-200 hover:bg-blue-600">
+            <MousePointerClick className="h-5 w-5" />
+            <span className="font-medium">Try it yourself</span>
           </button>
-          <div className="ml-16">OR</div>
-        </div>
 
-        <div className="m-3 flex items-center justify-between rounded-lg bg-gray-50 p-4">
-          <div className="flex flex-row items-center justify-center space-x-2 space-y-2">
-            <select className="rounded-lg border border-gray-300 py-1 pl-2 pr-8">
+          <div className="relative my-3 flex w-full items-center">
+            <div className="flex-grow border-t border-gray-300"></div>
+            <span className="mx-4 flex-shrink text-gray-500">or</span>
+            <div className="flex-grow border-t border-gray-300"></div>
+          </div>
+
+          <div className="space-y-3">
+            <select className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 transition duration-200 focus:border-blue-500 focus:outline-none">
               <option value="alg1">Algorithm 1</option>
               <option value="alg2">Algorithm 2</option>
               <option value="alg3">Algorithm 3</option>
             </select>
 
-            <button className="rounded-lg bg-blue-400 px-2 py-2 text-white">
-              Choose algorithm
+            <button className="w-full rounded-xl bg-blue-500 px-4 py-3 font-medium text-white shadow-md transition duration-200 hover:bg-blue-600">
+              Choose an algorithm
             </button>
           </div>
         </div>
 
         <div className="m-3 flex items-center justify-around space-x-2 rounded-lg bg-gray-50 p-4">
-          <button className="rounded-lg bg-blue-400 px-2 py-2 text-white">
-            Reset
+          <button className="flex flex-1 items-center justify-center space-x-2 rounded-xl bg-gray-100 px-2 py-3 font-medium text-gray-700 shadow-md transition duration-200 hover:bg-gray-200">
+            <RefreshCcw className="h-5 w-5" />
+            <span className="text-xs">Reset</span>
           </button>
-          <button className="rounded-lg bg-blue-400 px-2 py-2 text-white">
-            Change Country
+          <button className="flex flex-1 items-center justify-center space-x-2 rounded-xl bg-gray-100 px-2 py-3 font-medium text-gray-700 shadow-md transition duration-200 hover:bg-gray-200">
+            <Globe className="h-5 w-5" />
+            <span className="text-xs">Change Country</span>
           </button>
         </div>
       </div>
