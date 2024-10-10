@@ -30,14 +30,14 @@ const TravelingProvider = ({ children }) => {
     Egypt: { zoom: 4.1, center: { lat: 26.8217, lng: 30.7954 } },
     India: { zoom: 2.82, center: { lat: 21.5617, lng: 78.954 } },
     Indonesia: { zoom: 2.67, center: { lat: -0.7617, lng: 117.3954 } },
-    Iran: { zoom: 3.27, center: { lat: 32.4617, lng: 53.6954 } },
+    Iran: { zoom: 3.43, center: { lat: 32.4617, lng: 53.6954 } },
     Mexico: { zoom: 3.25, center: { lat: 23.617, lng: -102.5554 } },
     Mongolia: { zoom: 3.23, center: { lat: 46.8617, lng: 103.7954 } },
     Spain: { zoom: 4.2, center: { lat: 39.9937, lng: -3.0492 } },
     Vietnam: { zoom: 3.67, center: { lat: 16.0617, lng: 105.3954 } },
   };
 
-  const selectedCountries = ["Brazil", "Spain", "Bangladesh"];
+  const selectedCountries = ["Brazil", "Spain", "Bangladesh", "Iran"];
   //"China", "Spain", "Indonesia"
   // "Brazil", "China", "Spain",
   useEffect(() => {

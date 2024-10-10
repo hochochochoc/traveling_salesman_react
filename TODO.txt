@@ -1,5 +1,6 @@
 // DEMOSPAGE
     // Menu
+        // open secrets alert? Gmail
         // search function for maps
         // sort by continent 
         // issue where scrolling through maps doesn't work when loading that page but it does when coming from other page...
