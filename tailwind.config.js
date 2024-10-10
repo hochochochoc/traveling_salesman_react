@@ -20,6 +20,10 @@ export default {
 
         quaternary: "#D4C5A8",
         quinary: "#C9B997",
+
+        landing1: "#E6F3F7",
+        landing2: "#2C5F7C",
+        landing3: "#4A6E4D",
       },
     },
   },
