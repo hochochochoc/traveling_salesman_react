@@ -18,6 +18,8 @@ export const MapPageProvider = ({ children }) => {
   const [citiesToBeAdded, setCitiesToBeAdded] = useState(3);
   const sliderRef = useRef(null);
   const [sliderWidth, setSliderWidth] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [estimatedTime, setEstimatedTime] = useState(0);
 
   useEffect(() => {
     if (sliderRef.current) {
@@ -66,6 +68,9 @@ export const MapPageProvider = ({ children }) => {
   };
 
   const addNewCities = async (country, currentCount, citiesToBeAdded) => {
+    setLoading(true);
+    setEstimatedTime(5);
+
     try {
       let totalCalls = 0;
       let offset = 0;
@@ -130,6 +135,7 @@ export const MapPageProvider = ({ children }) => {
 
         currentCount += cities.length;
         totalCalls++;
+        setEstimatedTime((5 - totalCalls) * 1);
         offset += 10;
         console.log(`geocities api calls: ${totalCalls}`);
         await new Promise((resolve) => setTimeout(resolve, 1100));
@@ -144,6 +150,8 @@ export const MapPageProvider = ({ children }) => {
       }
     } catch (error) {
       console.error("Error fetching or writing cities:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -163,6 +171,8 @@ export const MapPageProvider = ({ children }) => {
         getThumbPosition,
         citiesToBeAdded,
         sliderRef,
+        loading,
+        estimatedTime,
       }}
     >
       {children}

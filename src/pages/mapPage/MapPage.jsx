@@ -17,6 +17,8 @@ export default function MapPage() {
     getThumbPosition,
     citiesToBeAdded,
     sliderRef,
+    loading,
+    estimatedTime,
   } = useMapPageContext();
 
   const center = countryCenters[country];
@@ -57,6 +59,8 @@ export default function MapPage() {
           <CountryMap center={center} zoom={zoom} country={country} />
         </div>
       </div>
+
+      {loading && <LoadingPopup estimatedTime={estimatedTime} />}
 
       <div className="flex-grow overflow-y-auto">
         <div className="m-3 rounded-lg bg-gray-50 p-3">
