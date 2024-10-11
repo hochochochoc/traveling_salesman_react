@@ -5,6 +5,7 @@ import { MousePointerClick, Globe, RefreshCcw } from "lucide-react";
 import { useMapPageContext } from "./context/MapPageContext";
 import CountryMap from "./components/CountryMap";
 import { useTravelingData } from "../../context/TravelingContext";
+import LoadingPopup from "./components/LoadingPopup";
 
 export default function MapPage() {
   const [searchParams] = useSearchParams();
@@ -19,6 +20,7 @@ export default function MapPage() {
     sliderRef,
     loading,
     estimatedTime,
+    cities,
   } = useMapPageContext();
 
   const center = countryCenters[country];
@@ -56,7 +58,12 @@ export default function MapPage() {
           />
         </div>
         <div className="mx-3 h-[25rem] w-auto">
-          <CountryMap center={center} zoom={zoom} country={country} />
+          <CountryMap
+            center={center}
+            zoom={zoom}
+            country={country}
+            cities={cities}
+          />
         </div>
       </div>
 

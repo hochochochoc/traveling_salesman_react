@@ -1,21 +1,19 @@
 import React, { useRef, useState, useEffect } from "react";
 
-const CountryMap = React.memo(({ center, zoom }) => {
+const CountryMap = React.memo(({ center, zoom, cities }) => {
   const mapRef = useRef(null);
-  const mapInstance = useRef(null); // <-- store the map instance
+  const mapInstance = useRef(null);
   const [mapLoaded, setMapLoaded] = useState(false);
 
   useEffect(() => {
     const loadGoogleMapsScript = (callback) => {
       if (window.google && window.google.maps) {
-        // console.log("Google Maps already loaded.");
         callback();
         return;
       }
 
       const script = document.createElement("script");
       script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyByE64wA61IlqrLScEBn6dUig4zx8liL44&libraries=places`;
-
       script.async = true;
       script.defer = true;
       script.onload = () => {
@@ -34,45 +32,69 @@ const CountryMap = React.memo(({ center, zoom }) => {
   }, []);
 
   useEffect(() => {
-    if (mapLoaded && window.google && mapRef.current && !mapInstance.current) {
-      // Only create the map if it hasn't been created before
-      mapInstance.current = new window.google.maps.Map(mapRef.current, {
-        center,
-        zoom,
-        mapTypeControl: false,
-        streetViewControl: false,
-        zoomControl: true,
-        fullscreenControl: false,
-        gestureHandling: "auto",
-        styles: [
-          {
-            featureType: "administrative",
-            elementType: "labels",
-            stylers: [{ visibility: "off" }],
-          },
-          { featureType: "poi", stylers: [{ visibility: "off" }] },
-          {
-            featureType: "road",
-            elementType: "geometry",
-            stylers: [{ visibility: "off" }],
-          },
-          {
-            featureType: "water",
-            elementType: "labels",
-            stylers: [{ visibility: "off" }],
-          },
-        ],
-      });
-    }
-  }, [mapLoaded]);
+    if (mapLoaded && window.google && mapRef.current) {
+      if (!mapInstance.current) {
+        mapInstance.current = new window.google.maps.Map(mapRef.current, {
+          center,
+          zoom,
+          mapTypeControl: false,
+          streetViewControl: false,
+          zoomControl: true,
+          fullscreenControl: false,
+          gestureHandling: "auto",
+          styles: [
+            {
+              featureType: "administrative",
+              elementType: "labels",
+              stylers: [{ visibility: "off" }],
+            },
+            { featureType: "poi", stylers: [{ visibility: "off" }] },
+            {
+              featureType: "road",
+              elementType: "geometry",
+              stylers: [{ visibility: "off" }],
+            },
+            {
+              featureType: "water",
+              elementType: "labels",
+              stylers: [{ visibility: "off" }],
+            },
+          ],
+        });
+      } else {
+        mapInstance.current.setCenter(center);
+        mapInstance.current.setZoom(zoom);
+      }
 
-  useEffect(() => {
-    if (mapInstance.current) {
-      // If the map already exists, update the center and zoom without reloading
-      mapInstance.current.setCenter(center);
-      mapInstance.current.setZoom(zoom);
+      // Clear existing markers
+      if (mapInstance.current.markers) {
+        mapInstance.current.markers.forEach((marker) => marker.setMap(null));
+      }
+      mapInstance.current.markers = [];
+
+      // Add new markers for cities
+      if (Array.isArray(cities) && cities.length > 0) {
+        cities.forEach((city) => {
+          const marker = new window.google.maps.Marker({
+            position: { lat: city.latitude, lng: city.longitude },
+            map: mapInstance.current,
+            title: city.name,
+            icon: {
+              url: "/pin_icon.png",
+              scaledSize: new google.maps.Size(14, 14),
+            },
+            label: {
+              text: city.name,
+              color: "black",
+              fontSize: "11px",
+              className: "-translate-y-3",
+            },
+          });
+          mapInstance.current.markers.push(marker);
+        });
+      }
     }
-  }, [center, zoom]);
+  }, [mapLoaded, center, zoom, cities]);
 
   return (
     <div className="relative h-full w-full overflow-hidden">

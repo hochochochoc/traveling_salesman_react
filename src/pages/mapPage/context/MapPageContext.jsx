@@ -16,10 +16,12 @@ export const useMapPageContext = () => {
 
 export const MapPageProvider = ({ children }) => {
   const [citiesToBeAdded, setCitiesToBeAdded] = useState(3);
+  const [cities, setCities] = useState([]);
   const sliderRef = useRef(null);
   const [sliderWidth, setSliderWidth] = useState(0);
   const [loading, setLoading] = useState(false);
   const [estimatedTime, setEstimatedTime] = useState(0);
+  const mapInstance = useRef(null);
 
   useEffect(() => {
     if (sliderRef.current) {
@@ -52,6 +54,10 @@ export const MapPageProvider = ({ children }) => {
   const displayCities = (cities) => {
     const shuffledCities = cities.sort(() => 0.5 - Math.random());
     const selectedCities = shuffledCities.slice(0, citiesToBeAdded);
+
+    setCities(selectedCities);
+
+    // Update city container with city details
     const cityParagraphs = selectedCities
       .map(
         (city) =>
@@ -64,6 +70,22 @@ export const MapPageProvider = ({ children }) => {
       cityContainer.innerHTML = cityParagraphs;
     } else {
       console.error("City container not found.");
+    }
+
+    // Add city markers to the map
+    addCityMarkers(selectedCities);
+  };
+
+  // New function to add city markers to the map
+  const addCityMarkers = (selectedCities) => {
+    if (mapInstance.current) {
+      selectedCities.forEach((city) => {
+        new window.google.maps.Marker({
+          position: { lat: city.latitude, lng: city.longitude },
+          map: mapInstance.current,
+          title: city.name,
+        });
+      });
     }
   };
 
@@ -171,6 +193,7 @@ export const MapPageProvider = ({ children }) => {
         getThumbPosition,
         citiesToBeAdded,
         sliderRef,
+        cities,
         loading,
         estimatedTime,
       }}
