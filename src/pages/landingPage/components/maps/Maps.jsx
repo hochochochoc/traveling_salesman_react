@@ -83,7 +83,7 @@ export default function CountryMapsCarousel() {
   }
 
   return (
-    <div className="rounded-lg bg-tertiary px-4 pt-4">
+    <div className="bg-tertiary px-4 pt-4">
       <div className="ml-2 font-bold">Choose a map</div>
       <div className="ml-2 pb-1">
         Select a country to try out the algorithms.

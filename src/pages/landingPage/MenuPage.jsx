@@ -14,7 +14,6 @@ export default function MenuPage() {
         <Header />
       </div>
       <div className="mx-3 mb-3 flex flex-col space-y-3">
-        {/* <Description /> */}
         <Demos />
 
         <Maps />

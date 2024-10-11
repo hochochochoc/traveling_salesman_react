@@ -7,6 +7,7 @@ import LandingPage from "./pages/destinationPage/LandingPage";
 import { Route, Routes } from "react-router-dom";
 import { DemosProvider } from "./pages/demosPage/context/GraphContext";
 import "./index.css";
+import { MapPageProvider } from "./pages/mapPage/context/MapPageContext";
 
 // import { AuthProvider } from "./context/authContext";
 
@@ -18,7 +19,14 @@ function App() {
     <Routes>
       <Route path="/landing" element={<LandingPage />} />
       <Route path="/" element={<MenuPage />} />
-      <Route path="/map" element={<MapPage />} />
+      <Route
+        path="/map"
+        element={
+          <MapPageProvider>
+            <MapPage />
+          </MapPageProvider>
+        }
+      />
       <Route
         path="/demos"
         element={

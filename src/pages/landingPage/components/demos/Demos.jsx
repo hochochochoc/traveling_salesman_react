@@ -17,7 +17,7 @@ export default function Demos() {
             },
           });
         }}
-        className="mb-3 mt-2 rounded-lg border border-black bg-gray-800 py-2 text-egg active:scale-95"
+        className="mb-3 mt-2 border border-black bg-gray-800 py-2 text-egg active:scale-95"
       >
         Algorithms
       </button>
@@ -31,7 +31,7 @@ export default function Demos() {
             },
           });
         }}
-        className="rounded-lg border border-black bg-gray-700 py-2 active:scale-95"
+        className="border border-black bg-gray-700 py-2 active:scale-95"
       >
         Validation
       </button>

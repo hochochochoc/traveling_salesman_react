@@ -41,15 +41,15 @@ export default function LandingPage() {
 
             <div className="relative z-10 px-4 text-egg">
               <p className="mt-4">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
-                orci nulla, condimentum nec pulvinar vitae, placerat at leo.
-                Vestibulum ornare odio vel rutrum bibendum. Phasellus sit amet
-                urna nisi.
+                Welcome to TSP Explorer, where we bring the Traveling Salesman
+                Problem to life through interactive demos, visual maps, and
+                algorithm codes. Explore optimization solutions and learn at
+                your own pace.
               </p>
               <p className="mt-2 pb-4 text-egg">
-                Fusce pellentesque mollis augue ac ultricies. Integer vel leo ut
-                tortor fermentum rutrum quis ac nunc. Vestibulum a suscipit
-                tellus.
+                Try your hand at solving the problem, discover new algorithms,
+                and deepen your understanding of route optimization in a fun,
+                visual way.
               </p>
             </div>
           </div>
