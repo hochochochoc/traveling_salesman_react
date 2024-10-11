@@ -27,12 +27,12 @@ export default function LandingPage() {
       <div className="fixed left-0 right-0 top-0 z-30 flex justify-center pt-6">
         <h1 className="font-semibold text-egg">TSP EXPLORER</h1>
       </div>
-      <div className="relative z-10 min-h-[122vh] w-auto py-4 pt-16">
-        <div className="flex h-[88vh] flex-col justify-between">
+      <div className="relative z-10 min-h-[125vh] w-auto py-4 pt-16">
+        <div className="flex h-[95vh] flex-col justify-between">
           <div className="pb-2"></div>
           <div className="relative">
             <div
-              className="bg-landing2 absolute inset-0 bg-opacity-80"
+              className="absolute inset-0 bg-landing2 bg-opacity-80"
               style={{ top: "8%" }}
             ></div>
             <h3 className="relative z-10 px-2 text-4xl text-egg">
@@ -46,7 +46,7 @@ export default function LandingPage() {
                 algorithm codes. Explore optimization solutions and learn at
                 your own pace.
               </p>
-              <p className="mt-2 pb-4 text-egg">
+              <p className="mt-2 pb-12 text-egg">
                 Try your hand at solving the problem, discover new algorithms,
                 and deepen your understanding of route optimization in a fun,
                 visual way.
@@ -64,13 +64,13 @@ export default function LandingPage() {
         }}
       >
         <button
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/menu")}
           className="text-md w-64 cursor-pointer border-4 border-black bg-black px-4 py-2 font-bold text-white transition-colors hover:bg-white hover:text-black"
         >
           GET STARTED
         </button>
         <button
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/menu")}
           className="text-md w-64 cursor-pointer border-4 border-black px-9 py-2 font-bold text-black transition-colors hover:bg-black hover:text-white"
         >
           SIGN UP

@@ -15,7 +15,7 @@ export const useMapPageContext = () => {
 };
 
 export const MapPageProvider = ({ children }) => {
-  const [citiesToBeAdded, setCitiesToBeAdded] = useState(3);
+  const [citiesToBeAdded, setCitiesToBeAdded] = useState(8);
   const [cities, setCities] = useState([]);
   const sliderRef = useRef(null);
   const [sliderWidth, setSliderWidth] = useState(0);
@@ -58,19 +58,19 @@ export const MapPageProvider = ({ children }) => {
     setCities(selectedCities);
 
     // Update city container with city details
-    const cityParagraphs = selectedCities
-      .map(
-        (city) =>
-          `<p>${city.name} (Lat: ${city.latitude}, Lng: ${city.longitude})</p>`,
-      )
-      .join("");
+    // const cityParagraphs = selectedCities
+    //   .map(
+    //     (city) =>
+    //       `<p>${city.name} (Lat: ${city.latitude}, Lng: ${city.longitude})</p>`,
+    //   )
+    //   .join("");
 
-    const cityContainer = document.querySelector(".h-10.bg-mapsblue");
-    if (cityContainer) {
-      cityContainer.innerHTML = cityParagraphs;
-    } else {
-      console.error("City container not found.");
-    }
+    // const cityContainer = document.querySelector(".h-10.bg-mapsblue");
+    // if (cityContainer) {
+    //   cityContainer.innerHTML = cityParagraphs;
+    // } else {
+    //   console.error("City container not found.");
+    // }
 
     // Add city markers to the map
     addCityMarkers(selectedCities);

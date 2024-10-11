@@ -81,14 +81,14 @@ const CountryMap = React.memo(({ center, zoom, cities }) => {
             title: city.name,
             icon: {
               url: "/pin_icon.png",
-              scaledSize: new google.maps.Size(14, 14),
+              scaledSize: new google.maps.Size(14, 16),
             },
-            label: {
-              text: city.name,
-              color: "black",
-              fontSize: "11px",
-              className: "-translate-y-3",
-            },
+            // label: {
+            //   text: city.name,
+            //   color: "black",
+            //   fontSize: "11px",
+            //   className: "-translate-y-4",
+            // },
           });
           mapInstance.current.markers.push(marker);
         });

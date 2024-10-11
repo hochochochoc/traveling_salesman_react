@@ -36,7 +36,7 @@ export default function MapPage() {
           <div className="flex items-center">
             <button
               onClick={() => {
-                navigate("/");
+                navigate("/menu");
               }}
             >
               <ArrowLeft className="text-black" />
@@ -46,7 +46,7 @@ export default function MapPage() {
           <button
             onClick={() => {
               // Logout logic
-              navigate("/");
+              navigate("/menu");
             }}
             className="ml-12 flex max-h-9 justify-center rounded-lg border border-black px-2 hover:bg-gray-200 active:scale-95"
           >
@@ -149,7 +149,7 @@ export default function MapPage() {
             <span className="text-xs">Change Country</span>
           </button>
         </div>
-        <div className="h-10 bg-mapsblue"></div>
+        {/* <div className="h-10 bg-mapsblue"></div> */}
       </div>
     </div>
   );

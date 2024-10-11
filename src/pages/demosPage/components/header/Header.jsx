@@ -10,7 +10,7 @@ export default function Header() {
       <div className="flex items-center">
         <button
           onClick={() => {
-            navigate("/");
+            navigate("/menu");
           }}
         >
           <ArrowLeft className="text-white" />

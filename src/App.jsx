@@ -17,8 +17,8 @@ function App() {
   return (
     // <AuthProvider>
     <Routes>
-      <Route path="/landing" element={<LandingPage />} />
-      <Route path="/" element={<MenuPage />} />
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/menu" element={<MenuPage />} />
       <Route
         path="/map"
         element={

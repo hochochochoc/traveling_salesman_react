@@ -1,78 +1,105 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const loadGoogleMapsScript = (callback) => {
-  if (window.google && window.google.maps) {
-    // console.log("Google Maps already loaded.");
-    callback();
-    return;
-  }
+// Global state to track script loading
+let isLoadingScript = false;
+let isScriptLoaded = false;
+const callbacks = [];
 
-  const existingScript = document.getElementById("googleMapsScript");
-  if (!existingScript) {
-    console.log("Loading Google Maps script...");
+const loadGoogleMapsScript = () => {
+  return new Promise((resolve, reject) => {
+    if (isScriptLoaded) {
+      resolve();
+      return;
+    }
+
+    if (isLoadingScript) {
+      callbacks.push(resolve);
+      return;
+    }
+
+    isLoadingScript = true;
     const script = document.createElement("script");
     script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyByE64wA61IlqrLScEBn6dUig4zx8liL44&libraries=places`;
-    script.id = "googleMapsScript";
     script.async = true;
     script.defer = true;
     script.onload = () => {
-      console.log("Google Maps script loaded successfully.");
-      callback();
+      isScriptLoaded = true;
+      isLoadingScript = false;
+      callbacks.forEach((cb) => cb());
+      callbacks.length = 0;
+      resolve();
     };
     script.onerror = () => {
-      console.error("Error loading Google Maps script.");
+      isLoadingScript = false;
+      callbacks.forEach((cb) => cb(new Error("Script loading failed")));
+      callbacks.length = 0;
+      reject(new Error("Failed to load Google Maps script"));
     };
-    document.body.appendChild(script);
-  } else {
-    console.log("Google Maps script already exists.");
-    callback();
-  }
+    document.head.appendChild(script);
+  });
 };
 
 const MapTest = ({ center, zoom }) => {
   const mapRef = useRef(null);
-  const [mapLoaded, setMapLoaded] = useState(false);
+  const [map, setMap] = useState(null);
 
   useEffect(() => {
-    loadGoogleMapsScript(() => {
-      // console.log("Map loading initiated.");
-      setMapLoaded(true);
-    });
-  }, []);
+    let isMounted = true;
 
-  useEffect(() => {
-    if (mapLoaded && window.google && mapRef.current) {
-      // console.log(`Loading map with zoom level: ${zoom}`);
-      const { Map } = window.google.maps;
-      new Map(mapRef.current, {
-        center,
-        zoom,
-        mapTypeControl: false,
-        streetViewControl: false,
-        zoomControl: false,
-        fullscreenControl: false,
-        gestureHandling: "none",
-        styles: [
-          {
-            featureType: "administrative",
-            elementType: "labels",
-            stylers: [{ visibility: "off" }],
-          },
-          { featureType: "poi", stylers: [{ visibility: "off" }] },
-          {
-            featureType: "road",
-            elementType: "geometry",
-            stylers: [{ visibility: "off" }],
-          },
-          {
-            featureType: "water",
-            elementType: "labels",
-            stylers: [{ visibility: "off" }],
-          },
-        ],
-      });
-    }
-  }, [mapLoaded, center, zoom]);
+    const initializeMap = async () => {
+      try {
+        await loadGoogleMapsScript();
+        if (
+          isMounted &&
+          mapRef.current &&
+          !map &&
+          window.google &&
+          window.google.maps
+        ) {
+          const { Map } = window.google.maps;
+          const newMap = new Map(mapRef.current, {
+            center,
+            zoom,
+            mapTypeControl: false,
+            streetViewControl: false,
+            zoomControl: false,
+            fullscreenControl: false,
+            gestureHandling: "none",
+            styles: [
+              {
+                featureType: "administrative",
+                elementType: "labels",
+                stylers: [{ visibility: "off" }],
+              },
+              { featureType: "poi", stylers: [{ visibility: "off" }] },
+              {
+                featureType: "road",
+                elementType: "geometry",
+                stylers: [{ visibility: "off" }],
+              },
+              {
+                featureType: "water",
+                elementType: "labels",
+                stylers: [{ visibility: "off" }],
+              },
+            ],
+          });
+          setMap(newMap);
+        }
+      } catch (error) {
+        console.error("Error initializing map:", error);
+      }
+    };
+
+    initializeMap();
+
+    return () => {
+      isMounted = false;
+      if (map) {
+        // Clean up the map instance if needed
+      }
+    };
+  }, [center, zoom]);
 
   return (
     <div className="relative h-36 w-56 overflow-hidden">
@@ -86,7 +113,3 @@ const MapTest = ({ center, zoom }) => {
 };
 
 export default MapTest;
-
-// TODO
-// still doesn't work when loading first time...
-// rename things
