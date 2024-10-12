@@ -22,12 +22,73 @@ export const MapPageProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [estimatedTime, setEstimatedTime] = useState(0);
   const mapInstance = useRef(null);
+  const [selectedCities, setSelectedCities] = useState([]);
+  const [totalDistance, setTotalDistance] = useState(0);
+  const [isTryItYourselfMode, setIsTryItYourselfMode] = useState(false);
+  const [isTourCompleted, setIsTourCompleted] = useState(false);
 
   useEffect(() => {
     if (sliderRef.current) {
       setSliderWidth(sliderRef.current.offsetWidth);
     }
   }, []);
+
+  const addSelectedCity = (city) => {
+    if (isTryItYourselfMode) {
+      setSelectedCities((prev) => {
+        if (
+          prev.length === 0 ||
+          (prev.length > 1 && city.name === prev[0].name) ||
+          prev[prev.length - 1].name !== city.name
+        ) {
+          const newSelectedCities = [...prev, city];
+
+          // Check if tour is completed
+          if (
+            newSelectedCities.length > 1 &&
+            city.name === newSelectedCities[0].name
+          ) {
+            setIsTourCompleted(true);
+          }
+
+          return newSelectedCities;
+        }
+        return prev;
+      });
+    }
+  };
+
+  const resetSelectedCities = () => {
+    setSelectedCities([]);
+    setTotalDistance(0);
+    setIsTourCompleted(false);
+  };
+
+  const updateTotalDistance = (distance) => {
+    setTotalDistance(distance);
+    console.log(`Total distance: ${distance.toFixed(2)} km`);
+  };
+
+  const toggleTryItYourselfMode = () => {
+    setIsTryItYourselfMode((prev) => {
+      if (prev) {
+        resetSelectedCities();
+        setTotalDistance(0); // Reset the total distance
+        clearPolylines(); // Clear the existing polylines
+      }
+      return !prev;
+    });
+  };
+
+  // Function to clear the polylines from the map
+  const clearPolylines = () => {
+    if (mapInstance.current && mapInstance.current.polylines) {
+      mapInstance.current.polylines.forEach((polyline) =>
+        polyline.setMap(null),
+      );
+      mapInstance.current.polylines = []; // Reset the polyline array
+    }
+  };
 
   const fetchCities = async (country) => {
     const citiesFromFirebase = await getCitiesFromFirebase(country);
@@ -196,6 +257,14 @@ export const MapPageProvider = ({ children }) => {
         cities,
         loading,
         estimatedTime,
+        selectedCities,
+        addSelectedCity,
+        resetSelectedCities,
+        updateTotalDistance,
+        totalDistance,
+        isTryItYourselfMode,
+        toggleTryItYourselfMode,
+        isTourCompleted,
       }}
     >
       {children}

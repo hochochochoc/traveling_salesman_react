@@ -37,7 +37,7 @@ const TravelingProvider = ({ children }) => {
     Vietnam: { zoom: 3.67, center: { lat: 16.0617, lng: 105.3954 } },
   };
 
-  const selectedCountries = ["Brazil", "Spain", "India"];
+  const selectedCountries = ["Brazil"];
   //"China", "Spain", "Indonesia"
   // "Brazil", "China", "Spain",
   useEffect(() => {
@@ -101,23 +101,3 @@ const TravelingProvider = ({ children }) => {
 };
 
 export { TravelingProvider, TravelingContext, useTravelingData };
-
-// Spain
-
-// TO BE CHANGED:
-// Sant Martí
-// Eixample
-// L'Hospitalet de Llobregat
-// Badalona
-// Móstoles
-// Fuencarral-El Pardo
-
-// TO BE ADDED:
-// Albacete
-// Jaén
-// Ciudad Real
-// Cáceres
-// Badajoz
-// Santiago de Compostela
-
-// next commit: city labels depend on zoom

@@ -1,7 +1,13 @@
 import React from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Menu, MapPin } from "lucide-react";
-import { MousePointerClick, Globe, RefreshCcw } from "lucide-react";
+import {
+  ArrowLeft,
+  Menu,
+  MapPin,
+  MousePointerClick,
+  Globe,
+  RefreshCcw,
+} from "lucide-react";
 import { useMapPageContext } from "./context/MapPageContext";
 import CountryMap from "./components/CountryMap";
 import { useTravelingData } from "../../context/TravelingContext";
@@ -21,6 +27,10 @@ export default function MapPage() {
     loading,
     estimatedTime,
     cities,
+    totalDistance,
+    isTryItYourselfMode,
+    toggleTryItYourselfMode,
+    isTourCompleted,
   } = useMapPageContext();
 
   const center = countryCenters[country];
@@ -58,12 +68,14 @@ export default function MapPage() {
           />
         </div>
         <div className="mx-3 h-[25rem] w-auto">
-          <CountryMap
-            center={center}
-            zoom={zoom}
-            country={country}
-            cities={cities}
-          />
+          {center && zoom && cities && (
+            <CountryMap
+              center={center}
+              zoom={zoom}
+              country={country}
+              cities={cities}
+            />
+          )}
         </div>
       </div>
 
@@ -115,10 +127,27 @@ export default function MapPage() {
         </div>
 
         <div className="m-3 flex flex-col items-center rounded-lg bg-gray-50 p-4">
-          <button className="flex w-full items-center justify-center space-x-3 rounded-xl bg-blue-500 px-4 py-3 text-white shadow-md transition duration-200 hover:bg-blue-600">
+          <button
+            className={`flex w-full items-center justify-center space-x-3 rounded-xl px-4 py-3 text-white shadow-md transition duration-200 ${
+              isTryItYourselfMode
+                ? "bg-red-500 hover:bg-red-600"
+                : "bg-blue-500 hover:bg-blue-600"
+            }`}
+            onClick={toggleTryItYourselfMode}
+          >
             <MousePointerClick className="h-5 w-5" />
-            <span className="font-medium">Try it yourself</span>
+            <span className="font-medium">
+              {isTryItYourselfMode ? "Exit Try It Yourself" : "Try It Yourself"}
+            </span>
           </button>
+          {isTryItYourselfMode && totalDistance > 0 && (
+            <p className="mt-2 text-sm text-gray-600">
+              Total distance: {totalDistance.toFixed(2)} km
+            </p>
+          )}
+          {isTourCompleted && (
+            <p className="mt-1 font-semibold text-green-600">Tour Completed!</p>
+          )}
 
           <div className="relative my-3 flex w-full items-center">
             <div className="flex-grow border-t border-gray-300"></div>
