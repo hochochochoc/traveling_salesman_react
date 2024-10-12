@@ -24,7 +24,7 @@ export default function MapPage() {
   } = useMapPageContext();
 
   const center = countryCenters[country];
-  const zoom = zoomLevels[country] * 1.4;
+  const zoom = zoomLevels[country] * (country === "Spain" ? 1.2 : 1.4);
 
   return (
     <div

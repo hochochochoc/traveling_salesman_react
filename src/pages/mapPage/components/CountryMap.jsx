@@ -4,6 +4,7 @@ const CountryMap = React.memo(({ center, zoom, cities }) => {
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const initialZoom = useRef(zoom);
 
   useEffect(() => {
     const loadGoogleMapsScript = (callback) => {
@@ -61,6 +62,12 @@ const CountryMap = React.memo(({ center, zoom, cities }) => {
             },
           ],
         });
+
+        initialZoom.current = zoom;
+
+        mapInstance.current.addListener("zoom_changed", () => {
+          updateMarkerLabels();
+        });
       } else {
         mapInstance.current.setCenter(center);
         mapInstance.current.setZoom(zoom);
@@ -81,20 +88,42 @@ const CountryMap = React.memo(({ center, zoom, cities }) => {
             title: city.name,
             icon: {
               url: "/pin_icon.png",
-              scaledSize: new google.maps.Size(14, 16),
+              scaledSize: new google.maps.Size(12, 14),
             },
-            // label: {
-            //   text: city.name,
-            //   color: "black",
-            //   fontSize: "11px",
-            //   className: "-translate-y-4",
-            // },
+            label: {
+              text: city.name,
+              color: "black",
+              fontSize: "11px",
+              className: "-translate-y-3",
+            },
           });
           mapInstance.current.markers.push(marker);
         });
       }
+
+      updateMarkerLabels();
     }
   }, [mapLoaded, center, zoom, cities]);
+
+  const updateMarkerLabels = () => {
+    if (mapInstance.current && mapInstance.current.markers) {
+      const currentZoom = mapInstance.current.getZoom();
+      const showLabels = currentZoom >= initialZoom.current * 1.3;
+
+      mapInstance.current.markers.forEach((marker) => {
+        if (showLabels) {
+          marker.setLabel({
+            text: marker.getTitle(),
+            color: "",
+            fontSize: "11px",
+            className: "-translate-y-3.5  font-semibold text-gray-700",
+          });
+        } else {
+          marker.setLabel(null);
+        }
+      });
+    }
+  };
 
   return (
     <div className="relative h-full w-full overflow-hidden">
@@ -108,3 +137,6 @@ const CountryMap = React.memo(({ center, zoom, cities }) => {
 });
 
 export default CountryMap;
+
+// easy light fix: Only show labels when zoomed in a certain amount
+// Brazil:
