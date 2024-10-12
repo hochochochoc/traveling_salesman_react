@@ -67,14 +67,37 @@ export default function MapPage() {
             onClick={() => setSidebarOpen(!sidebarOpen)}
           />
         </div>
-        <div className="mx-3 h-[25rem] w-auto">
+        <div className="relative mx-3 h-[25rem] w-auto">
           {center && zoom && cities && (
-            <CountryMap
-              center={center}
-              zoom={zoom}
-              country={country}
-              cities={cities}
-            />
+            <>
+              <CountryMap
+                center={center}
+                zoom={zoom}
+                country={country}
+                cities={cities}
+              />
+              {isTryItYourselfMode && !isTourCompleted && totalDistance > 0 && (
+                <div
+                  className="absolute left-0 right-0 z-10 ml-40 bg-black bg-opacity-50 py-1 text-center font-bold text-white"
+                  style={{ top: "368px" }} // Adjust this to control height under the top screen border
+                >
+                  Distance: {totalDistance.toFixed(0)} km
+                </div>
+              )}
+              {isTourCompleted && (
+                <div
+                  className="absolute left-0 right-0 bg-white bg-opacity-50 py-40 text-center font-bold text-white"
+                  style={{ top: "0px" }}
+                >
+                  <p className="mt-3 text-3xl font-bold text-green-600">
+                    Tour Completed!
+                  </p>
+                  <p className="mt-1 text-lg text-black">
+                    Total distance: {totalDistance.toFixed(0)} km
+                  </p>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
@@ -140,14 +163,6 @@ export default function MapPage() {
               {isTryItYourselfMode ? "Exit Try It Yourself" : "Try It Yourself"}
             </span>
           </button>
-          {isTryItYourselfMode && totalDistance > 0 && (
-            <p className="mt-2 text-sm text-gray-600">
-              Total distance: {totalDistance.toFixed(2)} km
-            </p>
-          )}
-          {isTourCompleted && (
-            <p className="mt-1 font-semibold text-green-600">Tour Completed!</p>
-          )}
 
           <div className="relative my-3 flex w-full items-center">
             <div className="flex-grow border-t border-gray-300"></div>
