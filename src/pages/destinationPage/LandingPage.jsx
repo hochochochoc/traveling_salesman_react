@@ -5,41 +5,81 @@ import { motion, useAnimation } from "framer-motion";
 export default function LandingPage() {
   const navigate = useNavigate();
   const videoRef = useRef(null);
-  const controls = useAnimation();
+  const controls1 = useAnimation();
+  const controls2 = useAnimation();
+  const controls3 = useAnimation();
 
-  const buttonAnimation = {
-    initial: { x: "-10vw" },
+  const buttonAnimation = (startX, startY) => ({
+    initial: { x: startX, y: startY },
     animate: {
-      x: "47vw", // Move to the right
+      x: `calc(${startX} + 57vw)`,
+      y: startY,
       transition: {
-        duration: 25.0325, // Duration of the animation
-        ease: "linear", // Smooth linear movement
+        duration: 25.0318,
+        ease: "linear",
       },
     },
     exit: {
-      x: "-10vw", // Reset position instantly
-      transition: { duration: 0 }, // No transition during reset
+      x: startX,
+      y: startY,
+      transition: { duration: 0 },
     },
-  };
+  });
 
   useEffect(() => {
-    // Scroll to top on component mount
     window.scrollTo(0, 0);
 
     if (videoRef.current) {
       videoRef.current.playbackRate = 0.4;
     }
 
-    startAnimation(); // Start the animation on mount
+    startAnimation(controls1, "-10vw", "25%");
+    startAnimation(controls2, "-10vw", "50%");
+    startAnimation(controls3, "-10vw", "75%");
   }, []);
 
-  const startAnimation = () => {
+  const startAnimation = (controls, startX, startY) => {
     controls.start("animate").then(() => {
       controls.start("exit").then(() => {
-        startAnimation(); // Loop the animation
+        startAnimation(controls, startX, startY);
       });
     });
   };
+
+  const ButtonComponent = ({ controls, startX, startY, text, id }) => (
+    <motion.button
+      className="rounded bg-transparent px-3 py-1 font-bold"
+      style={{
+        color: "black",
+        textShadow:
+          "1px 1px 0 white, -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white",
+      }}
+      initial="initial"
+      animate={controls}
+      variants={buttonAnimation(startX, startY)}
+      onClick={() => {
+        navigate("/demos", {
+          state: {
+            activeSection: "algorithms",
+            algorithmSelection: id,
+            validationSelection: "Prims",
+          },
+        });
+      }}
+    >
+      <span
+        className="px-1"
+        style={{
+          color: "white",
+          textShadow:
+            "1px 1px 0 black, -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black",
+        }}
+      >
+        •
+      </span>
+      {text}
+    </motion.button>
+  );
 
   return (
     <div className="relative min-h-screen overflow-y-auto overflow-x-hidden">
@@ -51,41 +91,29 @@ export default function LandingPage() {
         muted
         className="fixed inset-0 h-full w-full object-cover"
       />
-      <motion.div className="fixed left-0 top-1/4 z-50 flex space-x-4">
-        <motion.button
-          className="rounded bg-transparent px-3 py-1 font-bold"
-          style={{
-            color: "black",
-            textShadow:
-              "1px 1px 0 white, -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white", // For the text
-          }}
-          initial="initial"
-          animate={controls} // Use controls for animation
-          variants={buttonAnimation}
-          onClick={() => {
-            navigate("/demos", {
-              state: {
-                activeSection: "algorithms",
-                algorithmSelection: "Christofides",
-                validationSelection: "Prims",
-              },
-            });
-          }}
-        >
-          {/* Dot with its own styling */}
-          <span
-            className="px-1"
-            style={{
-              color: "white", // Inside color for dot
-              textShadow:
-                "1px 1px 0 black, -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black", // Black outline for dot
-            }}
-          >
-            •
-          </span>
-          Christofides
-        </motion.button>
-      </motion.div>
+      <div className="fixed left-0 top-0 z-50 h-1/2 w-full">
+        <ButtonComponent
+          controls={controls1}
+          startX="-5vw"
+          startY="330%"
+          text="Christofides"
+          id="Christofides"
+        />
+        <ButtonComponent
+          controls={controls2}
+          startX="-6vw"
+          startY="520%"
+          text="Nearest Neighbor"
+          id="Nearest"
+        />
+        <ButtonComponent
+          controls={controls3}
+          startX="-40vw"
+          startY="390%"
+          text="2-Opt"
+          id="TwoOpt"
+        />
+      </div>
       <div className="fixed left-0 right-0 top-0 z-30 flex justify-center pt-6">
         <h1 className="font-semibold text-egg">TSP EXPLORER</h1>
       </div>
