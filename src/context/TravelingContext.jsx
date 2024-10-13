@@ -34,10 +34,17 @@ const TravelingProvider = ({ children }) => {
     Mexico: { zoom: 3.25, center: { lat: 23.617, lng: -102.5554 } },
     Mongolia: { zoom: 3.53, center: { lat: 46.8617, lng: 103.7954 } },
     Spain: { zoom: 4.7, center: { lat: 39.9937, lng: -3.0492 } },
-    Vietnam: { zoom: 3.67, center: { lat: 16.0617, lng: 105.3954 } },
+    Vietnam: { zoom: 4.47, center: { lat: 16.0617, lng: 105.3954 } },
   };
 
-  const selectedCountries = ["Spain", "Brazil"];
+  const selectedCountries = [
+    "Spain",
+    "Brazil",
+    "Mongolia",
+    "Philippines",
+    "Vietnam",
+    "Bangladesh",
+  ];
   //"China", "Spain", "Indonesia"
   // "Brazil", "Mongolia", "Vietnam",
   useEffect(() => {

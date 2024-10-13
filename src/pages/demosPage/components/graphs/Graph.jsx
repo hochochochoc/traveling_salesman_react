@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import * as d3 from "d3";
-import { Play, Pause } from "lucide-react";
+import { Play, Pause, Square } from "lucide-react";
 import { DemosContext } from "../../context/GraphContext";
 import { ChevronRight, ChevronLeft } from "lucide-react";
 import { RotateCcw } from "lucide-react";
@@ -339,18 +339,11 @@ const Graph = () => {
         <div className="items-center justify-center lg:flex lg:space-x-10">
           <div className="mb-2 flex items-center justify-center space-x-3 lg:mb-0">
             <button
-              onClick={resetVisualization}
-              className="rounded-lg bg-slate-400 px-3 py-2 text-egg active:scale-95 active:bg-slate-500"
-            >
-              Reset
-            </button>
-
-            <button
               onClick={() => {
                 setIsPlaying(true);
                 playAnimation();
               }}
-              className="rounded-lg bg-slate-400 px-3 py-2 text-egg active:scale-95 active:bg-slate-500"
+              className="bg-slate-400 px-3 py-2 text-egg active:scale-95 active:bg-slate-500"
             >
               <Play />
             </button>
@@ -359,9 +352,15 @@ const Graph = () => {
               onClick={() => {
                 setIsPlaying(false);
               }}
-              className="rounded-lg bg-slate-400 px-3 py-2 text-egg active:scale-95 active:bg-slate-500"
+              className="bg-slate-400 px-3 py-2 text-egg active:scale-95 active:bg-slate-500"
             >
               <Pause />
+            </button>
+            <button
+              onClick={resetVisualization}
+              className="bg-slate-400 px-3 py-2 text-egg active:scale-95 active:bg-slate-500"
+            >
+              <Square />
             </button>
           </div>
 
@@ -377,7 +376,7 @@ const Graph = () => {
             <div className="relative">
               <button
                 onClick={() => setStepsIsOpen(!stepsIsOpen)}
-                className="rounded-md bg-slate-500 px-3 py-2 text-white"
+                className="bg-slate-500 px-3 py-2 text-white"
               >
                 {currentStep === 0 ? "Start" : `Step ${currentStep}`}
               </button>

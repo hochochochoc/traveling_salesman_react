@@ -3,6 +3,9 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      width: {
+        "before-width": "var-(--tw-before-width)",
+      },
       colors: {
         // primary: "#F3F3F8",
         // secondary: "#E8DBED",

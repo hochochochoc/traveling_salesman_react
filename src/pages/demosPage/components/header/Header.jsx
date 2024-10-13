@@ -28,7 +28,7 @@ export default function Header() {
           }}
           className="w-24 rounded-lg border border-egg py-1 text-egg hover:bg-gray-200 hover:text-black active:scale-95"
         >
-          Logout
+          Log in
         </button>
       </div>
     </>

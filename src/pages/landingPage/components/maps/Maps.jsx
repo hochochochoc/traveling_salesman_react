@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import MapTest from "../maptest/MapTest";
 import { useTravelingData } from "../../../../context/TravelingContext";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +18,29 @@ export default function CountryMapsCarousel() {
   const [isSwiping, setIsSwiping] = useState(false);
   const [slidePosition, setSlidePosition] = useState(0);
   const navigate = useNavigate();
-  const [cardWidth, setCardWidth] = useState(200);
+  const [cardWidth, setCardWidth] = useState(220);
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [isAutoFlipping, setIsAutoFlipping] = useState(true);
+
+  const flip = useCallback(() => {
+    if (isAutoFlipping) {
+      setIsFlipped((prev) => !prev);
+    }
+  }, [isAutoFlipping]);
+
+  useEffect(() => {
+    const flipInterval = setInterval(flip, 8000);
+    return () => clearInterval(flipInterval);
+  }, [flip]);
+
+  const handleManualFlip = () => {
+    setIsFlipped((prev) => !prev);
+    setIsAutoFlipping(false);
+
+    setTimeout(() => {
+      setIsAutoFlipping(true);
+    }, 4000);
+  };
 
   const countryNames = selectedCountries;
 
@@ -85,7 +107,9 @@ export default function CountryMapsCarousel() {
   return (
     <div className="border-b border-black">
       <div className="bg-landing2 px-3 text-white">
-        <div className="pb-16 text-5xl font-bold">Choose a map</div>
+        <div className="pb-10 text-5xl font-bold uppercase">
+          Choose a country
+        </div>
         <div className="pb-2 text-sm">
           Select a country to try out the algorithms.
         </div>
@@ -96,7 +120,7 @@ export default function CountryMapsCarousel() {
         style={{ touchAction: "pan-y" }}
       >
         <div
-          className="flex space-x-3"
+          className="flex space-x-3 pl-1.5"
           style={{
             width: `${countryNames.length * 100}%`,
             transform: `translateX(${slidePosition}px)`,
@@ -104,32 +128,81 @@ export default function CountryMapsCarousel() {
           }}
         >
           {countryNames.map((country) => (
-            <div
-              key={country}
-              onClick={() => navigate(`/map?country=${country}`)}
-              className="card"
-            >
-              <div className="my-3 overflow-hidden border border-gray-800 bg-white shadow-md transition-all duration-300 hover:shadow-lg active:scale-95">
-                {countryCenters[country] && (
-                  <MapTest
-                    center={countryCenters[country]}
-                    zoom={zoomLevels[country]}
-                  />
-                )}
-                <div className="border-t border-black bg-white px-3 pb-3">
-                  <div className="flex justify-between">
-                    <h3 className="text-2xl font-bold text-black">{country}</h3>
-                    <div className="self-center shadow-lg">
-                      <img
-                        src={countryFlags[country]}
-                        alt={`${country} flag`}
-                        className="h-5 w-auto rounded-sm border border-black"
-                      />
+            <div key={country} className="card">
+              <div
+                className="my-3"
+                style={{
+                  perspective: "1000px",
+                  width: "300px",
+                  height: "400px",
+                  cursor: "pointer",
+                }}
+              >
+                <div
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    height: "100%",
+                    transition: "transform 0.6s",
+                    transformStyle: "preserve-3d",
+                    transform: isFlipped ? "rotateY(180deg)" : "",
+                  }}
+                >
+                  <div
+                    className="flex h-full w-full items-center justify-center"
+                    style={{
+                      position: "absolute",
+
+                      backfaceVisibility: "hidden",
+
+                      backgroundColor: "#ffffff",
+                      border: "1px solid #000000",
+                    }}
+                    onClick={handleManualFlip}
+                  >
+                    <img
+                      className="h-full w-full object-cover p-2"
+                      src={`/${country}.jpg?height=380&width=280`}
+                      alt={country}
+                    />
+                  </div>
+                  <div
+                    className="relative flex h-full w-full items-center justify-center bg-white shadow-lg" // Add relative
+                    style={{
+                      backfaceVisibility: "hidden",
+                      transform: "rotateY(180deg)",
+                    }}
+                    onClick={() => navigate(`/map?country=${country}`)}
+                  >
+                    <div className="flex h-full w-full flex-col border border-black">
+                      {" "}
+                      {/* Make inner div fill outer */}
+                      {countryCenters[country] && (
+                        <MapTest
+                          center={countryCenters[country]}
+                          zoom={zoomLevels[country]}
+                          className="flex-grow" // Allows the MapTest to grow and take available space
+                        />
+                      )}
+                      <div className="w-full border-t border-black bg-white pl-3">
+                        <div className="flex justify-between">
+                          <h3 className="text-2xl font-bold text-black">
+                            {country}
+                          </h3>
+                          <div className="mx-2 self-center shadow-lg">
+                            <img
+                              src={countryFlags[country]}
+                              alt={`${country} flag`}
+                              className="h-5 w-auto rounded-sm border border-black"
+                            />
+                          </div>
+                        </div>
+                        <p className="mt-1 text-sm text-black">
+                          {countryAreas[country]} km²
+                        </p>
+                      </div>
                     </div>
                   </div>
-                  <p className="text-sm text-black">
-                    {countryAreas[country]} km²
-                  </p>
                 </div>
               </div>
             </div>
