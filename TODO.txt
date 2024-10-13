@@ -1,4 +1,17 @@
-// 
+// TODO:
+
+    // Priorities:
+
+        // stupid error with landing page ruining vercel
+        // implement algorithms in mappage
+        // implement login, lock other countries in menu
+        // when logged in, enable country search, search by continent
+        // fix the ui design
+        // language toggle
+    
+    
+    
+    
     // Menu
         // open secrets alert? Gmail
         // search function for maps

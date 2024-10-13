@@ -1,10 +1,11 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
 
 export default function LandingPage() {
   const navigate = useNavigate();
   const videoRef = useRef(null);
+  const [isReady, setIsReady] = useState(false);
   const controls1 = useAnimation();
   const controls2 = useAnimation();
   const controls3 = useAnimation();
@@ -17,12 +18,9 @@ export default function LandingPage() {
       transition: {
         duration: 25.0318,
         ease: "linear",
+        repeat: Infinity,
+        repeatType: "loop",
       },
-    },
-    exit: {
-      x: startX,
-      y: startY,
-      transition: { duration: 0 },
     },
   });
 
@@ -33,18 +31,21 @@ export default function LandingPage() {
       videoRef.current.playbackRate = 0.4;
     }
 
-    startAnimation(controls1, "-10vw", "25%");
-    startAnimation(controls2, "-10vw", "50%");
-    startAnimation(controls3, "-10vw", "75%");
+    // Set a timeout to ensure all necessary elements are ready
+    const timer = setTimeout(() => {
+      setIsReady(true);
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, []);
 
-  const startAnimation = (controls, startX, startY) => {
-    controls.start("animate").then(() => {
-      controls.start("exit").then(() => {
-        startAnimation(controls, startX, startY);
-      });
-    });
-  };
+  useEffect(() => {
+    if (isReady) {
+      controls1.start("animate");
+      controls2.start("animate");
+      controls3.start("animate");
+    }
+  }, [isReady, controls1, controls2, controls3]);
 
   const ButtonComponent = ({ controls, startX, startY, text, id }) => (
     <motion.button
