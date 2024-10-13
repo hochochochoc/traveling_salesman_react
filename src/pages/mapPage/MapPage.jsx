@@ -9,6 +9,7 @@ import {
   RefreshCcw,
 } from "lucide-react";
 import { useMapPageContext } from "./context/MapPageContext";
+import { useMapPageTSPContext } from "./context/MapPageTSPContext";
 import CountryMap from "./components/CountryMap";
 import { useTravelingData } from "../../context/TravelingContext";
 import LoadingPopup from "./components/LoadingPopup";
@@ -33,8 +34,33 @@ export default function MapPage() {
     isTourCompleted,
   } = useMapPageContext();
 
+  const {
+    setIsTSPRouteCalculated,
+    selectedAlgorithm,
+    setSelectedAlgorithm,
+    route,
+    totalDistanceTSP,
+    isCalculatingRoute,
+    calculateRoute,
+  } = useMapPageTSPContext();
+
   const center = countryCenters[country];
-  const zoom = zoomLevels[country] * (country === "Spain" ? 1.2 : 1.4);
+  const zoom =
+    zoomLevels[country] *
+    (country === "Spain" || country === "Indonesia" ? 1.2 : 1.4);
+
+  const handleAlgorithmChange = (e) => {
+    setSelectedAlgorithm(e.target.value);
+  };
+
+  const handleCalculateRoute = () => {
+    calculateRoute(cities);
+  };
+
+  console.log(setIsTSPRouteCalculated);
+  const handleReset = () => {
+    setIsTSPRouteCalculated(false);
+  };
 
   return (
     <div
@@ -171,20 +197,31 @@ export default function MapPage() {
           </div>
 
           <div className="space-y-3">
-            <select className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 transition duration-200 focus:border-blue-500 focus:outline-none">
-              <option value="alg1">Algorithm 1</option>
+            <select
+              className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 transition duration-200 focus:border-blue-500 focus:outline-none"
+              value={selectedAlgorithm}
+              onChange={handleAlgorithmChange}
+            >
+              <option value="alg1">Nearest Neighbor</option>
               <option value="alg2">Algorithm 2</option>
               <option value="alg3">Algorithm 3</option>
             </select>
 
-            <button className="w-full rounded-xl bg-blue-500 px-4 py-3 font-medium text-white shadow-md transition duration-200 hover:bg-blue-600">
-              Choose an algorithm
+            <button
+              className="w-full rounded-xl bg-blue-500 px-4 py-3 font-medium text-white shadow-md transition duration-200 hover:bg-blue-600"
+              onClick={handleCalculateRoute}
+              disable={isCalculatingRoute}
+            >
+              {isCalculatingRoute ? "Calculating..." : "Choose an algorithm"}
             </button>
           </div>
         </div>
 
         <div className="m-3 flex items-center justify-around space-x-2 rounded-lg bg-gray-50 p-4">
-          <button className="flex flex-1 items-center justify-center space-x-2 rounded-xl bg-gray-100 px-2 py-3 font-medium text-gray-700 shadow-md transition duration-200 hover:bg-gray-200">
+          <button
+            className="flex flex-1 items-center justify-center space-x-2 rounded-xl bg-gray-100 px-2 py-3 font-medium text-gray-700 shadow-md transition duration-200 hover:bg-gray-200"
+            onClick={handleReset}
+          >
             <RefreshCcw className="h-5 w-5" />
             <span className="text-xs">Reset</span>
           </button>

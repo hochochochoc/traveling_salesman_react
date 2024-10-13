@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useMapPageContext } from "../context/MapPageContext";
+import { useMapPageTSPContext } from "../context/MapPageTSPContext";
 
 // Global state for loading the Google Maps script
 let isLoadingScript = false;
@@ -51,6 +52,12 @@ const CountryMap = React.memo(({ center, zoom, cities }) => {
     updateTotalDistance,
     isTryItYourselfMode,
   } = useMapPageContext();
+  const {
+    route: tspRoute,
+    isCalculatingRoute,
+    isTSPRouteCalculated,
+    setIsTSPRouteCalculated,
+  } = useMapPageTSPContext();
 
   useEffect(() => {
     const initializeMap = async () => {
@@ -150,9 +157,22 @@ const CountryMap = React.memo(({ center, zoom, cities }) => {
       }
 
       updateMarkerLabels();
-      updatePolylines(); // Update polylines based on the current selected cities
+      if (isTryItYourselfMode) {
+        updatePolylines();
+      } else {
+        updateTSPPolylines();
+      } // Update polylines based on the current selected cities
     }
-  }, [mapLoaded, center, zoom, cities, selectedCities, isTryItYourselfMode]);
+  }, [
+    mapLoaded,
+    center,
+    zoom,
+    cities,
+    selectedCities,
+    isTryItYourselfMode,
+    tspRoute,
+    isCalculatingRoute,
+  ]);
 
   const updateMarkerLabels = () => {
     if (mapInstance.current && mapInstance.current.markers) {
@@ -224,6 +244,39 @@ const CountryMap = React.memo(({ center, zoom, cities }) => {
     }
   };
 
+  const updateTSPPolylines = () => {
+    if (
+      mapInstance.current &&
+      tspRoute.length > 1 &&
+      window.google &&
+      window.google.maps &&
+      window.google.maps.geometry
+    ) {
+      clearPolylines();
+
+      for (let i = 1; i < tspRoute.length; i++) {
+        const start = tspRoute[i - 1];
+        const end = tspRoute[i];
+
+        const path = [
+          { lat: start.latitude, lng: start.longitude },
+          { lat: end.latitude, lng: end.longitude },
+        ];
+
+        const polyline = new window.google.maps.Polyline({
+          path: path,
+          geodesic: true,
+          strokeColor: "#FF1111", // Blue color for TSP route
+          strokeOpacity: 1.0,
+          strokeWeight: 2,
+          map: mapInstance.current,
+        });
+
+        mapInstance.current.polylines.push(polyline);
+      }
+    }
+  };
+
   const clearPolylines = () => {
     if (mapInstance.current && mapInstance.current.polylines) {
       mapInstance.current.polylines.forEach((polyline) =>
@@ -234,12 +287,18 @@ const CountryMap = React.memo(({ center, zoom, cities }) => {
   };
 
   useEffect(() => {
-    if (!isTryItYourselfMode) {
+    if (!isTryItYourselfMode && !isTSPRouteCalculated) {
       clearPolylines();
     } else {
-      updatePolylines();
+      updatePolylines(); // Update polylines for Try It Yourself mode
     }
-  }, [isTryItYourselfMode, selectedCities]);
+  }, [
+    isTryItYourselfMode,
+    selectedCities,
+    tspRoute,
+    isTSPRouteCalculated,
+    setIsTSPRouteCalculated,
+  ]);
 
   return (
     <div className="relative h-full w-full overflow-hidden">

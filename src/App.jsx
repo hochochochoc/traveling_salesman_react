@@ -8,6 +8,7 @@ import { Route, Routes } from "react-router-dom";
 import { DemosProvider } from "./pages/demosPage/context/GraphContext";
 import "./index.css";
 import { MapPageProvider } from "./pages/mapPage/context/MapPageContext";
+import { MapPageTSPProvider } from "./pages/mapPage/context/MapPageTSPContext";
 
 // import { AuthProvider } from "./context/authContext";
 
@@ -23,7 +24,9 @@ function App() {
         path="/map"
         element={
           <MapPageProvider>
-            <MapPage />
+            <MapPageTSPProvider>
+              <MapPage />
+            </MapPageTSPProvider>
           </MapPageProvider>
         }
       />

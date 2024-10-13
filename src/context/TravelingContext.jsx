@@ -37,9 +37,9 @@ const TravelingProvider = ({ children }) => {
     Vietnam: { zoom: 3.67, center: { lat: 16.0617, lng: 105.3954 } },
   };
 
-  const selectedCountries = ["Spain", "Indonesia"];
+  const selectedCountries = ["Spain", "Brazil"];
   //"China", "Spain", "Indonesia"
-  // "Brazil", "China", "Spain",
+  // "Brazil", "Mongolia", "Vietnam",
   useEffect(() => {
     fetch("https://restcountries.com/v3.1/independent?status=true")
       .then((response) => response.json())
