@@ -159,7 +159,7 @@ export default function LandingPage() {
           onClick={() => navigate("/menu")}
           className="text-md w-64 cursor-pointer border-4 border-black bg-black px-4 py-2 font-bold text-white transition-colors hover:bg-white hover:text-black"
         >
-          GET STARTED
+          JUMP IN!
         </button>
         <button
           onClick={() => navigate("/menu")}

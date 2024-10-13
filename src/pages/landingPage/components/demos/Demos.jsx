@@ -1,12 +1,24 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { ArrowRight } from "lucide-react";
 
 export default function Demos() {
   const navigate = useNavigate();
   return (
-    <div className="flex flex-col rounded-lg bg-bluedarkest p-4 text-egg">
-      <p className="ml-2 font-bold">How it works</p>
-      <p className="ml-2">Try algorithms or validation.</p>
+    <div className="flex flex-col border-b border-black text-black">
+      <div className="bg-landing2 pt-4 text-white">
+        <p className="ml-3 pb-10 text-5xl font-bold uppercase">How it works</p>
+        <p className="mx-3 pb-2 text-sm">
+          Understand the logic behind the algorithms for solving the TSP and
+          their validation.
+        </p>
+      </div>
+
+      <img
+        className="mx-auto h-[50vh] w-screen border-t border-black object-cover p-3"
+        src="/blackboard_v2.jpg"
+        alt="Blackboard"
+      />
       <button
         onClick={() => {
           navigate("/demos", {
@@ -17,10 +29,16 @@ export default function Demos() {
             },
           });
         }}
-        className="mb-3 mt-2 border border-black bg-gray-800 py-2 text-egg active:scale-95"
+        className="mb-3 flex justify-center space-x-5 border-b border-t border-black py-2 active:scale-95"
       >
-        Algorithms
+        <ArrowRight />
+        <span>Algorithms</span>
       </button>
+      <img
+        className="mx-auto h-[50vh] w-screen border-t border-black object-cover p-3"
+        src="/wind_tunnel.jpg"
+        alt="Blackboard"
+      />
       <button
         onClick={() => {
           navigate("/demos", {
@@ -31,9 +49,10 @@ export default function Demos() {
             },
           });
         }}
-        className="border border-black bg-gray-700 py-2 active:scale-95"
+        className="mb-3 flex justify-center space-x-5 border-b border-t border-black py-2 active:scale-95"
       >
-        Validation
+        <ArrowRight />
+        <span>Validation</span>
       </button>
     </div>
   );

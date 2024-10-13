@@ -9,11 +9,11 @@ import Description from "./components/description/Description";
 
 export default function MenuPage() {
   return (
-    <div className="flex w-auto flex-col bg-primary">
-      <div className="flex flex-row justify-center space-x-10 p-4">
+    <div className="flex h-full w-auto flex-col bg-egg">
+      <div className="flex flex-row justify-center space-x-10">
         <Header />
       </div>
-      <div className="mx-3 mb-3 flex flex-col space-y-3">
+      <div className="mb-3 flex flex-col space-y-3">
         <Demos />
 
         <Maps />

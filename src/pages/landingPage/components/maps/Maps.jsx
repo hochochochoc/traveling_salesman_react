@@ -83,14 +83,16 @@ export default function CountryMapsCarousel() {
   }
 
   return (
-    <div className="bg-tertiary px-4 pt-4">
-      <div className="ml-2 font-bold">Choose a map</div>
-      <div className="ml-2 pb-1">
-        Select a country to try out the algorithms.
+    <div className="border-b border-black">
+      <div className="bg-landing2 px-3 text-white">
+        <div className="pb-16 text-5xl font-bold">Choose a map</div>
+        <div className="pb-2 text-sm">
+          Select a country to try out the algorithms.
+        </div>
       </div>
       <div
         ref={carouselRef}
-        className="mx-auto w-full max-w-xs overflow-hidden"
+        className="w-full overflow-hidden"
         style={{ touchAction: "pan-y" }}
       >
         <div
@@ -107,18 +109,16 @@ export default function CountryMapsCarousel() {
               onClick={() => navigate(`/map?country=${country}`)}
               className="card"
             >
-              <div className="mb-3 overflow-hidden rounded-lg border border-gray-800 bg-white shadow-md transition-all duration-300 hover:shadow-lg active:scale-95">
+              <div className="my-3 overflow-hidden border border-gray-800 bg-white shadow-md transition-all duration-300 hover:shadow-lg active:scale-95">
                 {countryCenters[country] && (
                   <MapTest
                     center={countryCenters[country]}
                     zoom={zoomLevels[country]}
                   />
                 )}
-                <div className="bg-gradient-to-br from-[#E9D9C8] to-[#A3C9C7] px-3 pb-3">
+                <div className="border-t border-black bg-white px-3 pb-3">
                   <div className="flex justify-between">
-                    <h3 className="text-lg font-bold text-gray-800">
-                      {country}
-                    </h3>
+                    <h3 className="text-2xl font-bold text-black">{country}</h3>
                     <div className="self-center shadow-lg">
                       <img
                         src={countryFlags[country]}
@@ -127,7 +127,7 @@ export default function CountryMapsCarousel() {
                       />
                     </div>
                   </div>
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-black">
                     {countryAreas[country]} km²
                   </p>
                 </div>

@@ -9,16 +9,16 @@ export default function Header() {
 
   return (
     <>
-      <div className="flex w-full items-center justify-between px-2 py-4">
-        <div className="text-lg font-extrabold">Algorithm Visualizer</div>
+      <div className="flex w-full items-center justify-between border-b border-black px-4 py-4">
+        <div className="text-lg font-extrabold">TSP Explorer</div>
         <div className="flex items-center">
           <button
             onClick={() => {
-              doSignOut().then(() => {
+              doSignIn().then(() => {
                 navigate("/");
               });
             }}
-            className="mr-4 flex max-h-9 justify-center rounded-lg border border-black px-2 py-1 hover:bg-gray-200 active:scale-95"
+            className="my-1 mr-8 flex max-h-9 justify-center border-b-2 border-black px-2 hover:bg-gray-200 active:scale-95"
           >
             Logout
           </button>

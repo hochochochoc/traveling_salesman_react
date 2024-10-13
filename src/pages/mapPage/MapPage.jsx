@@ -47,7 +47,7 @@ export default function MapPage() {
   const center = countryCenters[country];
   const zoom =
     zoomLevels[country] *
-    (country === "Spain" || country === "Indonesia" ? 1.2 : 1.4);
+    (country === "Spain" || country === "Indonesia" ? 1.05 : 1.1);
 
   const handleAlgorithmChange = (e) => {
     setSelectedAlgorithm(e.target.value);
@@ -57,7 +57,6 @@ export default function MapPage() {
     calculateRoute(cities);
   };
 
-  console.log(setIsTSPRouteCalculated);
   const handleReset = () => {
     setIsTSPRouteCalculated(false);
   };
