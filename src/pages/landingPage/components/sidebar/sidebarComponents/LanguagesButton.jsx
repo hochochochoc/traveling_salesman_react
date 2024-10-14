@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Languages } from "lucide-react";
-
 const languages = [
   { code: "en", name: "English" },
   { code: "ca", name: "Catalá" },
@@ -23,10 +22,9 @@ const LanguagesButton = ({ onLanguageChange }) => {
     <div className="relative w-full">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full items-center rounded-md p-2 text-gray-700 transition-colors duration-200 hover:bg-gray-200 hover:text-gray-900"
+        className="flex w-full items-center rounded-md p-2 text-gray-900 transition-colors duration-200 hover:bg-gray-200 hover:text-gray-900"
       >
-        <Languages size={20} className="mr-3" />
-        <span className="text-lg font-bold">{selectedLanguage.name}</span>
+        <span className="text-2xl font-semibold">{selectedLanguage.name}</span>
       </button>
       {isOpen && (
         <div className="absolute left-0 mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">

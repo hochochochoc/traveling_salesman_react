@@ -18,7 +18,10 @@ export default function Header() {
   return (
     <>
       <div className="flex w-full items-center justify-between border-b border-black px-4 py-4">
-        <div className="text-lg font-extrabold">TSP Explorer</div>
+        <div onClick={() => navigate("/")} className="text-lg font-extrabold">
+          TSP Explorer
+        </div>
+
         <div className="flex items-center">
           <button
             onClick={() => {

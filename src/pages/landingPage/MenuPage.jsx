@@ -4,8 +4,6 @@ import Header from "./components/header/Header";
 import Algorithms from "./components/algorithms/Algorithms";
 import Maps from "./components/maps/Maps";
 import Demos from "./components/demos/Demos";
-import Results from "./components/results/Results";
-import Description from "./components/description/Description";
 
 export default function MenuPage() {
   return (
@@ -19,8 +17,6 @@ export default function MenuPage() {
         <Maps />
 
         <Algorithms />
-
-        <Results />
       </div>
     </div>
   );

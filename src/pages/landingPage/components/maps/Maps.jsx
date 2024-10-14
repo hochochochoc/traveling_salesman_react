@@ -19,27 +19,30 @@ export default function CountryMapsCarousel() {
   const [slidePosition, setSlidePosition] = useState(0);
   const navigate = useNavigate();
   const [cardWidth, setCardWidth] = useState(220);
-  const [isFlipped, setIsFlipped] = useState(false);
   const [isAutoFlipping, setIsAutoFlipping] = useState(true);
+  const [currentFlippedIndex, setCurrentFlippedIndex] = useState(0); // Start from first index
 
   const flip = useCallback(() => {
     if (isAutoFlipping) {
-      setIsFlipped((prev) => !prev);
+      setCurrentFlippedIndex((prev) => (prev + 1) % selectedCountries.length); // Loop back to start
     }
-  }, [isAutoFlipping]);
+  }, [isAutoFlipping, selectedCountries.length]);
 
   useEffect(() => {
     const flipInterval = setInterval(flip, 8000);
     return () => clearInterval(flipInterval);
   }, [flip]);
 
-  const handleManualFlip = () => {
-    setIsFlipped((prev) => !prev);
+  const handleManualFlip = (index) => {
+    if (currentFlippedIndex === index) return; // Prevent flipping if already flipped
+
+    setCurrentFlippedIndex(index);
     setIsAutoFlipping(false);
 
+    // Reset the auto-flipping after a manual flip
     setTimeout(() => {
       setIsAutoFlipping(true);
-    }, 4000);
+    }, 600); // After the flip duration
   };
 
   const countryNames = selectedCountries;
@@ -106,7 +109,7 @@ export default function CountryMapsCarousel() {
 
   return (
     <div className="border-b border-black">
-      <div className="bg-landing2 px-3 text-white">
+      <div className="bg-landing2 px-3 pt-4 text-white">
         <div className="pb-10 text-5xl font-bold uppercase">
           Choose a country
         </div>
@@ -127,7 +130,7 @@ export default function CountryMapsCarousel() {
             transition: isSwiping ? "none" : "transform 0.3s ease-out",
           }}
         >
-          {countryNames.map((country) => (
+          {countryNames.map((country, index) => (
             <div key={country} className="card">
               <div
                 className="my-3"
@@ -145,29 +148,28 @@ export default function CountryMapsCarousel() {
                     height: "100%",
                     transition: "transform 0.6s",
                     transformStyle: "preserve-3d",
-                    transform: isFlipped ? "rotateY(180deg)" : "",
+                    transform:
+                      currentFlippedIndex === index ? "rotateY(180deg)" : "",
                   }}
                 >
                   <div
                     className="flex h-full w-full items-center justify-center"
                     style={{
                       position: "absolute",
-
                       backfaceVisibility: "hidden",
-
                       backgroundColor: "#ffffff",
                       border: "1px solid #000000",
                     }}
-                    onClick={handleManualFlip}
+                    onClick={() => handleManualFlip(index)}
                   >
                     <img
-                      className="h-full w-full object-cover p-2"
+                      className="h-full w-full object-cover p-2 shadow-lg"
                       src={`/${country}.jpg?height=380&width=280`}
                       alt={country}
                     />
                   </div>
                   <div
-                    className="relative flex h-full w-full items-center justify-center bg-white shadow-lg" // Add relative
+                    className="relative flex h-full w-full items-center justify-center bg-white shadow-lg"
                     style={{
                       backfaceVisibility: "hidden",
                       transform: "rotateY(180deg)",
@@ -175,13 +177,11 @@ export default function CountryMapsCarousel() {
                     onClick={() => navigate(`/map?country=${country}`)}
                   >
                     <div className="flex h-full w-full flex-col border border-black">
-                      {" "}
-                      {/* Make inner div fill outer */}
                       {countryCenters[country] && (
                         <MapTest
                           center={countryCenters[country]}
                           zoom={zoomLevels[country]}
-                          className="flex-grow" // Allows the MapTest to grow and take available space
+                          className="flex-grow"
                         />
                       )}
                       <div className="w-full border-t border-black bg-white pl-3">

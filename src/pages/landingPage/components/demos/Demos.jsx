@@ -16,7 +16,7 @@ export default function Demos() {
 
       <img
         className="mx-auto h-[50vh] w-screen border-t border-black object-cover p-3"
-        src="/blackboard_v3.jpg"
+        src="/blackboard_v4.png"
         alt="Blackboard"
       />
       <button
