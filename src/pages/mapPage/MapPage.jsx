@@ -202,8 +202,9 @@ export default function MapPage() {
               onChange={handleAlgorithmChange}
             >
               <option value="alg1">Nearest Neighbor</option>
-              <option value="alg2">Algorithm 2</option>
-              <option value="alg3">Algorithm 3</option>
+              <option value="alg2">Greedy</option>
+              <option value="alg3">2-Opt</option>
+              <option value="alg4">Christofides</option>
             </select>
 
             <button

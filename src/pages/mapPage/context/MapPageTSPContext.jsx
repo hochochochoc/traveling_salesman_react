@@ -1,4 +1,7 @@
 import React, { createContext, useContext, useState, useCallback } from "react";
+import { nearestNeighbor } from "../functions/nearestTSPMap";
+import { greedyTSPMap } from "../functions/greedyTSPMap";
+import { twoOptTSPMap } from "../functions/twoOptTSPMap";
 
 const MapPageTSPContext = createContext();
 
@@ -29,34 +32,6 @@ export const MapPageTSPProvider = ({ children }) => {
     return deg * (Math.PI / 180);
   };
 
-  const nearestNeighbor = useCallback(
-    (cities) => {
-      const route = [cities[0]];
-      const unvisited = cities.slice(1);
-
-      while (unvisited.length > 0) {
-        const current = route[route.length - 1];
-        let nearestCity = unvisited[0];
-        let minDistance = calculateDistance(current, nearestCity);
-
-        for (let i = 1; i < unvisited.length; i++) {
-          const distance = calculateDistance(current, unvisited[i]);
-          if (distance < minDistance) {
-            minDistance = distance;
-            nearestCity = unvisited[i];
-          }
-        }
-
-        route.push(nearestCity);
-        unvisited.splice(unvisited.indexOf(nearestCity), 1);
-      }
-
-      route.push(route[0]); // Return to starting city
-      return route;
-    },
-    [calculateDistance],
-  );
-
   const calculateRoute = useCallback(
     (cities) => {
       setIsCalculatingRoute(true);
@@ -64,10 +39,24 @@ export const MapPageTSPProvider = ({ children }) => {
 
       let optimalRoute;
       if (selectedAlgorithm === "alg1") {
-        optimalRoute = nearestNeighbor(cities);
+        optimalRoute = nearestNeighbor(cities, calculateDistance);
+        console.log("worked using nearest neighbor");
+      } else if (selectedAlgorithm === "alg2") {
+        const result = greedyTSPMap(cities, calculateDistance);
+        optimalRoute = result.route;
+        console.log("worked using greedy heuristic");
+      } else if (selectedAlgorithm === "alg3") {
+        const result = twoOptTSPMap(cities, calculateDistance);
+        optimalRoute = result.route;
+        console.log("worked using two opt method");
+      } else if (selectedAlgorithm === "alg4") {
+        const result = twoOptTSPMap(cities, calculateDistance);
+        optimalRoute = result.route;
+        console.log("worked using two opt method");
       } else {
         // Implement other algorithms here
         optimalRoute = cities;
+        console.log("Didn't work");
       }
 
       let totalDist = 0;
@@ -80,7 +69,7 @@ export const MapPageTSPProvider = ({ children }) => {
       setIsCalculatingRoute(false);
       setIsTSPRouteCalculated(true);
     },
-    [selectedAlgorithm, nearestNeighbor, calculateDistance],
+    [selectedAlgorithm, calculateDistance],
   );
 
   return (

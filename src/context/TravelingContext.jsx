@@ -37,9 +37,26 @@ const TravelingProvider = ({ children }) => {
     Vietnam: { zoom: 4.84, center: { lat: 16.0617, lng: 105.3954 } },
   };
 
-  const selectedCountries = ["Spain", "Brazil", "India"];
+  const selectedCountries = ["Vietnam", "Indonesia", "Bangladesh"];
   //"China", "Spain", "Indonesia"
   // "Brazil", "Mongolia", "Vietnam",
+
+  // Vietnam OUT
+  // Thái Thụy
+  // Hải Hậu
+  // Nghi Sơn
+  // Yên Thành
+  // Ninh Thuận
+  // Kiên Giang
+
+  // Vietnam IN
+  // Đổng Hới
+  // Đông Hà
+  // Dalat
+  // Pleiku
+  // Tây Ninh
+  // Điện Biên Phủ
+
   useEffect(() => {
     fetch("https://restcountries.com/v3.1/independent?status=true")
       .then((response) => response.json())
