@@ -22,7 +22,7 @@ const LanguagesButton = ({ onLanguageChange }) => {
     <div className="relative w-full">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full items-center rounded-md p-2 text-gray-900 transition-colors duration-200 hover:bg-gray-200 hover:text-gray-900"
+        className="flex w-full items-center p-2 text-gray-900"
       >
         <span className="text-2xl font-semibold">{selectedLanguage.name}</span>
       </button>

@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import MapTest from "../maptest/MapTest";
 import { useTravelingData } from "../../../../context/TravelingContext";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../../auth/authContext";
+import { div } from "framer-motion/client";
 
 export default function CountryMapsCarousel() {
   const {
@@ -21,6 +23,7 @@ export default function CountryMapsCarousel() {
   const [cardWidth, setCardWidth] = useState(220);
   const [isAutoFlipping, setIsAutoFlipping] = useState(true);
   const [currentFlippedIndex, setCurrentFlippedIndex] = useState(0); // Start from first index
+  const { userLoggedIn } = useAuth();
 
   const flip = useCallback(() => {
     if (isAutoFlipping) {
@@ -174,34 +177,58 @@ export default function CountryMapsCarousel() {
                       backfaceVisibility: "hidden",
                       transform: "rotateY(180deg)",
                     }}
-                    onClick={() => navigate(`/map?country=${country}`)}
+                    onClick={() => {
+                      if (
+                        !userLoggedIn &&
+                        country !== "Brazil" &&
+                        country !== "Spain" &&
+                        country !== "Egypt" &&
+                        country !== "Vietnam" &&
+                        country !== "Bangladesh"
+                      ) {
+                        return;
+                      }
+                      navigate(`/map?country=${country}`);
+                    }}
                   >
-                    <div className="flex h-full w-full flex-col border border-black">
-                      {countryCenters[country] && (
-                        <MapTest
-                          center={countryCenters[country]}
-                          zoom={zoomLevels[country]}
-                          className="flex-grow"
-                        />
-                      )}
-                      <div className="w-full border-t border-black bg-white pl-3">
-                        <div className="flex justify-between">
-                          <h3 className="text-2xl font-bold text-black">
-                            {country}
-                          </h3>
-                          <div className="mx-2 self-center shadow-lg">
-                            <img
-                              src={countryFlags[country]}
-                              alt={`${country} flag`}
-                              className="h-5 w-auto rounded-sm border border-black"
-                            />
-                          </div>
-                        </div>
-                        <p className="mt-1 text-sm text-black">
-                          {countryAreas[country]} km²
-                        </p>
+                    {!userLoggedIn &&
+                    country !== "Brazil" &&
+                    country !== "Spain" &&
+                    country !== "Egypt" &&
+                    country !== "Vietnam" &&
+                    country !== "Bangladesh" ? (
+                      <div className="text-md m-2 flex h-[384px] w-full flex-col items-center justify-center border border-red-800 py-6 text-center text-red-500">
+                        <p>Access to this country is restricted.</p>
+                        <p>Please log in to unlock and explore.</p>
                       </div>
-                    </div>
+                    ) : (
+                      <div className="flex h-full w-full flex-col border border-black">
+                        {countryCenters[country] && (
+                          <MapTest
+                            center={countryCenters[country]}
+                            zoom={zoomLevels[country]}
+                            className="flex-grow"
+                          />
+                        )}
+                        <div className="w-full border-t border-black bg-white pl-3">
+                          <div className="flex justify-between">
+                            <h3 className="text-2xl font-bold text-black">
+                              {country}
+                            </h3>
+                            <div className="mx-2 self-center shadow-lg">
+                              <img
+                                src={countryFlags[country]}
+                                alt={`${country} flag`}
+                                className="h-5 w-auto rounded-sm border border-black"
+                              />
+                            </div>
+                          </div>
+                          <p className="mt-1 text-sm text-black">
+                            {countryAreas[country]} km²
+                          </p>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

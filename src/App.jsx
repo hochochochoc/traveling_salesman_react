@@ -10,39 +10,40 @@ import "./index.css";
 import { MapPageProvider } from "./pages/mapPage/context/MapPageContext";
 import { MapPageTSPProvider } from "./pages/mapPage/context/MapPageTSPContext";
 
-// import { AuthProvider } from "./context/authContext";
-
+import { AuthProvider } from "./auth/authContext";
+import Login from "./auth/login/login";
+import Register from "./auth/register/register";
 // import ProtectedRoute from "./components/utils/ProtectedRoute.jsx";
 
 function App() {
   return (
-    // <AuthProvider>
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
-      <Route path="/menu" element={<MenuPage />} />
-      <Route
-        path="/map"
-        element={
-          <MapPageProvider>
-            <MapPageTSPProvider>
-              <MapPage />
-            </MapPageTSPProvider>
-          </MapPageProvider>
-        }
-      />
-      <Route
-        path="/demos"
-        element={
-          <DemosProvider>
-            <DemosPage />
-          </DemosProvider>
-        }
-      />
-      <Route path="/results" element={<ResultsPage />} />
-      {/* <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} /> */}
-    </Routes>
-    // </AuthProvider>
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/menu" element={<MenuPage />} />
+        <Route
+          path="/map"
+          element={
+            <MapPageProvider>
+              <MapPageTSPProvider>
+                <MapPage />
+              </MapPageTSPProvider>
+            </MapPageProvider>
+          }
+        />
+        <Route
+          path="/demos"
+          element={
+            <DemosProvider>
+              <DemosPage />
+            </DemosProvider>
+          }
+        />
+        <Route path="/results" element={<ResultsPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </AuthProvider>
   );
 }
 

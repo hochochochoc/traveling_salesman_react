@@ -35,27 +35,24 @@ const TravelingProvider = ({ children }) => {
     Mongolia: { zoom: 3.53, center: { lat: 46.8617, lng: 103.7954 } },
     Spain: { zoom: 4.7, center: { lat: 39.9937, lng: -3.0492 } },
     Vietnam: { zoom: 4.84, center: { lat: 16.0617, lng: 105.3954 } },
+    Fiji: { zoom: 6, center: { lat: -17.7137, lng: 178.065 } },
   };
 
-  const selectedCountries = ["Vietnam", "Indonesia", "Bangladesh"];
+  const selectedCountries = [
+    "Brazil",
+    "Mongolia",
+    "China",
+    "Indonesia",
+    "Bangladesh",
+  ];
   //"China", "Spain", "Indonesia"
   // "Brazil", "Mongolia", "Vietnam",
 
   // Vietnam OUT
-  // Thái Thụy
-  // Hải Hậu
-  // Nghi Sơn
-  // Yên Thành
-  // Ninh Thuận
   // Kiên Giang
 
   // Vietnam IN
-  // Đổng Hới
-  // Đông Hà
-  // Dalat
-  // Pleiku
   // Tây Ninh
-  // Điện Biên Phủ
 
   useEffect(() => {
     fetch("https://restcountries.com/v3.1/independent?status=true")

@@ -1,5 +1,4 @@
 import React from "react";
-import Sidebar from "./components/sidebar/Sidebar";
 import Header from "./components/header/Header";
 import Algorithms from "./components/algorithms/Algorithms";
 import Maps from "./components/maps/Maps";
@@ -17,6 +16,7 @@ export default function MenuPage() {
         <Maps />
 
         <Algorithms />
+        <div className="h-80"></div>
       </div>
     </div>
   );
