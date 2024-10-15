@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "./components/header/Header";
 import Algorithms from "./components/algorithms/Algorithms";
-import Maps from "./components/maps/Maps";
+import CountryMapsCarousel from "./components/maps/Maps";
 import Demos from "./components/demos/Demos";
 
 export default function MenuPage() {
@@ -13,10 +13,9 @@ export default function MenuPage() {
       <div className="mb-3 flex flex-col space-y-3">
         <Demos />
 
-        <Maps />
+        <CountryMapsCarousel />
 
         <Algorithms />
-        <div className="h-80"></div>
       </div>
     </div>
   );

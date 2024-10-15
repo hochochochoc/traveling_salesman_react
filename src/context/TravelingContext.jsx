@@ -4,7 +4,7 @@ const TravelingContext = createContext();
 
 const calculateZoomLevel = (area) => {
   const m = -2.29e-7; // Slope
-  const c = 4.4; // Y-intercept
+  const c = 4.6; // Y-intercept
   const zoom = Math.max(1, Math.min(20, m * area + c)); // Clamp between 1 and 20
   // console.log(`Calculating zoom level for area ${area}: ${zoom}`);
   return zoom;
@@ -21,7 +21,7 @@ const TravelingProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   const fixedValues = {
-    Argentina: { zoom: 2.13, center: { lat: -40.7617, lng: -63.7954 } },
+    Argentina: { zoom: 3.28, center: { lat: -40.7617, lng: -63.7954 } },
     Brazil: { zoom: 3.16, center: { lat: -14.235, lng: -53.4253 } },
     Bangladesh: { zoom: 5.9, center: { lat: 23.675, lng: 90.3253 } },
     Chad: { zoom: 4.7, center: { lat: 15.7617, lng: 18.7954 } },
@@ -39,20 +39,15 @@ const TravelingProvider = ({ children }) => {
   };
 
   const selectedCountries = [
-    "Brazil",
-    "Mongolia",
-    "China",
-    "Indonesia",
-    "Bangladesh",
+    "Mali",
+    "Chile",
+    "Japan",
+    "Libya",
+    "Spain",
+    "Vietnam",
   ];
   //"China", "Spain", "Indonesia"
   // "Brazil", "Mongolia", "Vietnam",
-
-  // Vietnam OUT
-  // Kiên Giang
-
-  // Vietnam IN
-  // Tây Ninh
 
   useEffect(() => {
     fetch("https://restcountries.com/v3.1/independent?status=true")
