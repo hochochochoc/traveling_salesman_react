@@ -15,7 +15,7 @@ export default function Demos() {
       </div>
 
       <img
-        className="mx-auto h-[50vh] w-screen border-t border-black object-cover p-3"
+        className="mx-auto h-[50vh] w-screen border-t border-black object-cover px-3 pt-3"
         src="/blackboard_v4.png"
         alt="Blackboard"
       />
@@ -35,11 +35,12 @@ export default function Demos() {
         <span className="text-xl">Algorithms</span>
       </button>
       <img
-        className="mx-auto h-[50vh] w-screen border-t border-black object-cover p-3"
+        className="mx-auto h-[50vh] w-screen border-t border-black object-cover px-3 pt-3"
         src="/wind_tunnel.jpg"
         alt="WindTunnel"
       />
       <button
+        className="mb-3 flex items-center justify-center space-x-5 border-b border-t border-black py-2 active:scale-95"
         onClick={() => {
           navigate("/demos", {
             state: {
@@ -49,7 +50,6 @@ export default function Demos() {
             },
           });
         }}
-        className="mb-3 flex items-center justify-center space-x-5 border-b border-t border-black py-2 active:scale-95"
       >
         <ArrowRight />
         <span className="text-xl">Validation</span>

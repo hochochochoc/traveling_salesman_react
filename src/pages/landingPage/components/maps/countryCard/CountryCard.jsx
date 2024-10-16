@@ -35,7 +35,7 @@ const CountryCard = ({
 
   return (
     <div
-      className="my-3"
+      className="mb-3 mt-1"
       style={{
         perspective: "1000px",
         width: "300px",

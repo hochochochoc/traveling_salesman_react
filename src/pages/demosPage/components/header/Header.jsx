@@ -19,18 +19,7 @@ export default function Header() {
       <div className="flex items-center text-lg font-extrabold text-egg">
         Demonstrations
       </div>
-      <div>
-        <button
-          onClick={() => {
-            doSignOut().then(() => {
-              navigate("/");
-            });
-          }}
-          className="w-24 rounded-lg border border-egg py-1 text-egg hover:bg-gray-200 hover:text-black active:scale-95"
-        >
-          Log in
-        </button>
-      </div>
+      <div></div>
     </>
   );
 }

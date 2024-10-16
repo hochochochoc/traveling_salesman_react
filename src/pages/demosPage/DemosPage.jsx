@@ -56,7 +56,7 @@ export default function DemosPage() {
           className={`mx-2 flex flex-shrink-0 flex-col items-center justify-center p-3 text-xs font-medium transition-all duration-300 ${
             activeItem === item
               ? "bg-gradient-to-br from-teal-400 to-blue-500 text-white shadow-lg"
-              : "bg-gray-800 text-teal-300 hover:bg-gray-700 hover:text-white"
+              : "bg-gray-900 text-teal-300 hover:bg-gray-700 hover:text-white"
           }`}
           onClick={() => setActiveItem(item)}
           style={{
@@ -83,12 +83,12 @@ export default function DemosPage() {
   );
 
   return (
-    <div className="h-screen overflow-hidden bg-bluedarkest">
+    <div className="h-screen overflow-hidden bg-landing2">
       <div className="flex flex-row justify-between p-4">
         <Header />
       </div>
 
-      <div className="mx-auto flex max-w-sm flex-col justify-center rounded-xl bg-gray-800 p-2 shadow-lg backdrop-blur-lg backdrop-filter">
+      <div className="mx-auto flex max-w-sm flex-col justify-center bg-gray-900 p-2 shadow-lg backdrop-blur-lg backdrop-filter">
         <div className="flex justify-center gap-6">
           <button
             className={`text-sm font-medium transition-all duration-200 ${

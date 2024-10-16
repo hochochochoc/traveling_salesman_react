@@ -66,15 +66,14 @@ export const MapPageProvider = ({ children }) => {
 
   const updateTotalDistance = (distance) => {
     setTotalDistance(distance);
-    console.log(`Total distance: ${distance.toFixed(2)} km`);
   };
 
   const toggleTryItYourselfMode = () => {
     setIsTryItYourselfMode((prev) => {
       if (prev) {
         resetSelectedCities();
-        setTotalDistance(0); // Reset the total distance
-        clearPolylines(); // Clear the existing polylines
+        setTotalDistance(0);
+        clearPolylines();
       }
       return !prev;
     });
@@ -86,7 +85,7 @@ export const MapPageProvider = ({ children }) => {
       mapInstance.current.polylines.forEach((polyline) =>
         polyline.setMap(null),
       );
-      mapInstance.current.polylines = []; // Reset the polyline array
+      mapInstance.current.polylines = [];
     }
   };
 

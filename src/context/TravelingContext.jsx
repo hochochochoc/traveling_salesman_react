@@ -3,10 +3,9 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 const TravelingContext = createContext();
 
 const calculateZoomLevel = (area) => {
-  const m = -2.29e-7; // Slope
-  const c = 4.6; // Y-intercept
-  const zoom = Math.max(1, Math.min(20, m * area + c)); // Clamp between 1 and 20
-  // console.log(`Calculating zoom level for area ${area}: ${zoom}`);
+  const m = -2.29e-7;
+  const c = 4.6;
+  const zoom = Math.max(1, Math.min(20, m * area + c));
   return zoom;
 };
 
@@ -17,6 +16,11 @@ const TravelingProvider = ({ children }) => {
   const [zoomLevels, setZoomLevels] = useState({});
   const [countryFlags, setCountryFlags] = useState({});
   const [countryAreas, setCountryAreas] = useState({});
+  const [selectedCountries, setSelectedCountries] = useState([
+    "Spain",
+    "Brazil",
+    "Japan",
+  ]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -36,11 +40,55 @@ const TravelingProvider = ({ children }) => {
     Spain: { zoom: 4.7, center: { lat: 39.9937, lng: -3.0492 } },
     Vietnam: { zoom: 4.84, center: { lat: 16.0617, lng: 105.3954 } },
     Fiji: { zoom: 6, center: { lat: -17.7137, lng: 178.065 } },
+    Japan: { zoom: 4.4, center: { lat: 39.3123, lng: 138.1315 } },
   };
 
-  const selectedCountries = ["Sudan", "Mexico"];
-  //"China", "Spain", "Indonesia"
-  // "Brazil", "Mongolia", "Vietnam",
+  const setNewCountry = async (countryName) => {
+    try {
+      const response = await fetch(
+        `https://restcountries.com/v3.1/name/${countryName}?fullText=true`,
+      );
+      const data = await response.json();
+
+      if (data.length > 0) {
+        const country = data[0];
+        const formattedCountryName = country.name.common;
+
+        // Update all the state objects with the new country data
+        setCountryCenters((prev) => ({
+          ...prev,
+          [formattedCountryName]: fixedValues[formattedCountryName]?.center || {
+            lat: country.latlng[0],
+            lng: country.latlng[1],
+          },
+        }));
+
+        setZoomLevels((prev) => ({
+          ...prev,
+          [formattedCountryName]:
+            fixedValues[formattedCountryName]?.zoom ||
+            calculateZoomLevel(country.area),
+        }));
+
+        setCountryFlags((prev) => ({
+          ...prev,
+          [formattedCountryName]: country.flags.png,
+        }));
+
+        setCountryAreas((prev) => ({
+          ...prev,
+          [formattedCountryName]: country.area.toLocaleString(),
+        }));
+
+        setSelectedCountries([formattedCountryName]);
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Error fetching new country data:", error);
+      return false;
+    }
+  };
 
   useEffect(() => {
     fetch("https://restcountries.com/v3.1/independent?status=true")
@@ -49,16 +97,16 @@ const TravelingProvider = ({ children }) => {
         const centers = {};
         const zooms = {};
         const flags = {};
+        const areas = {};
+
         data.forEach((country) => {
           if (selectedCountries.includes(country.name.common)) {
-            // Check if the country has fixed values
             if (fixedValues[country.name.common]) {
               centers[country.name.common] =
                 fixedValues[country.name.common].center;
               zooms[country.name.common] =
                 fixedValues[country.name.common].zoom;
             } else {
-              // Calculate for countries without fixed values
               centers[country.name.common] = {
                 lat: country.latlng[0],
                 lng: country.latlng[1],
@@ -67,23 +115,21 @@ const TravelingProvider = ({ children }) => {
             }
 
             flags[country.name.common] = country.flags.png;
-            // Correct the variable here:
-            countryAreas[country.name.common] = country.area.toLocaleString();
+            areas[country.name.common] = country.area.toLocaleString();
           }
         });
 
         setCountryCenters(centers);
         setZoomLevels(zooms);
         setCountryFlags(flags);
-        setCountryAreas(countryAreas);
+        setCountryAreas(areas);
         setLoading(false);
       })
       .catch((error) => {
-        // console.error("Error fetching country data:", error);
         setError(error);
         setLoading(false);
       });
-  }, []);
+  }, [selectedCountries]);
 
   return (
     <TravelingContext.Provider
@@ -93,6 +139,7 @@ const TravelingProvider = ({ children }) => {
         countryFlags,
         countryAreas,
         selectedCountries,
+        setNewCountry,
         loading,
         error,
       }}

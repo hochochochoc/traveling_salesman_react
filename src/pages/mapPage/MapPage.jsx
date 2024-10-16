@@ -69,8 +69,8 @@ export default function MapPage() {
       style={{ touchAction: "pan-y" }}
     >
       <div className="flex-shrink-0">
-        <div className="flex justify-between p-4">
-          <div className="flex items-center">
+        <div className="flex items-center justify-between p-4">
+          <div className="">
             <button
               onClick={() => {
                 navigate("/menu");
@@ -108,7 +108,7 @@ export default function MapPage() {
                   className="absolute left-0 right-0 bg-white bg-opacity-50 py-40 text-center font-bold text-white"
                   style={{ top: "0px" }}
                 >
-                  <p className="mt-3 text-3xl font-bold text-green-600">
+                  <p className="mt-3 text-3xl font-bold text-landing2">
                     Tour Completed!
                   </p>
                   <p className="mt-1 text-lg text-black">
@@ -125,7 +125,7 @@ export default function MapPage() {
 
       <div className="flex-grow overflow-y-auto">
         {mapStep === 0 && (
-          <div className="m-3 rounded-lg bg-gray-50 px-5 pt-12">
+          <div className="m-3 bg-gray-50 px-5 pt-12">
             <div className="mb-3 mr-1 flex items-center justify-between">
               <label
                 htmlFor="citiesSlider"
@@ -157,7 +157,7 @@ export default function MapPage() {
               />
 
               <button
-                className="mt-3 flex w-full items-center justify-center border border-black bg-black px-4 py-3 text-sm font-medium uppercase tracking-wide text-white"
+                className="mt-1 flex w-full items-center justify-center border border-black bg-black px-4 py-3 text-sm font-medium uppercase tracking-wide text-white"
                 onClick={() => {
                   fetchCities(country, citiesToBeAdded);
                   setMapStep(1);
@@ -171,12 +171,12 @@ export default function MapPage() {
         )}
         {mapStep === 1 && (
           <div>
-            <div className="m-3 flex flex-col items-center rounded-lg bg-gray-50 p-4">
+            <div className="m-3 flex flex-col items-center bg-gray-50 p-4">
               <button
-                className={`flex w-full items-center justify-center space-x-3 rounded-xl px-4 py-3 text-white shadow-md transition duration-200 ${
+                className={`flex w-full items-center justify-center space-x-3 px-4 py-3 text-white shadow-md transition duration-200 ${
                   isTryItYourselfMode
-                    ? "bg-red-500 hover:bg-red-600"
-                    : "bg-blue-500 hover:bg-blue-600"
+                    ? "bg-white text-landing2 hover:bg-white hover:text-landing2"
+                    : "bg-landing2"
                 }`}
                 onClick={toggleTryItYourselfMode}
               >
@@ -201,7 +201,7 @@ export default function MapPage() {
 
               <div className="space-y-3">
                 <select
-                  className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 transition duration-200 focus:border-blue-500 focus:outline-none"
+                  className="w-full border-2 border-gray-200 px-4 py-2 text-gray-700 transition duration-200 focus:border-landing2 focus:outline-none"
                   value={selectedAlgorithm}
                   onChange={handleAlgorithmChange}
                 >
@@ -212,7 +212,7 @@ export default function MapPage() {
                 </select>
 
                 <button
-                  className="w-full rounded-xl bg-blue-500 px-4 py-3 font-medium text-white shadow-md transition duration-200 hover:bg-blue-600"
+                  className="w-full bg-landing2 px-4 py-3 font-medium text-white shadow-md transition duration-200 hover:bg-white hover:text-landing2"
                   onClick={handleCalculateRoute}
                   disable={isCalculatingRoute}
                 >
@@ -222,20 +222,21 @@ export default function MapPage() {
                 </button>
               </div>
             </div>
-
-            <div className="m-3 flex items-center justify-around space-x-2 rounded-lg bg-gray-50 p-4">
-              <button
-                className="flex flex-1 items-center justify-center space-x-2 rounded-xl bg-gray-100 px-2 py-3 font-medium text-gray-700 shadow-md transition duration-200 hover:bg-gray-200"
-                onClick={handleReset}
-              >
-                <RefreshCcw className="h-5 w-5" />
-                <span className="text-xs">Reset</span>
-              </button>
-              <button className="flex flex-1 items-center justify-center space-x-2 rounded-xl bg-gray-100 px-2 py-3 font-medium text-gray-700 shadow-md transition duration-200 hover:bg-gray-200">
-                <Globe className="h-5 w-5" />
-                <span className="text-xs">Change Country</span>
-              </button>
-            </div>
+          </div>
+        )}
+        {mapStep === 2 && (
+          <div className="m-3 flex items-center justify-around space-x-2 rounded-lg bg-gray-50 p-4">
+            <button
+              className="flex flex-1 items-center justify-center space-x-2 rounded-xl bg-gray-100 px-2 py-3 font-medium text-gray-700 shadow-md transition duration-200 hover:bg-gray-200"
+              onClick={handleReset}
+            >
+              <RefreshCcw className="h-5 w-5" />
+              <span className="text-xs">Reset</span>
+            </button>
+            <button className="flex flex-1 items-center justify-center space-x-2 rounded-xl bg-gray-100 px-2 py-3 font-medium text-gray-700 shadow-md transition duration-200 hover:bg-gray-200">
+              <Globe className="h-5 w-5" />
+              <span className="text-xs">Change Country</span>
+            </button>
           </div>
         )}
       </div>

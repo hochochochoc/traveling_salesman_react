@@ -307,7 +307,7 @@ const Graph = () => {
         <svg
           ref={svgRef}
           width="100%"
-          className="mb-5 border border-gray-500 bg-gray-800 shadow-lg shadow-inherit lg:my-0 lg:mb-5"
+          className="mb-5 border border-gray-500 bg-gray-900 shadow-lg shadow-inherit lg:my-0 lg:mb-5"
           style={{ maxHeight: "400px", height: "100%" }}
         ></svg>
         <p

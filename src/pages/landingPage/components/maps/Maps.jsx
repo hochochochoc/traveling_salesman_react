@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { useTravelingData } from "../../../../context/TravelingContext";
 import { useAuth } from "../../../../auth/authContext";
 import CountryCard from "./countryCard/CountryCard";
+import Searchbar from "./searchbar/Searchbar";
 
 export default function CountryMapsCarousel() {
   const {
@@ -12,6 +13,7 @@ export default function CountryMapsCarousel() {
     selectedCountries,
     loading,
     error,
+    setNewCountry,
   } = useTravelingData();
   const carouselRef = useRef(null);
   const [startX, setStartX] = useState(0);
@@ -20,7 +22,27 @@ export default function CountryMapsCarousel() {
   const [cardWidth, setCardWidth] = useState(220);
   const [isAutoFlipping, setIsAutoFlipping] = useState(true);
   const [currentFlippedIndex, setCurrentFlippedIndex] = useState(0);
+  const [countryNames, setCountryNames] = useState(selectedCountries);
   const { userLoggedIn } = useAuth();
+
+  const handleSearch = async (searchTerm) => {
+    if (searchTerm) {
+      // Capitalize first letter and make the rest lowercase
+      const formattedCountry =
+        searchTerm.charAt(0).toUpperCase() + searchTerm.slice(1).toLowerCase();
+      const success = await setNewCountry(formattedCountry);
+
+      if (success) {
+        setSlidePosition(0);
+        setCurrentFlippedIndex(1);
+        setCountryNames(formattedCountry);
+      }
+    } else {
+      setCountryNames(selectedCountries);
+      setSlidePosition(0);
+      setCurrentFlippedIndex(0);
+    }
+  };
 
   const flip = useCallback(() => {
     if (isAutoFlipping) {
@@ -41,8 +63,6 @@ export default function CountryMapsCarousel() {
       setIsAutoFlipping(true);
     }, 600);
   };
-
-  const countryNames = selectedCountries;
 
   useEffect(() => {
     const carousel = carouselRef.current;
@@ -71,7 +91,8 @@ export default function CountryMapsCarousel() {
       // Calculate maximum slide position (can't scroll further than the last card)
       const maxPosition = -(
         countryNames.length * (cardWidth + 12) -
-        carousel.offsetWidth
+        carousel.offsetWidth +
+        12
       );
 
       // Ensure the new position is within bounds (0 for first slide, maxPosition for last)
@@ -114,15 +135,21 @@ export default function CountryMapsCarousel() {
           Select a country to try out the algorithms.
         </div>
       </div>
+      <div className="bg-egg px-6 py-1">
+        <Searchbar onSearch={handleSearch} />
+      </div>
       <div
         ref={carouselRef}
-        className="w-full overflow-hidden"
-        style={{ touchAction: "pan-y" }}
+        className="mx-3 w-full overflow-hidden"
+        style={{
+          touchAction: "pan-y",
+          marginLeft: selectedCountries.length === 1 ? 30 : 12,
+        }}
       >
         <div
-          className="flex space-x-3 pl-1.5"
+          className="flex space-x-3"
           style={{
-            width: `${countryNames.length * 100}%`,
+            width: `${selectedCountries.length * 100}%`,
             transform: `translateX(${slidePosition}px)`,
             transition: isSwiping ? "none" : "transform 0.3s ease-out",
           }}
@@ -147,9 +174,3 @@ export default function CountryMapsCarousel() {
     </div>
   );
 }
-
-// TODO / OPTIONAL
-// IF LOADING WITH THE SEARCH FUNCTION IS TOO SLOW, TRY PAGINATION???
-// I GUESS SKIP THE FAST SCROLL PART
-// COMPRESS THE IMAGES??
-// MAKE THE AUTOSPIN REINITIALIZE AFTER MANUAL AGAIN
