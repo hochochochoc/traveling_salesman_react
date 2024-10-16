@@ -38,14 +38,7 @@ const TravelingProvider = ({ children }) => {
     Fiji: { zoom: 6, center: { lat: -17.7137, lng: 178.065 } },
   };
 
-  const selectedCountries = [
-    "Mali",
-    "Chile",
-    "Japan",
-    "Libya",
-    "Spain",
-    "Vietnam",
-  ];
+  const selectedCountries = ["Sudan", "Mexico"];
   //"China", "Spain", "Indonesia"
   // "Brazil", "Mongolia", "Vietnam",
 

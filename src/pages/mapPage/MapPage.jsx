@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
@@ -38,8 +38,6 @@ export default function MapPage() {
     setIsTSPRouteCalculated,
     selectedAlgorithm,
     setSelectedAlgorithm,
-    route,
-    totalDistanceTSP,
     isCalculatingRoute,
     calculateRoute,
   } = useMapPageTSPContext();
@@ -47,7 +45,11 @@ export default function MapPage() {
   const center = countryCenters[country];
   const zoom =
     zoomLevels[country] *
-    (country === "Spain" || country === "Indonesia" ? 1.05 : 1.1);
+    (country === "Spain" || country === "Indonesia" || country === "Vietnam"
+      ? 1.05
+      : 1.1);
+
+  const [mapStep, setMapStep] = useState(0);
 
   const handleAlgorithmChange = (e) => {
     setSelectedAlgorithm(e.target.value);
@@ -63,7 +65,7 @@ export default function MapPage() {
 
   return (
     <div
-      className="flex h-screen flex-col bg-tertiary"
+      className="flex h-screen flex-col bg-egg"
       style={{ touchAction: "pan-y" }}
     >
       <div className="flex-shrink-0">
@@ -77,16 +79,8 @@ export default function MapPage() {
               <ArrowLeft className="text-black" />
             </button>
           </div>
-          <div className="text-lg font-extrabold">{country}</div>
-          <button
-            onClick={() => {
-              // Logout logic
-              navigate("/menu");
-            }}
-            className="ml-12 flex max-h-9 justify-center rounded-lg border border-black px-2 hover:bg-gray-200 active:scale-95"
-          >
-            Logout
-          </button>
+          <div className="text-2xl font-extrabold">{country}</div>
+          <div className="w-16"></div>
           <Menu
             className="cursor-pointer"
             onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -130,107 +124,120 @@ export default function MapPage() {
       {loading && <LoadingPopup estimatedTime={estimatedTime} />}
 
       <div className="flex-grow overflow-y-auto">
-        <div className="m-3 rounded-lg bg-gray-50 p-3">
-          <div className="mb-2 mr-1 flex items-center justify-between">
-            <label
-              htmlFor="citiesSlider"
-              className="text-sm font-light text-gray-600"
-            >
-              Number to be added:
-            </label>
-            <span className="text-lg font-light text-mapsblue">
-              {citiesToBeAdded}
-            </span>
-          </div>
+        {mapStep === 0 && (
+          <div className="m-3 rounded-lg bg-gray-50 px-5 pt-12">
+            <div className="mb-3 mr-1 flex items-center justify-between">
+              <label
+                htmlFor="citiesSlider"
+                className="text-xl font-light text-gray-600"
+              >
+                Number to be added:
+              </label>
+              <span className="text-lg text-landing2">{citiesToBeAdded}</span>
+            </div>
 
-          <div className="relative pb-1 pt-3" ref={sliderRef}>
-            <div className="absolute left-0 top-0 h-4 w-full rounded-full bg-gradient-to-br from-blue-50 to-blue-200"></div>
-            <div
-              className="absolute left-0 top-0 h-4 rounded-l-full bg-blue-300"
-              style={{ width: `${(citiesToBeAdded / 30) * 100}%` }}
-            ></div>
-            <div
-              className="absolute top-[-4px] h-6 w-6 rounded-full border-2 border-blue-400 bg-white shadow-md"
-              style={{ left: `${getThumbPosition()}px` }}
-            ></div>
-            <input
-              type="range"
-              id="citiesSlider"
-              min="1"
-              max="30"
-              value={citiesToBeAdded}
-              onChange={handleSliderChange}
-              className="absolute left-0 top-0 h-4 w-full cursor-pointer opacity-0"
-            />
-            <div className="flex justify-center">
+            <div className="relative pb-1 pt-14" ref={sliderRef}>
+              <div className="absolute left-0 top-0 h-6 w-full rounded-full border border-black"></div>
+              <div
+                className="absolute left-0 top-0 h-6 rounded-l-full bg-landing2"
+                style={{ width: `${(citiesToBeAdded / 30) * 100}%` }}
+              ></div>
+              <div
+                className="absolute top-[-4px] h-8 w-8 rounded-full border-2 border-landing2 bg-white shadow-md"
+                style={{ left: `${getThumbPosition()}px` }}
+              ></div>
+              <input
+                className="absolute left-0 top-0 h-6 w-full cursor-pointer opacity-0"
+                type="range"
+                id="citiesSlider"
+                min="4"
+                max="30"
+                value={citiesToBeAdded}
+                onChange={handleSliderChange}
+              />
+
               <button
-                onClick={() => fetchCities(country, citiesToBeAdded)}
-                className="mt-4 flex w-max items-center justify-center rounded-full bg-blue-500 px-3 py-2 font-light text-white transition-colors duration-200"
+                className="mt-3 flex w-full items-center justify-center border border-black bg-black px-4 py-3 text-sm font-medium uppercase tracking-wide text-white"
+                onClick={() => {
+                  fetchCities(country, citiesToBeAdded);
+                  setMapStep(1);
+                }}
               >
                 <MapPin className="mr-2 h-4 w-4" />
                 Add Cities to Map
               </button>
             </div>
           </div>
-        </div>
+        )}
+        {mapStep === 1 && (
+          <div>
+            <div className="m-3 flex flex-col items-center rounded-lg bg-gray-50 p-4">
+              <button
+                className={`flex w-full items-center justify-center space-x-3 rounded-xl px-4 py-3 text-white shadow-md transition duration-200 ${
+                  isTryItYourselfMode
+                    ? "bg-red-500 hover:bg-red-600"
+                    : "bg-blue-500 hover:bg-blue-600"
+                }`}
+                onClick={toggleTryItYourselfMode}
+              >
+                <MousePointerClick className="h-5 w-5" />
+                <span className="font-medium">
+                  {isTryItYourselfMode
+                    ? "Exit Try It Yourself"
+                    : "Try It Yourself"}
+                </span>
+              </button>
 
-        <div className="m-3 flex flex-col items-center rounded-lg bg-gray-50 p-4">
-          <button
-            className={`flex w-full items-center justify-center space-x-3 rounded-xl px-4 py-3 text-white shadow-md transition duration-200 ${
-              isTryItYourselfMode
-                ? "bg-red-500 hover:bg-red-600"
-                : "bg-blue-500 hover:bg-blue-600"
-            }`}
-            onClick={toggleTryItYourselfMode}
-          >
-            <MousePointerClick className="h-5 w-5" />
-            <span className="font-medium">
-              {isTryItYourselfMode ? "Exit Try It Yourself" : "Try It Yourself"}
-            </span>
-          </button>
+              <div
+                onClick={() => {
+                  setMapStep(0);
+                }}
+                className="relative my-3 flex w-full items-center"
+              >
+                <div className="flex-grow border-t border-gray-300"></div>
+                <span className="mx-4 flex-shrink text-gray-500">or</span>
+                <div className="flex-grow border-t border-gray-300"></div>
+              </div>
 
-          <div className="relative my-3 flex w-full items-center">
-            <div className="flex-grow border-t border-gray-300"></div>
-            <span className="mx-4 flex-shrink text-gray-500">or</span>
-            <div className="flex-grow border-t border-gray-300"></div>
+              <div className="space-y-3">
+                <select
+                  className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 transition duration-200 focus:border-blue-500 focus:outline-none"
+                  value={selectedAlgorithm}
+                  onChange={handleAlgorithmChange}
+                >
+                  <option value="alg1">Nearest Neighbor</option>
+                  <option value="alg2">Greedy</option>
+                  <option value="alg3">2-Opt</option>
+                  <option value="alg4">Christofides</option>
+                </select>
+
+                <button
+                  className="w-full rounded-xl bg-blue-500 px-4 py-3 font-medium text-white shadow-md transition duration-200 hover:bg-blue-600"
+                  onClick={handleCalculateRoute}
+                  disable={isCalculatingRoute}
+                >
+                  {isCalculatingRoute
+                    ? "Calculating..."
+                    : "Choose an algorithm"}
+                </button>
+              </div>
+            </div>
+
+            <div className="m-3 flex items-center justify-around space-x-2 rounded-lg bg-gray-50 p-4">
+              <button
+                className="flex flex-1 items-center justify-center space-x-2 rounded-xl bg-gray-100 px-2 py-3 font-medium text-gray-700 shadow-md transition duration-200 hover:bg-gray-200"
+                onClick={handleReset}
+              >
+                <RefreshCcw className="h-5 w-5" />
+                <span className="text-xs">Reset</span>
+              </button>
+              <button className="flex flex-1 items-center justify-center space-x-2 rounded-xl bg-gray-100 px-2 py-3 font-medium text-gray-700 shadow-md transition duration-200 hover:bg-gray-200">
+                <Globe className="h-5 w-5" />
+                <span className="text-xs">Change Country</span>
+              </button>
+            </div>
           </div>
-
-          <div className="space-y-3">
-            <select
-              className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-gray-700 transition duration-200 focus:border-blue-500 focus:outline-none"
-              value={selectedAlgorithm}
-              onChange={handleAlgorithmChange}
-            >
-              <option value="alg1">Nearest Neighbor</option>
-              <option value="alg2">Greedy</option>
-              <option value="alg3">2-Opt</option>
-              <option value="alg4">Christofides</option>
-            </select>
-
-            <button
-              className="w-full rounded-xl bg-blue-500 px-4 py-3 font-medium text-white shadow-md transition duration-200 hover:bg-blue-600"
-              onClick={handleCalculateRoute}
-              disable={isCalculatingRoute}
-            >
-              {isCalculatingRoute ? "Calculating..." : "Choose an algorithm"}
-            </button>
-          </div>
-        </div>
-
-        <div className="m-3 flex items-center justify-around space-x-2 rounded-lg bg-gray-50 p-4">
-          <button
-            className="flex flex-1 items-center justify-center space-x-2 rounded-xl bg-gray-100 px-2 py-3 font-medium text-gray-700 shadow-md transition duration-200 hover:bg-gray-200"
-            onClick={handleReset}
-          >
-            <RefreshCcw className="h-5 w-5" />
-            <span className="text-xs">Reset</span>
-          </button>
-          <button className="flex flex-1 items-center justify-center space-x-2 rounded-xl bg-gray-100 px-2 py-3 font-medium text-gray-700 shadow-md transition duration-200 hover:bg-gray-200">
-            <Globe className="h-5 w-5" />
-            <span className="text-xs">Change Country</span>
-          </button>
-        </div>
-        {/* <div className="h-10 bg-mapsblue"></div> */}
+        )}
       </div>
     </div>
   );

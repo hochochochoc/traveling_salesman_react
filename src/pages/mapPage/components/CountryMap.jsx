@@ -46,6 +46,8 @@ const CountryMap = React.memo(({ center, zoom, cities }) => {
   const mapInstance = useRef(null);
   const [mapLoaded, setMapLoaded] = useState(false);
   const initialZoom = useRef(zoom);
+  const [isFirstRender, setIsFirstRender] = useState(true);
+  const shouldShowLabels = useRef(false);
   const {
     selectedCities,
     addSelectedCity,
@@ -110,6 +112,8 @@ const CountryMap = React.memo(({ center, zoom, cities }) => {
         initialZoom.current = zoom;
 
         mapInstance.current.addListener("zoom_changed", () => {
+          shouldShowLabels.current =
+            mapInstance.current.getZoom() >= initialZoom.current * 1.3;
           updateMarkerLabels();
         });
 
@@ -129,39 +133,31 @@ const CountryMap = React.memo(({ center, zoom, cities }) => {
 
       // Add new markers for cities
       if (Array.isArray(cities) && cities.length > 0) {
-        cities.forEach((city) => {
-          const marker = new window.google.maps.Marker({
-            position: { lat: city.latitude, lng: city.longitude },
-            map: mapInstance.current,
-            title: city.name,
-            icon: {
-              url: "/pin_icon.png",
-              scaledSize: new google.maps.Size(12, 14),
-            },
-            label: {
-              text: city.name,
-              color: "black",
-              fontSize: "11px",
-              className: "-translate-y-3",
-            },
+        if (isFirstRender) {
+          cities.forEach((city, index) => {
+            setTimeout(() => {
+              addMarker(city, false); // Hide labels initially
+              if (index === cities.length - 1) {
+                setIsFirstRender(false);
+                updateMarkerLabels(); // Show labels based on zoom
+                if (isTryItYourselfMode) {
+                  updatePolylines();
+                } else {
+                  updateTSPPolylines();
+                }
+              }
+            }, index * 100);
           });
-
-          marker.addListener("click", () => {
-            if (isTryItYourselfMode) {
-              handleCityClick(city);
-            }
-          });
-
-          mapInstance.current.markers.push(marker);
-        });
+        } else {
+          cities.forEach(addMarker);
+          updateMarkerLabels();
+          if (isTryItYourselfMode) {
+            updatePolylines();
+          } else {
+            updateTSPPolylines();
+          }
+        }
       }
-
-      updateMarkerLabels();
-      if (isTryItYourselfMode) {
-        updatePolylines();
-      } else {
-        updateTSPPolylines();
-      } // Update polylines based on the current selected cities
     }
   }, [
     mapLoaded,
@@ -173,6 +169,34 @@ const CountryMap = React.memo(({ center, zoom, cities }) => {
     tspRoute,
     isCalculatingRoute,
   ]);
+
+  const addMarker = (city, showLabel = true) => {
+    const marker = new window.google.maps.Marker({
+      position: { lat: city.latitude, lng: city.longitude },
+      map: mapInstance.current,
+      title: city.name,
+      icon: {
+        url: "/pin_icon.png",
+        scaledSize: new google.maps.Size(12, 14),
+      },
+      label: showLabel
+        ? {
+            text: city.name,
+            color: "black",
+            fontSize: "11px",
+            className: "-translate-y-3",
+          }
+        : null, // Initially hide labels
+    });
+
+    marker.addListener("click", () => {
+      if (isTryItYourselfMode) {
+        handleCityClick(city);
+      }
+    });
+
+    mapInstance.current.markers.push(marker);
+  };
 
   const updateMarkerLabels = () => {
     if (mapInstance.current && mapInstance.current.markers) {
