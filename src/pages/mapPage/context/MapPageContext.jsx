@@ -169,8 +169,20 @@ export const MapPageProvider = ({ children }) => {
           `https://restcountries.com/v3.1/name/${country}`,
         );
         const countryData = await countryResponse.json();
-        const countryCode = countryData[0].cca2;
-        const countryName = countryData[0].name.common;
+        const countryCode =
+          country.toLowerCase() === "china"
+            ? "CN"
+            : country.toLowerCase() === "united states"
+              ? "US"
+              : countryData[0].cca2;
+
+        console.log(`coutnry code: ${countryCode}`);
+        const countryName =
+          country.toLowerCase() === "china"
+            ? "China"
+            : country.toLowerCase() === "united states"
+              ? "United States"
+              : countryData[0].name.common;
 
         const geoDbApiKey =
           "7767b21710mshcd08efc5bb4012ap1f54b7jsndcc3fc53b913";
