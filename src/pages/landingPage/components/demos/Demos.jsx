@@ -18,6 +18,15 @@ export default function Demos() {
         className="mx-auto h-[50vh] w-screen border-t border-black object-cover px-3 pt-3"
         src="/blackboard_v4.png"
         alt="Blackboard"
+        onClick={() => {
+          navigate("/demos", {
+            state: {
+              activeSection: "algorithms",
+              algorithmSelection: "Nearest",
+              validationSelection: "Prims",
+            },
+          });
+        }}
       />
       <button
         onClick={() => {
@@ -38,6 +47,15 @@ export default function Demos() {
         className="mx-auto h-[50vh] w-screen border-t border-black object-cover px-3 pt-3"
         src="/wind_tunnel.jpg"
         alt="WindTunnel"
+        onClick={() => {
+          navigate("/demos", {
+            state: {
+              activeSection: "validation",
+              algorithmSelection: "Greedy",
+              validationSelection: "Prims",
+            },
+          });
+        }}
       />
       <button
         className="mb-3 flex items-center justify-center space-x-5 border-b border-t border-black py-2 active:scale-95"

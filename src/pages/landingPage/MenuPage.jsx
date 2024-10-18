@@ -11,9 +11,9 @@ export default function MenuPage() {
         <Header />
       </div>
       <div className="mb-3 flex flex-col space-y-3">
-        <Demos />
-
         <CountryMapsCarousel />
+
+        <Demos />
 
         <Algorithms />
       </div>

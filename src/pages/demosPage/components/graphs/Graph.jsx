@@ -81,7 +81,7 @@ const Graph = () => {
     resetVisualization();
   }, [validationSelection, algorithmSelection]);
 
-  let vertexRadius = isMobile ? 6 : 5;
+  let vertexRadius = isMobile ? 7 : 5;
   let graphFontSize = isMobile ? "18px" : "12px";
   let edgeSize = isMobile ? 5 : 3;
   let offset = isMobile ? 25 : 15;
@@ -243,7 +243,7 @@ const Graph = () => {
 
       // Find potential edges from the current node to remaining nodes
       if (currentStep > 0) {
-        potentialEdges.forEach(({ from, to, distance }) => {
+        potentialEdges.forEach(({ from, to, distance: edgeDistance }) => {
           if (from === currentFromNode) {
             const fromNode = graphData[currentFromNode];
             const toNode = graphData[to];
@@ -255,7 +255,7 @@ const Graph = () => {
               .attr("x2", toNode.x)
               .attr("y2", toNode.y)
               .attr("stroke", "lightgray") // Lighter color for potential edges
-              .attr("stroke-width", edgeSize - 2); // Thinner line for potential edges
+              .attr("stroke-width", edgeSize - 2);
           }
         });
       }
@@ -337,83 +337,30 @@ const Graph = () => {
         )}
 
         <div className="items-center justify-center lg:flex lg:space-x-10">
-          <div className="mb-2 flex items-center justify-center space-x-3 lg:mb-0">
+          <div className="flex items-center justify-center space-x-2">
             <button
+              className="rounded-md border border-egg px-3 py-2 text-egg active:scale-95 active:bg-gray-50"
               onClick={() => {
                 setIsPlaying(true);
                 playAnimation();
               }}
-              className="bg-slate-400 px-3 py-2 text-egg active:scale-95 active:bg-slate-500"
             >
               <Play />
             </button>
 
             <button
+              className="rounded-md border border-egg px-3 py-2 text-egg active:scale-95 active:bg-gray-50"
               onClick={() => {
                 setIsPlaying(false);
               }}
-              className="bg-slate-400 px-3 py-2 text-egg active:scale-95 active:bg-slate-500"
             >
               <Pause />
             </button>
             <button
+              className="rounded-md border border-egg px-3 py-2 text-egg active:scale-95 active:bg-gray-50"
               onClick={resetVisualization}
-              className="bg-slate-400 px-3 py-2 text-egg active:scale-95 active:bg-slate-500"
             >
               <Square />
-            </button>
-          </div>
-
-          <div className="flex items-center justify-center space-x-2">
-            <button
-              disabled={currentStep === 0}
-              onClick={() => handleStepClick(currentStep - 1)}
-              className="rounded-full bg-gray-200 p-2 text-gray-600 disabled:opacity-50"
-            >
-              <ChevronLeft />
-            </button>
-
-            <div className="relative">
-              <button
-                onClick={() => setStepsIsOpen(!stepsIsOpen)}
-                className="bg-slate-500 px-3 py-2 text-white"
-              >
-                {currentStep === 0 ? "Start" : `Step ${currentStep}`}
-              </button>
-
-              {stepsIsOpen && (
-                <div
-                  ref={popoverRef}
-                  className="absolute left-1/2 z-50 mt-2 -translate-x-1/2 transform rounded-full bg-egg p-1.5 shadow-lg lg:p-2"
-                >
-                  <div className="flex items-center space-x-0.5 lg:space-x-2">
-                    {Array.from({ length: edges.length + 1 }, (_, i) => (
-                      <button
-                        key={i}
-                        onClick={() => {
-                          handleStepClick(i);
-                          setStepsIsOpen(false);
-                        }}
-                        className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-medium transition-colors ${
-                          i === currentStep
-                            ? "bg-slate-500 text-egg"
-                            : "bg-gray-200 text-gray-600 hover:bg-gray-300"
-                        }`}
-                      >
-                        {i === 0 ? <RotateCcw className="h-5 w-5" /> : i}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <button
-              disabled={currentStep === edges.length}
-              onClick={() => handleStepClick(currentStep + 1)}
-              className="rounded-full bg-gray-200 p-2 text-gray-600 disabled:opacity-50"
-            >
-              <ChevronRight />
             </button>
           </div>
         </div>
@@ -421,13 +368,17 @@ const Graph = () => {
 
       <div className="mt-4 w-full text-egg lg:ml-14 lg:mt-0 lg:w-1/2">
         <div className="flex flex-col items-center justify-center lg:space-y-8">
-          <div className="relative h-32 w-full lg:overflow-hidden">
+          <div className="relative h-24 w-full lg:overflow-hidden">
             {(activeSection === "algorithms" ||
               activeSection === "validation") &&
-              paragraphs[algorithmSelection].map((paragraph, i) => (
+              paragraphs[
+                activeSection === "algorithms"
+                  ? algorithmSelection
+                  : validationSelection
+              ].map((paragraph, i) => (
                 <p
                   key={i}
-                  className={`absolute inset-0 mx-4 flex items-start justify-center text-center text-sm font-medium text-egg transition-all duration-500 ease-in-out lg:text-sm ${
+                  className={`text-md absolute inset-0 mx-4 flex items-center justify-center text-center text-egg transition-all duration-500 ease-in-out lg:text-sm ${
                     i === currentStep
                       ? `translate-x-0 opacity-100`
                       : i < currentStep
@@ -439,6 +390,20 @@ const Graph = () => {
                 </p>
               ))}
           </div>
+        </div>
+        <div className="mt-4 flex items-center justify-center space-x-2">
+          {Array.from({ length: edges.length + 1 }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => handleStepClick(i)}
+              className={`h-3 w-3 rounded-full transition-all duration-200 ${
+                i === currentStep
+                  ? "scale-125 border border-white bg-black"
+                  : "border border-black bg-egg"
+              }`}
+              aria-label={`Go to step ${i}`}
+            />
+          ))}
         </div>
       </div>
     </div>

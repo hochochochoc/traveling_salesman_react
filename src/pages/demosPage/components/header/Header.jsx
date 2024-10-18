@@ -13,11 +13,11 @@ export default function Header() {
             navigate("/menu");
           }}
         >
-          <ArrowLeft className="text-white" />
+          <ArrowLeft className="text-black" />
         </button>
       </div>
-      <div className="flex items-center text-lg font-extrabold text-egg">
-        Demonstrations
+      <div className="flex items-center text-lg font-extrabold text-black">
+        How It Works
       </div>
       <div></div>
     </>

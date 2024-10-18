@@ -24,6 +24,7 @@ const DemosProvider = ({ children }) => {
   const [activeSection, setActiveSection] = useState("validation");
   const [algorithmSelection, setAlgorithmSelection] = useState("Nearest");
   const [validationSelection, setValidationSelection] = useState("Prims");
+  const [intro, setIntro] = useState(0);
 
   const value = {
     activeSection,
@@ -38,6 +39,8 @@ const DemosProvider = ({ children }) => {
     christofidesTSP: (graph) => christofidesTSP(graph, distance),
     cheapestInsertionTSP: (graph) => cheapestInsertionTSP(graph, distance),
     twoOptTSP: (graph) => twoOptTSP(graph, distance),
+    intro,
+    setIntro,
   };
 
   return (
