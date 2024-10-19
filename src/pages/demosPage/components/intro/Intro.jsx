@@ -98,8 +98,8 @@ const Intro = () => {
               <p className="text-lg font-semibold">
                 The TSP has exponential time complexity (O(n!)), meaning
                 computation time grows rapidly as the number of points
-                increases. Therefore, approximation algorithms are used to find
-                efficient near-optimal solutions instead.
+                increases. Therefore, algorithms are used to find efficient
+                near-optimal solutions instead.
               </p>
               <BigO />
               <div className="mb-4 mt-1 flex justify-end">

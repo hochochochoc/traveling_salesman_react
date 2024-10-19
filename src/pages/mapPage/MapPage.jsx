@@ -13,6 +13,7 @@ import { useMapPageTSPContext } from "./context/MapPageTSPContext";
 import CountryMap from "./components/CountryMap";
 import { useTravelingData } from "../../context/TravelingContext";
 import LoadingPopup from "./components/LoadingPopup";
+import { div } from "framer-motion/client";
 
 export default function MapPage() {
   const [searchParams] = useSearchParams();
@@ -172,59 +173,81 @@ export default function MapPage() {
         {mapStep === 1 && (
           <div>
             <div className="m-3 flex flex-col items-center bg-gray-50 p-4">
-              <button
-                className={`flex w-full items-center justify-center space-x-3 px-4 py-3 text-white shadow-md transition duration-200 ${
-                  isTryItYourselfMode
-                    ? "bg-white text-landing2 hover:bg-white hover:text-landing2"
-                    : "bg-landing2"
-                }`}
-                onClick={toggleTryItYourselfMode}
-              >
-                <MousePointerClick className="h-5 w-5" />
-                <span className="font-medium">
-                  {isTryItYourselfMode
-                    ? "Exit Try It Yourself"
-                    : "Try It Yourself"}
-                </span>
-              </button>
-
-              <div
-                onClick={() => {
-                  setMapStep(0);
-                }}
-                className="relative my-3 flex w-full items-center"
-              >
-                <div className="flex-grow border-t border-gray-300"></div>
-                <span className="mx-4 flex-shrink text-gray-500">or</span>
-                <div className="flex-grow border-t border-gray-300"></div>
-              </div>
-
-              <div className="space-y-3">
-                <select
-                  className="w-full border-2 border-gray-200 px-4 py-2 text-gray-700 transition duration-200 focus:border-landing2 focus:outline-none"
-                  value={selectedAlgorithm}
-                  onChange={handleAlgorithmChange}
+              <div className="mt-16 flex space-x-3">
+                <button
+                  className={`text-md flex w-full flex-col items-center justify-center px-4 py-3 uppercase shadow-md ${
+                    isTryItYourselfMode
+                      ? "bg-white text-landing2"
+                      : "bg-landing2 text-white"
+                  }`}
+                  onClick={toggleTryItYourselfMode}
                 >
-                  <option value="alg1">Nearest Neighbor</option>
-                  <option value="alg2">Greedy</option>
-                  <option value="alg3">2-Opt</option>
-                  <option value="alg4">Christofides</option>
-                </select>
+                  {/* <MousePointerClick className="h-5 w-5" /> */}
+                  <span className="font-medium">
+                    {isTryItYourselfMode
+                      ? "Exit Try It Yourself"
+                      : "Try It Yourself"}
+                  </span>
+                </button>
 
                 <button
-                  className="w-full bg-landing2 px-4 py-3 font-medium text-white shadow-md transition duration-200 hover:bg-white hover:text-landing2"
-                  onClick={handleCalculateRoute}
-                  disable={isCalculatingRoute}
+                  className="text-md w-full bg-landing2 px-4 py-3 font-medium uppercase text-white shadow-md transition duration-200 hover:bg-white hover:text-landing2"
+                  onClick={() => {
+                    setMapStep(2);
+                  }}
                 >
-                  {isCalculatingRoute
-                    ? "Calculating..."
-                    : "Choose an algorithm"}
+                  Choose algorithm
                 </button>
               </div>
+
+              <button
+                className="w-18 relative my-8 mr-auto flex items-center border-2 border-landing2 p-1 pr-2 font-medium"
+                onClick={() => {
+                  setMapStep(mapStep - 1);
+                }}
+              >
+                <ArrowLeft />
+                <span className="text-landing-2 mx-auto ml-1 flex-shrink">
+                  Back
+                </span>
+              </button>
             </div>
           </div>
         )}
         {mapStep === 2 && (
+          <div className="mx-10 mt-16 space-y-3">
+            <select
+              className="w-full border-2 border-gray-200 px-4 py-2 text-gray-700 transition duration-200 focus:border-landing2 focus:outline-none"
+              value={selectedAlgorithm}
+              onChange={handleAlgorithmChange}
+            >
+              <option value="alg1">Nearest Neighbor</option>
+              <option value="alg2">Greedy</option>
+              <option value="alg3">2-Opt</option>
+              <option value="alg4">Christofides</option>
+            </select>
+
+            <button
+              className="w-full bg-landing2 px-4 py-3 font-medium uppercase text-white shadow-md"
+              onClick={handleCalculateRoute}
+              disable={isCalculatingRoute}
+            >
+              Choose the algorithm
+            </button>
+            <button
+              onClick={() => {
+                setMapStep(mapStep - 1);
+              }}
+              className="w-18 relative my-3 mr-auto mt-8 flex items-center border-2 border-landing2 p-1 pr-2 font-medium"
+            >
+              <ArrowLeft />
+              <span className="text-landing-2 mx-auto ml-1 flex-shrink">
+                Back
+              </span>
+            </button>
+          </div>
+        )}
+        {mapStep === 30 && (
           <div className="m-3 flex items-center justify-around space-x-2 rounded-lg bg-gray-50 p-4">
             <button
               className="flex flex-1 items-center justify-center space-x-2 rounded-xl bg-gray-100 px-2 py-3 font-medium text-gray-700 shadow-md transition duration-200 hover:bg-gray-200"
