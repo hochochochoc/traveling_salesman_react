@@ -17,6 +17,8 @@ const TravelingProvider = ({ children }) => {
   const [countryFlags, setCountryFlags] = useState({});
   const [countryAreas, setCountryAreas] = useState({});
   const [selectedCountries, setSelectedCountries] = useState([
+    "Canada",
+    "China",
     "Brazil",
     "Spain",
     "Bangladesh",

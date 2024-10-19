@@ -61,6 +61,11 @@ const CountryMap = React.memo(({ center, zoom, cities }) => {
     setIsTSPRouteCalculated,
   } = useMapPageTSPContext();
 
+  const citiesZoomLimit = zoom < 2.6 ? 2.4 : zoom < 3.3 ? 1.6 : 1.3;
+  zoom < 3.1
+    ? console.log(`zoom adjusted ${zoom}`)
+    : console.log(`zoom normal ${zoom}`);
+
   useEffect(() => {
     const initializeMap = async () => {
       try {
@@ -113,7 +118,8 @@ const CountryMap = React.memo(({ center, zoom, cities }) => {
 
         mapInstance.current.addListener("zoom_changed", () => {
           shouldShowLabels.current =
-            mapInstance.current.getZoom() >= initialZoom.current * 1.3;
+            mapInstance.current.getZoom() >=
+            initialZoom.current * citiesZoomLimit;
           updateMarkerLabels();
         });
 
@@ -201,7 +207,7 @@ const CountryMap = React.memo(({ center, zoom, cities }) => {
   const updateMarkerLabels = () => {
     if (mapInstance.current && mapInstance.current.markers) {
       const currentZoom = mapInstance.current.getZoom();
-      const showLabels = currentZoom >= initialZoom.current * 1.3;
+      const showLabels = currentZoom >= initialZoom.current * citiesZoomLimit;
 
       mapInstance.current.markers.forEach((marker) => {
         if (showLabels) {

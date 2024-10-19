@@ -50,7 +50,21 @@ export default function BigO() {
         name: "O(n²)",
         fn: (n) => n * n,
         color: "#F44336",
-        labelPosition: { x: 10, y: 15 }, // Top center for quadratic
+        labelPosition: { x: 70, y: 15 }, // Top center for quadratic
+      },
+      {
+        name: "O(n!)",
+        fn: (n) => {
+          const limit = 5; // Limit to prevent overflow
+          let result = 1;
+          for (let i = 2; i <= Math.min(n, limit); i++) {
+            result *= i;
+            if (result === Infinity) break;
+          }
+          return result;
+        },
+        color: "#9C27B0",
+        labelPosition: { x: 5, y: 15 },
       },
     ];
 
@@ -83,7 +97,7 @@ export default function BigO() {
       .text("Time Complexity");
 
     functions.forEach((func) => {
-      const data = d3.range(1, 51, 0.5).map((n) => [n, func.fn(n)]);
+      const data = d3.range(1, 50, 0.2).map((n) => [n, func.fn(n)]);
 
       const path = g
         .append("path")

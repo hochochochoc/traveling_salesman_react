@@ -1,13 +1,6 @@
 import React, { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import {
-  ArrowLeft,
-  Menu,
-  MapPin,
-  MousePointerClick,
-  Globe,
-  RefreshCcw,
-} from "lucide-react";
+import { ArrowLeft, Menu, MapPin, Globe, RefreshCcw } from "lucide-react";
 import { useMapPageContext } from "./context/MapPageContext";
 import { useMapPageTSPContext } from "./context/MapPageTSPContext";
 import CountryMap from "./components/CountryMap";
@@ -20,6 +13,7 @@ export default function MapPage() {
   const country = searchParams.get("country");
   const { countryCenters, zoomLevels } = useTravelingData();
   const navigate = useNavigate();
+  const [isAlgorithmChosen, setIsAlgorithmChosen] = useState(false);
   const {
     fetchCities,
     handleSliderChange,
@@ -41,6 +35,7 @@ export default function MapPage() {
     setSelectedAlgorithm,
     isCalculatingRoute,
     calculateRoute,
+    totalDistanceTSP,
   } = useMapPageTSPContext();
 
   const center = countryCenters[country];
@@ -58,6 +53,7 @@ export default function MapPage() {
 
   const handleCalculateRoute = () => {
     calculateRoute(cities);
+    setIsAlgorithmChosen(true);
   };
 
   const handleReset = () => {
@@ -104,6 +100,15 @@ export default function MapPage() {
                   Distance: {totalDistance.toFixed(0)} km
                 </div>
               )}
+              {isAlgorithmChosen && totalDistanceTSP > 0 && (
+                <div
+                  className="absolute left-0 right-0 z-10 ml-40 bg-black bg-opacity-50 py-1 text-center font-bold text-white"
+                  style={{ top: "368px" }} // Adjust this to control height under the top screen border
+                >
+                  Distance: {totalDistanceTSP.toFixed(0)} km
+                </div>
+              )}
+
               {isTourCompleted && (
                 <div
                   className="absolute left-0 right-0 bg-white bg-opacity-50 py-40 text-center font-bold text-white"
@@ -240,6 +245,7 @@ export default function MapPage() {
             <button
               onClick={() => {
                 setMapStep(mapStep - 1);
+                setIsAlgorithmChosen(false);
               }}
               className="w-18 relative my-3 mr-auto mt-8 flex items-center border-2 border-landing2 p-1 pr-2 font-medium"
             >
@@ -251,37 +257,22 @@ export default function MapPage() {
           </div>
         )}
         {mapStep === 3 && (
-          <div>
-            <p>
-              connect the cities to create a circular route. Try zooming in for
-              closer cities.
+          <div className="mx-8 mt-10">
+            <p className="mb-6">
+              Connect the cities to create a circular route! Try zooming in for
+              groups of closer cities.
             </p>
             <button
+              className="w-18 relative mr-auto mt-10 flex border-2 border-landing2 p-1 pr-2 font-medium"
               onClick={() => {
                 toggleTryItYourselfMode();
                 setMapStep(mapStep - 2);
               }}
-              className="w-18 relative my-3 mr-auto mt-8 flex items-center border-2 border-landing2 p-1 pr-2 font-medium"
             >
               <ArrowLeft />
               <span className="text-landing-2 mx-auto ml-1 flex-shrink">
                 Back
               </span>
-            </button>
-          </div>
-        )}
-        {mapStep === 30 && (
-          <div className="m-3 flex items-center justify-around space-x-2 rounded-lg bg-gray-50 p-4">
-            <button
-              className="flex flex-1 items-center justify-center space-x-2 rounded-xl bg-gray-100 px-2 py-3 font-medium text-gray-700 shadow-md transition duration-200 hover:bg-gray-200"
-              onClick={handleReset}
-            >
-              <RefreshCcw className="h-5 w-5" />
-              <span className="text-xs">Reset</span>
-            </button>
-            <button className="flex flex-1 items-center justify-center space-x-2 rounded-xl bg-gray-100 px-2 py-3 font-medium text-gray-700 shadow-md transition duration-200 hover:bg-gray-200">
-              <Globe className="h-5 w-5" />
-              <span className="text-xs">Change Country</span>
             </button>
           </div>
         )}

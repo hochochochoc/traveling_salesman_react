@@ -44,6 +44,7 @@ export const MapPageTSPProvider = ({ children }) => {
       } else if (selectedAlgorithm === "alg2") {
         const result = greedyTSPMap(cities, calculateDistance);
         optimalRoute = result.route;
+
         console.log("worked using greedy heuristic");
       } else if (selectedAlgorithm === "alg3") {
         const result = twoOptTSPMap(cities, calculateDistance);
@@ -52,7 +53,7 @@ export const MapPageTSPProvider = ({ children }) => {
       } else if (selectedAlgorithm === "alg4") {
         const result = twoOptTSPMap(cities, calculateDistance);
         optimalRoute = result.route;
-        console.log("worked using two opt method");
+        console.log("worked using christofides method");
       } else {
         // Implement other algorithms here
         optimalRoute = cities;
