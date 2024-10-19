@@ -59,9 +59,9 @@ const Intro = () => {
             <div className="relative z-10 p-4 text-white">
               <p className="my-10 text-5xl font-extrabold">Where is it used?</p>
               <p className="h-[26rem] text-lg font-semibold">
-                The TSP is used in many contexts where an optimal route has to
-                be drawn that reconnects with the original point, such as in
-                logistics, manufacturing and robotics.
+                The TSP is used in many contexts where an optimal circular route
+                has to be drawn, such as in logistics, manufacturing and
+                robotics.
               </p>
 
               <div className="flex justify-end">

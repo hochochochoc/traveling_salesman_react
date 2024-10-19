@@ -57,7 +57,7 @@ const CountryCard = ({
         >
           <img
             className="h-full w-full object-cover p-2 shadow-lg"
-            src={`/${country}.jpg?height=380&width=280`}
+            src={`/countryImages/${country}.jpg?height=380&width=280`}
             alt={country}
           />
         </div>

@@ -26,22 +26,30 @@ export default function CountryMapsCarousel() {
   const { userLoggedIn } = useAuth();
 
   const handleSearch = async (searchTerm) => {
-    if (searchTerm) {
-      // Capitalize first letter and make the rest lowercase
-      const formattedCountry =
-        searchTerm.charAt(0).toUpperCase() + searchTerm.slice(1).toLowerCase();
-      const success = await setNewCountry(formattedCountry);
+    let formattedCountries;
 
-      if (success) {
-        setSlidePosition(0);
-        setCurrentFlippedIndex(1);
-        setCountryNames(formattedCountry);
-      }
+    if (Array.isArray(searchTerm)) {
+      // If an array is passed (for random countries)
+      formattedCountries = searchTerm;
+    } else if (searchTerm) {
+      // If a single country string is passed
+      const formattedCountry = searchTerm
+        .split(/[\s-]+/)
+        .map(
+          (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase(),
+        )
+        .join(" ")
+        .replace(/\s-\s/g, "-");
+
+      formattedCountries = [formattedCountry];
     } else {
-      setCountryNames(selectedCountries);
-      setSlidePosition(0);
-      setCurrentFlippedIndex(0);
+      // Reset to the original country list if search term is empty
+      formattedCountries = selectedCountries;
     }
+
+    setCountryNames(formattedCountries);
+    setSlidePosition(0);
+    setCurrentFlippedIndex(0);
   };
 
   const flip = useCallback(() => {
@@ -140,21 +148,21 @@ export default function CountryMapsCarousel() {
       </div>
       <div
         ref={carouselRef}
-        className="mx-3 w-full overflow-hidden"
+        className="w-full overflow-hidden"
         style={{
           touchAction: "pan-y",
-          marginLeft: selectedCountries.length === 1 ? 30 : 12,
         }}
       >
         <div
           className="flex space-x-3"
           style={{
-            width: `${selectedCountries.length * 100}%`,
+            width: `${countryNames.length * 100}%`,
             transform: `translateX(${slidePosition}px)`,
+            marginLeft: countryNames.length === 1 ? 30 : 12,
             transition: isSwiping ? "none" : "transform 0.3s ease-out",
           }}
         >
-          {selectedCountries.map((country, index) => (
+          {countryNames.map((country, index) => (
             <div key={country} className="card">
               <CountryCard
                 country={country}

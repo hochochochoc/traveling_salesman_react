@@ -173,14 +173,17 @@ export default function MapPage() {
         {mapStep === 1 && (
           <div>
             <div className="m-3 flex flex-col items-center bg-gray-50 p-4">
-              <div className="mt-16 flex space-x-3">
+              <div className="mt-10 flex space-x-3">
                 <button
                   className={`text-md flex w-full flex-col items-center justify-center px-4 py-3 uppercase shadow-md ${
                     isTryItYourselfMode
                       ? "bg-white text-landing2"
                       : "bg-landing2 text-white"
                   }`}
-                  onClick={toggleTryItYourselfMode}
+                  onClick={() => {
+                    toggleTryItYourselfMode();
+                    setMapStep(3);
+                  }}
                 >
                   {/* <MousePointerClick className="h-5 w-5" /> */}
                   <span className="font-medium">
@@ -201,7 +204,7 @@ export default function MapPage() {
               </div>
 
               <button
-                className="w-18 relative my-8 mr-auto flex items-center border-2 border-landing2 p-1 pr-2 font-medium"
+                className="w-18 relative my-3 mr-auto flex items-center border-2 border-landing2 p-1 pr-2 font-medium"
                 onClick={() => {
                   setMapStep(mapStep - 1);
                 }}
@@ -215,7 +218,7 @@ export default function MapPage() {
           </div>
         )}
         {mapStep === 2 && (
-          <div className="mx-10 mt-16 space-y-3">
+          <div className="mx-8 mt-10 space-y-3">
             <select
               className="w-full border-2 border-gray-200 px-4 py-2 text-gray-700 transition duration-200 focus:border-landing2 focus:outline-none"
               value={selectedAlgorithm}
@@ -237,6 +240,26 @@ export default function MapPage() {
             <button
               onClick={() => {
                 setMapStep(mapStep - 1);
+              }}
+              className="w-18 relative my-3 mr-auto mt-8 flex items-center border-2 border-landing2 p-1 pr-2 font-medium"
+            >
+              <ArrowLeft />
+              <span className="text-landing-2 mx-auto ml-1 flex-shrink">
+                Back
+              </span>
+            </button>
+          </div>
+        )}
+        {mapStep === 3 && (
+          <div>
+            <p>
+              connect the cities to create a circular route. Try zooming in for
+              closer cities.
+            </p>
+            <button
+              onClick={() => {
+                toggleTryItYourselfMode();
+                setMapStep(mapStep - 2);
               }}
               className="w-18 relative my-3 mr-auto mt-8 flex items-center border-2 border-landing2 p-1 pr-2 font-medium"
             >

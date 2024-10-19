@@ -19,7 +19,6 @@ const TravelingProvider = ({ children }) => {
   const [selectedCountries, setSelectedCountries] = useState([
     "Brazil",
     "Spain",
-    "Egypt",
     "Bangladesh",
     "Vietnam",
   ]);
@@ -43,6 +42,9 @@ const TravelingProvider = ({ children }) => {
     Vietnam: { zoom: 4.84, center: { lat: 16.0617, lng: 105.3954 } },
     Fiji: { zoom: 6, center: { lat: -17.7137, lng: 178.065 } },
     Japan: { zoom: 4.4, center: { lat: 39.3123, lng: 138.1315 } },
+    Malaysia: { zoom: 4.2, center: { lat: 4.2105, lng: 108.9758 } },
+    Myanmar: { zoom: 4.4, center: { lat: 19.4162, lng: 95.956 } },
+    Chile: { zoom: 3.1, center: { lat: -38.6751, lng: -72.543 } },
   };
 
   const setNewCountry = async (countryName) => {
