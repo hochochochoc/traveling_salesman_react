@@ -17,8 +17,6 @@ const TravelingProvider = ({ children }) => {
   const [countryFlags, setCountryFlags] = useState({});
   const [countryAreas, setCountryAreas] = useState({});
   const [selectedCountries, setSelectedCountries] = useState([
-    "Canada",
-    "China",
     "Brazil",
     "Spain",
     "Bangladesh",
@@ -49,7 +47,7 @@ const TravelingProvider = ({ children }) => {
     Chile: { zoom: 3.1, center: { lat: -38.6751, lng: -72.543 } },
   };
 
-  const setNewCountry = async (countryName) => {
+  const fetchCountryData = async (countryName) => {
     try {
       const response = await fetch(
         `https://restcountries.com/v3.1/name/${countryName}?fullText=true`,
@@ -60,38 +58,70 @@ const TravelingProvider = ({ children }) => {
         const country = data[0];
         const formattedCountryName = country.name.common;
 
-        // Update all the state objects with the new country data
-        setCountryCenters((prev) => ({
-          ...prev,
-          [formattedCountryName]: fixedValues[formattedCountryName]?.center || {
+        return {
+          name: formattedCountryName,
+          center: fixedValues[formattedCountryName]?.center || {
             lat: country.latlng[0],
             lng: country.latlng[1],
           },
-        }));
-
-        setZoomLevels((prev) => ({
-          ...prev,
-          [formattedCountryName]:
+          zoom:
             fixedValues[formattedCountryName]?.zoom ||
             calculateZoomLevel(country.area),
-        }));
-
-        setCountryFlags((prev) => ({
-          ...prev,
-          [formattedCountryName]: country.flags.png,
-        }));
-
-        setCountryAreas((prev) => ({
-          ...prev,
-          [formattedCountryName]: country.area.toLocaleString(),
-        }));
-
-        setSelectedCountries([formattedCountryName]);
-        return true;
+          flag: country.flags.png,
+          area: country.area.toLocaleString(),
+        };
       }
-      return false;
+      return null;
     } catch (error) {
-      console.error("Error fetching new country data:", error);
+      console.error("Error fetching country data:", error);
+      return null;
+    }
+  };
+
+  const setNewCountries = async (countryNames) => {
+    try {
+      // Convert single country to array if necessary
+      const countries = Array.isArray(countryNames)
+        ? countryNames
+        : [countryNames];
+
+      // Fetch data for all countries in parallel
+      const countryDataPromises = countries.map((country) =>
+        fetchCountryData(country),
+      );
+      const countryDataResults = await Promise.all(countryDataPromises);
+
+      // Filter out any failed requests
+      const validCountryData = countryDataResults.filter(
+        (data) => data !== null,
+      );
+
+      if (validCountryData.length === 0) return false;
+
+      // Update all state objects with the new country data
+      const newCenters = {};
+      const newZooms = {};
+      const newFlags = {};
+      const newAreas = {};
+      const newSelectedCountries = [];
+
+      validCountryData.forEach((country) => {
+        newCenters[country.name] = country.center;
+        newZooms[country.name] = country.zoom;
+        newFlags[country.name] = country.flag;
+        newAreas[country.name] = country.area;
+        newSelectedCountries.push(country.name);
+      });
+
+      setCountryCenters((prev) => ({ ...prev, ...newCenters }));
+      setZoomLevels((prev) => ({ ...prev, ...newZooms }));
+      setCountryFlags((prev) => ({ ...prev, ...newFlags }));
+      setCountryAreas((prev) => ({ ...prev, ...newAreas }));
+      setSelectedCountries(newSelectedCountries);
+
+      return true;
+    } catch (error) {
+      console.error("Error setting new countries:", error);
       return false;
     }
   };
@@ -135,7 +165,7 @@ const TravelingProvider = ({ children }) => {
         setError(error);
         setLoading(false);
       });
-  }, [selectedCountries]);
+  }, []);
 
   return (
     <TravelingContext.Provider
@@ -145,7 +175,7 @@ const TravelingProvider = ({ children }) => {
         countryFlags,
         countryAreas,
         selectedCountries,
-        setNewCountry,
+        setNewCountries,
         loading,
         error,
       }}

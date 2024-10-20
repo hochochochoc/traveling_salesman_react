@@ -43,7 +43,7 @@ const LoadingPopup = ({ estimatedTime }) => {
               fill="none"
             />
             <circle
-              className="stroke-blue-500 transition-all duration-500 ease-in-out"
+              className="stroke-landing2 transition-all duration-500 ease-in-out"
               cx="50"
               cy="50"
               r={radius}
@@ -61,7 +61,7 @@ const LoadingPopup = ({ estimatedTime }) => {
               y="50"
               textAnchor="middle"
               dy="0.3em"
-              className="fill-blue-500 text-2xl font-bold"
+              className="fill-landing2 text-2xl font-bold"
             >
               {Math.round(progress)}%
             </text>

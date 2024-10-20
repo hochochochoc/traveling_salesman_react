@@ -34,6 +34,22 @@ const countryList = [
   "Mexico",
   "Mongolia",
   "Myanmar",
+  "Nigeria",
+  "Pakistan",
+  "Paraguay",
+  "Philippines",
+  "Poland",
+  "Russia",
+  "Spain",
+  "Sudan",
+  "Tanzania",
+  "Thailand",
+  "Turkey",
+  "Ukraine",
+  "United States",
+  "Uruguay",
+  "Venezuela",
+  "Vietnam",
 ];
 
 export default countryList;

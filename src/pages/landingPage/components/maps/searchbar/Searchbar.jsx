@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { Search } from "lucide-react";
+import { Search, RefreshCcw } from "lucide-react";
 import countryList from "./countryList";
-import { RefreshCcw } from "lucide-react";
 
 export default function Searchbar({ onSearch }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -24,12 +23,16 @@ export default function Searchbar({ onSearch }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSearch(searchTerm);
+    if (searchTerm.trim()) {
+      onSearch(searchTerm);
+      setSearchTerm("");
+    }
   };
 
   const getRandomCountries = () => {
-    const shuffled = countryList.sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, 3); // Return 3 random countries
+    const shuffled = [...countryList].sort(() => 0.5 - Math.random());
+    const randomCountries = shuffled.slice(0, 3);
+    onSearch(randomCountries);
   };
 
   return (
@@ -67,10 +70,8 @@ export default function Searchbar({ onSearch }) {
       </div>
       <button
         className="z-50 ml-0"
-        onClick={() => {
-          const randomCountries = getRandomCountries();
-          onSearch(randomCountries);
-        }}
+        onClick={getRandomCountries}
+        aria-label="Get random countries"
       >
         <RefreshCcw className="h-5 w-5 text-gray-500" />
       </button>
