@@ -13,6 +13,7 @@ export const MapPageTSPProvider = ({ children }) => {
   const [totalDistanceTSP, settotalDistanceTSP] = useState(0);
   const [isCalculatingRoute, setIsCalculatingRoute] = useState(false);
   const [isTSPRouteCalculated, setIsTSPRouteCalculated] = useState(false);
+  const [isTSPMode, setIsTSPMode] = useState(false);
 
   const calculateDistance = useCallback((city1, city2) => {
     const R = 6371; // Radius of the Earth in km
@@ -32,10 +33,18 @@ export const MapPageTSPProvider = ({ children }) => {
     return deg * (Math.PI / 180);
   };
 
+  const clearTSPRoute = useCallback(() => {
+    setRoute([]);
+    settotalDistanceTSP(0);
+    setIsTSPRouteCalculated(false);
+    setIsTSPMode(false);
+  }, []);
+
   const calculateRoute = useCallback(
     (cities) => {
       setIsCalculatingRoute(true);
       setIsTSPRouteCalculated(false);
+      setIsTSPMode(true);
 
       let optimalRoute;
       if (selectedAlgorithm === "alg1") {
@@ -44,7 +53,6 @@ export const MapPageTSPProvider = ({ children }) => {
       } else if (selectedAlgorithm === "alg2") {
         const result = greedyTSPMap(cities, calculateDistance);
         optimalRoute = result.route;
-
         console.log("worked using greedy heuristic");
       } else if (selectedAlgorithm === "alg3") {
         const result = twoOptTSPMap(cities, calculateDistance);
@@ -55,7 +63,6 @@ export const MapPageTSPProvider = ({ children }) => {
         optimalRoute = result.route;
         console.log("worked using christofides method");
       } else {
-        // Implement other algorithms here
         optimalRoute = cities;
         console.log("Didn't work");
       }
@@ -84,6 +91,9 @@ export const MapPageTSPProvider = ({ children }) => {
         isTSPRouteCalculated,
         setIsTSPRouteCalculated,
         calculateRoute,
+        isTSPMode,
+        setIsTSPMode,
+        clearTSPRoute,
       }}
     >
       {children}

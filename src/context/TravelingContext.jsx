@@ -186,3 +186,38 @@ const TravelingProvider = ({ children }) => {
 };
 
 export { TravelingProvider, TravelingContext, useTravelingData };
+
+// MONGOLIA
+// Ulaanbaatar
+// Bayankhongor
+// Mörön
+// Khovd
+// Choibalsan
+// Sükhbaatar
+// Öndörkhaan
+// Nalaikh
+// Dalanzadgad
+// Hovd
+// Darkhan
+// Ölgii
+// Ulaangom
+// Tsetserleg
+// Erdenet
+
+// Ulaangom
+// Jargalant
+// Altai Sum
+// Lun
+// Zamiin-Uud
+
+// Dariganga
+// Erdenetsagaan
+// Matad
+// Khalkgol
+// Eg
+
+// Chinggis
+// Baruun-Urt
+// Choir
+// Mandalgovi
+// Arvaikheer

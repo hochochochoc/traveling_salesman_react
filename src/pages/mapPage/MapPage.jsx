@@ -36,6 +36,8 @@ export default function MapPage() {
     isCalculatingRoute,
     calculateRoute,
     totalDistanceTSP,
+    clearTSPRoute,
+    isTSPMode,
   } = useMapPageTSPContext();
 
   const center = countryCenters[country];
@@ -56,8 +58,11 @@ export default function MapPage() {
     setIsAlgorithmChosen(true);
   };
 
-  const handleReset = () => {
-    setIsTSPRouteCalculated(false);
+  const handleMapStepChange = (step) => {
+    if (step !== 2 && isTSPMode) {
+      clearTSPRoute();
+    }
+    setMapStep(step);
   };
 
   return (
@@ -244,7 +249,7 @@ export default function MapPage() {
             </button>
             <button
               onClick={() => {
-                setMapStep(mapStep - 1);
+                handleMapStepChange(mapStep - 1);
                 setIsAlgorithmChosen(false);
               }}
               className="w-18 relative my-3 mr-auto mt-8 flex items-center border-2 border-landing2 p-1 pr-2 font-medium"
