@@ -18,7 +18,7 @@ export default function CountryMapsCarousel() {
   const carouselRef = useRef(null);
   const [startX, setStartX] = useState(0);
   const [isSwiping, setIsSwiping] = useState(false);
-  const [slidePosition, setSlidePosition] = useState(0);
+  const [slidePosition, setSlidePosition] = useState(1);
   const [cardWidth, setCardWidth] = useState(220);
   const [isAutoFlipping, setIsAutoFlipping] = useState(true);
   const [currentFlippedIndex, setCurrentFlippedIndex] = useState(1);

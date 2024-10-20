@@ -50,6 +50,8 @@ const countryList = [
   "Uruguay",
   "Venezuela",
   "Vietnam",
+  "United Kingdom",
+  "Italy",
 ];
 
 export default countryList;

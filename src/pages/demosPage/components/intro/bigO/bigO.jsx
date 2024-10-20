@@ -18,61 +18,68 @@ export default function BigO() {
       .append("g")
       .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    const x = d3.scalePow().exponent(0.5).range([0, width]);
+    // Use linear scale for x-axis from 0 to 20
+    const x = d3.scaleLinear().domain([0, 20]).range([0, width]);
 
-    const y = d3.scalePow().exponent(0.5).range([height, 0]);
+    // Use symlog scale for y-axis to handle both small and large values
+    const y = d3.scaleSymlog().domain([0, 1000]).range([height, 0]).constant(2); // Adjust this value to control the transition point
 
     const line = d3
       .line()
       .x((d) => x(d[0]))
-      .y((d) => y(d[1]));
+      .y((d) => y(d[1]))
+      .curve(d3.curveBasis);
+
+    // Stirling's approximation for factorial
+    const stirlingApprox = (n) => {
+      if (n < 1) return 0;
+      return Math.sqrt(2 * Math.PI * n) * Math.pow(n / Math.E, n);
+    };
 
     const functions = [
       {
         name: "O(1)",
         fn: () => 1,
         color: "#4CAF50",
-        labelPosition: { x: 178, y: 105 }, // Above the O(1) line
+        labelPosition: { x: 178, y: 100 },
       },
       {
         name: "O(log n)",
-        fn: (n) => Math.log2(n),
+        fn: (n) => Math.log2(Math.max(1, n)),
         color: "#2196F3",
-        labelPosition: { x: 178, y: 80 }, // Near end of log curve
+        labelPosition: { x: 178, y: 70 },
       },
       {
         name: "O(n)",
         fn: (n) => n,
         color: "#FFC107",
-        labelPosition: { x: 178, y: 35 }, // Right side of linear curve
+        labelPosition: { x: 178, y: 50 },
       },
       {
         name: "O(n²)",
         fn: (n) => n * n,
         color: "#F44336",
-        labelPosition: { x: 70, y: 15 }, // Top center for quadratic
+        labelPosition: { x: 178, y: 15 },
       },
       {
         name: "O(n!)",
         fn: (n) => {
-          const limit = 5; // Limit to prevent overflow
-          let result = 1;
-          for (let i = 2; i <= Math.min(n, limit); i++) {
-            result *= i;
-            if (result === Infinity) break;
-          }
-          return result;
+          if (n < 1) return 0;
+          return stirlingApprox(n); // Cap at 1000 for visualization
         },
         color: "#9C27B0",
-        labelPosition: { x: 5, y: 15 },
+        labelPosition: { x: 15, y: 15 },
       },
     ];
 
-    x.domain([1, 50]);
-    y.domain([0, 50]);
+    // Create more intuitive tick values for x-axis
+    const xAxis = d3.axisBottom(x).tickValues([0, 5, 10, 15, 20]);
 
-    const xAxis = d3.axisBottom(x).tickValues([1, 2, 5, 10, 20, 30, 40, 50]);
-    const yAxis = d3.axisLeft(y).tickValues([1, 2, 5, 10, 20, 30, 40, 50]);
+    // Create more intuitive tick values for y-axis
+    const yAxis = d3
+      .axisLeft(y)
+      .tickValues([0, 1, 10, 100, 1000])
+      .tickFormat(d3.format(",.0f"));
 
     // Add X axis
     g.append("g")
@@ -97,7 +104,8 @@ export default function BigO() {
       .text("Time Complexity");
 
     functions.forEach((func) => {
-      const data = d3.range(1, 50, 0.2).map((n) => [n, func.fn(n)]);
+      // Generate points including 0
+      const data = d3.range(0, 20, 0.1).map((n) => [n, func.fn(n)]);
 
       const path = g
         .append("path")

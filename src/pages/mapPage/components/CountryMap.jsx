@@ -62,9 +62,6 @@ const CountryMap = React.memo(({ center, zoom, cities }) => {
   } = useMapPageTSPContext();
 
   const citiesZoomLimit = zoom < 2.6 ? 2.4 : zoom < 3.3 ? 1.6 : 1.3;
-  zoom < 3.1
-    ? console.log(`zoom adjusted ${zoom}`)
-    : console.log(`zoom normal ${zoom}`);
 
   useEffect(() => {
     const initializeMap = async () => {
