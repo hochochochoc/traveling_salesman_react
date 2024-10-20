@@ -21,15 +21,7 @@
         // maps not loading properly
         // correct scrolling width adapted based on number of cards
 
-        // disable auto-load of maps -- done
-        // make menu a minimum of mobile friendly -- done
-        // limit sliding to right -- done
-        // borders -- done
-        // slider for countries -- done
-        // fix space between country cards -- done
-        // add information to the cards, what idk like area, continent -- done
-        // custom zoom, coordinates -- done
-         // sidebar/menu from crewlineapp -- done
+        
 
     // Landing
         // copy crewlineapp for landing page minimum
@@ -60,36 +52,6 @@
         // put the paragraphs somewhere else
         // don't have the time appear for a milisecond when switching algorithms
 
-        // change all the names, including prims and landingpage -- done
-        // algorithm should work correctly, with a random vertex?? -- done
-        // add visible lengths, display total cost/weight/length -- done
-        // error where it deletes the graph when pressing start -- done
-        // when changing validation selection, the graph and steps should reset -- done
-        // replace the stupid button icons from w3 -- done
-        // implement text mechanism -- done
-        // make setMobile to make it responsive... buttons, vertices, numbers -- done
-        // insert total length somewhere -- done
-        // implement greedy and nearest neighbor algorithms -- done
-        // change step 0 to start -- done
-        // correct the links to validation and algorithms -- done
-        // replace St with something better -- done
-        // fix bug when saving -- done
-        // responsify total edge weight in graph -- done
-        // fix greedy algorithm -- done
-        // fix texts not appearing for algorithms -- done
-        // fix directions of text in demos -- done
-        // add the algorithm for christofides -- done
-        // write the content of the little texts -- done
-        // show total time with last step -- done
-        // fix 2-opt... -- done
-        // make all algorithms work -- done
-        // secondary edges for first nearest -- done
-        // new paragraphs for twoOpt -- done
-        // change the ui to something better -- done
-        // maybe just try to adjust the chriftofides by secretly applying the twoOpt in the end -- done
-        // should probably keep any changes made to the vertices when changing algorithms -- done
-
-
 
          // optional: show how vertices move from unconnected set to connected one
          // optional: make it so when I change from one algorithm to the next the changed vertices stay in the same location
@@ -102,37 +64,3 @@
     // add ads
 
 
-    // MONGOLIA
-// Ulaanbaatar
-// Bayankhongor
-// Mörön
-// Khovd
-// Choibalsan
-// Sükhbaatar
-// Öndörkhaan
-// Nalaikh
-// Dalanzadgad
-// Hovd
-// Darkhan
-// Ölgii
-// Ulaangom
-// Tsetserleg
-// Erdenet
-
-// Ulaangom -- done
-// Jargalant
-// Altai Sum
-// Lun
-// Zamiin-Uud
-
-// Dariganga
-// Erdenetsagaan
-// Matad
-// Khalkgol
-// Eg
-
-// Chinggis
-// Baruun-Urt
-// Choir
-// Mandalgovi
-// Arvaikheer
