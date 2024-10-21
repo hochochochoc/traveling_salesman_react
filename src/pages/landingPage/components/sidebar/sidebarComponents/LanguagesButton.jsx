@@ -1,21 +1,28 @@
-import React, { useState } from "react";
-import { Languages } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import i18n from "i18next"; // Import i18n directly
+
 const languages = [
   { code: "en", name: "English" },
   { code: "ca", name: "Catalá" },
   { code: "es", name: "Español" },
 ];
 
-const LanguagesButton = ({ onLanguageChange }) => {
+const LanguagesButton = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState(languages[0]);
+  const [selectedLanguage, setSelectedLanguage] = useState(null);
+
+  useEffect(() => {
+    const currentLanguageCode = i18n.language || "en";
+    const currentLanguage = languages.find(
+      (lang) => lang.code === currentLanguageCode,
+    );
+    setSelectedLanguage(currentLanguage);
+  }, []);
 
   const handleLanguageSelect = (language) => {
     setSelectedLanguage(language);
     setIsOpen(false);
-    if (onLanguageChange) {
-      onLanguageChange(language.code);
-    }
+    i18n.changeLanguage(language.code);
   };
 
   return (
@@ -24,7 +31,9 @@ const LanguagesButton = ({ onLanguageChange }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="flex w-full items-center p-2 text-gray-900"
       >
-        <span className="text-2xl font-semibold">{selectedLanguage.name}</span>
+        <span className="text-2xl font-semibold">
+          {selectedLanguage ? selectedLanguage.name : "Loading..."}
+        </span>
       </button>
       {isOpen && (
         <div className="absolute left-0 mt-2 w-48 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">

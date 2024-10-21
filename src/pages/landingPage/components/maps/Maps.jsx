@@ -3,6 +3,7 @@ import { useTravelingData } from "../../../../context/TravelingContext";
 import { useAuth } from "../../../../auth/authContext";
 import CountryCard from "./countryCard/CountryCard";
 import Searchbar from "./searchbar/Searchbar";
+import { useTranslation } from "react-i18next";
 
 export default function CountryMapsCarousel() {
   const {
@@ -12,7 +13,6 @@ export default function CountryMapsCarousel() {
     countryAreas,
     selectedCountries,
     loading,
-    error,
     setNewCountries,
   } = useTravelingData();
   const carouselRef = useRef(null);
@@ -21,24 +21,24 @@ export default function CountryMapsCarousel() {
   const [slidePosition, setSlidePosition] = useState(1);
   const [cardWidth, setCardWidth] = useState(220);
   const [isAutoFlipping, setIsAutoFlipping] = useState(true);
-  const [currentFlippedIndex, setCurrentFlippedIndex] = useState(1);
+  const [isAllFlipped, setIsAllFlipped] = useState(false);
   const [countryNames, setCountryNames] = useState(selectedCountries);
   const { userLoggedIn } = useAuth();
+  const { t } = useTranslation();
+
+  // Initialize cards with alternating faces
+  const shouldShowFront = (index) => index % 2 === 0;
 
   const handleSearch = async (searchTerm) => {
     let formattedCountries;
     let success = true;
 
     if (Array.isArray(searchTerm)) {
-      // Handle multiple random countries
-      const countriesToFetch = [];
-      for (const country of searchTerm) {
-        if (!selectedCountries.includes(country) && !countryCenters[country]) {
-          countriesToFetch.push(country);
-        }
-      }
+      const countriesToFetch = searchTerm.filter(
+        (country) =>
+          !selectedCountries.includes(country) && !countryCenters[country],
+      );
 
-      // Fetch data for all new countries
       if (countriesToFetch.length > 0) {
         const results = await Promise.all(
           countriesToFetch.map((country) => setNewCountries(country)),
@@ -48,7 +48,6 @@ export default function CountryMapsCarousel() {
 
       formattedCountries = success ? searchTerm : selectedCountries;
     } else if (searchTerm) {
-      // Handle single country search
       const formattedCountry = searchTerm
         .split(/[\s-]+/)
         .map(
@@ -63,38 +62,39 @@ export default function CountryMapsCarousel() {
 
       formattedCountries = success ? [formattedCountry] : selectedCountries;
     } else {
-      // Reset to the original country list if search term is empty
       formattedCountries = selectedCountries;
     }
 
     if (success) {
       setCountryNames(formattedCountries);
       setSlidePosition(0);
-      setCurrentFlippedIndex(0);
+      setIsAllFlipped(false);
       setIsAutoFlipping(true);
     }
   };
 
-  const flip = useCallback(() => {
+  const flipAllCards = useCallback(() => {
     if (isAutoFlipping) {
-      setCurrentFlippedIndex((prev) => (prev + 1) % countryNames.length);
+      setIsAllFlipped((prev) => !prev);
     }
-  }, [isAutoFlipping, countryNames.length]);
+  }, [isAutoFlipping]);
 
   useEffect(() => {
-    const flipInterval = setInterval(flip, 5000);
+    const flipInterval = setInterval(flipAllCards, 8000);
     return () => clearInterval(flipInterval);
-  }, [flip]);
+  }, [flipAllCards]);
 
-  const handleManualFlip = (index) => {
-    setCurrentFlippedIndex(index);
+  const handleManualFlip = () => {
+    setIsAllFlipped((prev) => !prev);
     setIsAutoFlipping(false);
 
+    // Resume auto-flipping after a delay
     setTimeout(() => {
       setIsAutoFlipping(true);
     }, 600);
   };
 
+  // Touch handling setup
   useEffect(() => {
     const carousel = carouselRef.current;
     const singleCard = carousel?.querySelector(".card");
@@ -146,7 +146,7 @@ export default function CountryMapsCarousel() {
     };
   }, [isSwiping, startX, slidePosition, cardWidth]);
 
-  // Wait for all country data to be loaded
+  // Check if all country data is loaded
   const allDataLoaded = countryNames.every(
     (country) =>
       countryCenters[country] && zoomLevels[country] && countryFlags[country],
@@ -156,11 +156,9 @@ export default function CountryMapsCarousel() {
     <div className="border-b border-black">
       <div className="bg-landing2 px-3 pt-4 text-white">
         <div className="pb-10 text-5xl font-bold uppercase">
-          Choose a country
+          {t("Chooseacountry")}
         </div>
-        <div className="pb-2 text-sm">
-          Select a country to try out the algorithms.
-        </div>
+        <div className="pb-2 text-sm">{t("Selectacountry")}</div>
       </div>
       <div className="bg-egg px-6 py-1">
         <Searchbar onSearch={handleSearch} />
@@ -168,9 +166,7 @@ export default function CountryMapsCarousel() {
       <div
         ref={carouselRef}
         className="w-full overflow-hidden"
-        style={{
-          touchAction: "pan-y",
-        }}
+        style={{ touchAction: "pan-y" }}
       >
         <div
           className="flex space-x-3"
@@ -187,7 +183,9 @@ export default function CountryMapsCarousel() {
                 <CountryCard
                   country={country}
                   index={index}
-                  isFlipped={currentFlippedIndex === index}
+                  isFlipped={
+                    shouldShowFront(index) ? isAllFlipped : !isAllFlipped
+                  }
                   onFlip={handleManualFlip}
                   countryCenters={countryCenters}
                   zoomLevels={zoomLevels}

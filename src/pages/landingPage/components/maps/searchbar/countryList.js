@@ -52,6 +52,19 @@ const countryList = [
   "Vietnam",
   "United Kingdom",
   "Italy",
+  "Australia",
+  "Cuba",
+  "Ecuador",
+  "Finland",
+  "Greece",
+  "Hungary",
+  "Madagascar",
+  "Namibia",
+  "Nepal",
+  "Netherlands",
+  "Norway",
+  "Oman",
+  "Portugal",
 ];
 
 export default countryList;

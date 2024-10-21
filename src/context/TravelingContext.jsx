@@ -45,6 +45,13 @@ const TravelingProvider = ({ children }) => {
     Malaysia: { zoom: 4.2, center: { lat: 4.2105, lng: 108.9758 } },
     Myanmar: { zoom: 4.4, center: { lat: 19.4162, lng: 95.956 } },
     Chile: { zoom: 3.1, center: { lat: -38.6751, lng: -72.543 } },
+    Nigeria: { zoom: 4.9, center: { lat: 9.082, lng: 8.6753 } },
+    Portugal: { zoom: 5.7, center: { lat: 39.3999, lng: -8.2245 } },
+    Ghana: { zoom: 5.8, center: { lat: 7.9465, lng: -1.0232 } },
+    Norway: { zoom: 3.5, center: { lat: 65.472, lng: 14.4689 } },
+    Guatemala: { zoom: 6.5, center: { lat: 15.7835, lng: -90.2308 } },
+    Finland: { zoom: 4.1, center: { lat: 65.5241, lng: 25.7482 } },
+    Benin: { zoom: 6.2, center: { lat: 9.3077, lng: 2.3158 } },
   };
 
   const fetchCountryData = async (countryName) => {

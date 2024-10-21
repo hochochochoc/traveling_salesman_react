@@ -1,6 +1,5 @@
 import React from "react";
 import Header from "./components/header/Header";
-import Algorithms from "./components/algorithms/Algorithms";
 import CountryMapsCarousel from "./components/maps/Maps";
 import Demos from "./components/demos/Demos";
 
@@ -14,8 +13,6 @@ export default function MenuPage() {
         <CountryMapsCarousel />
 
         <Demos />
-
-        <Algorithms />
       </div>
     </div>
   );

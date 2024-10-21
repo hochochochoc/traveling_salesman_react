@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -9,20 +10,7 @@ export default function LandingPage() {
   const controls1 = useAnimation();
   const controls2 = useAnimation();
   const controls3 = useAnimation();
-
-  const buttonAnimation = (startX, startY) => ({
-    initial: { x: startX, y: startY },
-    animate: {
-      x: `calc(${startX} + 57vw)`,
-      y: startY,
-      transition: {
-        duration: 25.0318,
-        ease: "linear",
-        repeat: Infinity,
-        repeatType: "loop",
-      },
-    },
-  });
+  const { t } = useTranslation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -47,41 +35,6 @@ export default function LandingPage() {
     }
   }, [isReady, controls1, controls2, controls3]);
 
-  const ButtonComponent = ({ controls, startX, startY, text, id }) => (
-    <motion.button
-      className="rounded bg-transparent py-1 font-bold"
-      style={{
-        color: "black",
-        textShadow:
-          "1px 1px 0 white, -1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white",
-      }}
-      initial="initial"
-      animate={controls}
-      variants={buttonAnimation(startX, startY)}
-      onClick={() => {
-        navigate("/demos", {
-          state: {
-            activeSection: "algorithms",
-            algorithmSelection: id,
-            validationSelection: "Prims",
-          },
-        });
-      }}
-    >
-      <span
-        className="px-1"
-        style={{
-          color: "white",
-          textShadow:
-            "1px 1px 0 black, -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black",
-        }}
-      >
-        •
-      </span>
-      {text}
-    </motion.button>
-  );
-
   return (
     <div className="relative min-h-screen overflow-y-auto overflow-x-hidden">
       <video
@@ -92,29 +45,7 @@ export default function LandingPage() {
         muted
         className="fixed inset-0 h-full w-full object-cover"
       />
-      <div className="fixed left-0 top-0 z-50 h-1/2 w-full">
-        <ButtonComponent
-          controls={controls1}
-          startX="1vw"
-          startY="330%"
-          text="Christofides"
-          id="Christofides"
-        />
-        <ButtonComponent
-          controls={controls2}
-          startX="5vw"
-          startY="520%"
-          text="Nearest Neighbor"
-          id="Nearest"
-        />
-        <ButtonComponent
-          controls={controls3}
-          startX="-93vw"
-          startY="490%"
-          text="2-Opt"
-          id="TwoOpt"
-        />
-      </div>
+
       <div className="fixed left-0 right-0 top-0 z-30 flex justify-center pt-6">
         <h1 className="font-semibold text-egg">TSP EXPLORER</h1>
       </div>
@@ -128,21 +59,12 @@ export default function LandingPage() {
               style={{ top: "8%" }}
             ></div>
             <h3 className="relative z-10 px-2 text-4xl text-egg">
-              VISUALIZING OPTIMIZATION
+              {t("VISUALIZINGOPTIMIZATION")}
             </h3>
 
             <div className="relative z-10 px-4 text-egg">
-              <p className="mt-4">
-                Welcome to TSP Explorer, where we bring the Traveling Salesman
-                Problem to life through interactive demos, visual maps, and
-                algorithm codes. Explore optimization solutions and learn at
-                your own pace.
-              </p>
-              <p className="mt-2 pb-12 text-egg">
-                Try your hand at solving the problem, discover new algorithms,
-                and deepen your understanding of route optimization in a fun,
-                visual way.
-              </p>
+              <p className="mt-4">{t("welcome_message_1")}</p>
+              <p className="mt-2 pb-12 text-egg">{t("welcome_message_2")}</p>
             </div>
           </div>
         </div>

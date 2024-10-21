@@ -1,10 +1,11 @@
 import React from "react";
-import { Info } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const AboutButton = () => {
+  const { t } = useTranslation();
   return (
     <a href={"/about"} className="flex items-center p-2 text-gray-900">
-      <span className="text-2xl font-semibold">About</span>
+      <span className="text-2xl font-semibold">{t("About")}</span>
     </a>
   );
 };

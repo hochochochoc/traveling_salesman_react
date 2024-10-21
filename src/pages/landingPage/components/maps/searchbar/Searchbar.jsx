@@ -1,11 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { Search, RefreshCcw } from "lucide-react";
 import countryList from "./countryList";
+import { useTranslation } from "react-i18next";
 
 export default function Searchbar({ onSearch }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const inputRef = useRef(null);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (isExpanded && inputRef.current) {
@@ -50,7 +52,7 @@ export default function Searchbar({ onSearch }) {
             <input
               ref={inputRef}
               type="text"
-              placeholder="Select a country..."
+              placeholder={t("search_country")}
               value={searchTerm}
               onChange={handleSearchChange}
               className={`w-[270px] py-2 pl-4 pr-4 outline-none transition-all duration-200 ease-in-out ${
@@ -69,7 +71,7 @@ export default function Searchbar({ onSearch }) {
         </form>
       </div>
       <button
-        className="z-50 ml-0"
+        className="z-40 ml-0"
         onClick={getRandomCountries}
         aria-label="Get random countries"
       >

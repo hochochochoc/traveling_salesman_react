@@ -44,9 +44,9 @@ const CountryCard = ({
       }}
     >
       <div
-        className="duration-6000 relative h-full w-full transition-transform"
+        className="duration-7000 relative h-full w-full transition-transform"
         style={{
-          transition: "transform 0.6s",
+          transition: "transform 0.7s",
           transformStyle: "preserve-3d",
           transform: isFlipped ? "rotateY(180deg)" : "",
         }}

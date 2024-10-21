@@ -6,7 +6,8 @@ import { useMapPageTSPContext } from "./context/MapPageTSPContext";
 import CountryMap from "./components/CountryMap";
 import { useTravelingData } from "../../context/TravelingContext";
 import LoadingPopup from "./components/LoadingPopup";
-import { div } from "framer-motion/client";
+import StepIndicator from "./components/StepIndicator";
+import { useTranslation } from "react-i18next";
 
 export default function MapPage() {
   const [searchParams] = useSearchParams();
@@ -30,7 +31,6 @@ export default function MapPage() {
   } = useMapPageContext();
 
   const {
-    setIsTSPRouteCalculated,
     selectedAlgorithm,
     setSelectedAlgorithm,
     isCalculatingRoute,
@@ -39,6 +39,8 @@ export default function MapPage() {
     clearTSPRoute,
     isTSPMode,
   } = useMapPageTSPContext();
+
+  const { t } = useTranslation();
 
   const center = countryCenters[country];
   const zoom =
@@ -177,6 +179,9 @@ export default function MapPage() {
                 <MapPin className="mr-2 h-4 w-4" />
                 Add Cities to Map
               </button>
+              <div>
+                <StepIndicator currentStep={mapStep} />
+              </div>
             </div>
           </div>
         )}
@@ -196,11 +201,7 @@ export default function MapPage() {
                   }}
                 >
                   {/* <MousePointerClick className="h-5 w-5" /> */}
-                  <span className="font-medium">
-                    {isTryItYourselfMode
-                      ? "Exit Try It Yourself"
-                      : "Try It Yourself"}
-                  </span>
+                  <span className="font-medium">{t("try_it_yourself")}</span>
                 </button>
 
                 <button
@@ -221,9 +222,12 @@ export default function MapPage() {
               >
                 <ArrowLeft />
                 <span className="text-landing-2 mx-auto ml-1 flex-shrink">
-                  Back
+                  {t("Back")}
                 </span>
               </button>
+            </div>
+            <div>
+              <StepIndicator currentStep={mapStep} />
             </div>
           </div>
         )}
@@ -247,6 +251,7 @@ export default function MapPage() {
             >
               Choose the algorithm
             </button>
+
             <button
               onClick={() => {
                 handleMapStepChange(mapStep - 1);
@@ -256,17 +261,17 @@ export default function MapPage() {
             >
               <ArrowLeft />
               <span className="text-landing-2 mx-auto ml-1 flex-shrink">
-                Back
+                {t("Back")}
               </span>
             </button>
+            <div>
+              <StepIndicator currentStep={mapStep} />
+            </div>
           </div>
         )}
         {mapStep === 3 && (
           <div className="mx-8 mt-10">
-            <p className="mb-6">
-              Connect the cities to create a circular route! Try zooming in for
-              groups of closer cities.
-            </p>
+            <p className="mb-6">{t("connect_the_cities")}</p>
             <button
               className="w-18 relative mr-auto mt-10 flex border-2 border-landing2 p-1 pr-2 font-medium"
               onClick={() => {
@@ -276,9 +281,12 @@ export default function MapPage() {
             >
               <ArrowLeft />
               <span className="text-landing-2 mx-auto ml-1 flex-shrink">
-                Back
+                {t("Back")}
               </span>
             </button>
+            <div>
+              <StepIndicator currentStep={mapStep} />
+            </div>
           </div>
         )}
       </div>

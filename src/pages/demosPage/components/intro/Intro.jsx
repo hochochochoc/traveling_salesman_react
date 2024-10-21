@@ -60,7 +60,7 @@ const Intro = () => {
             <video
               className="absolute inset-0 z-0 h-full w-full rounded-xl object-cover"
               ref={videoRef}
-              src="/intro_8.mp4"
+              src="/intro_8_v2.mp4"
               autoPlay
               loop
               muted

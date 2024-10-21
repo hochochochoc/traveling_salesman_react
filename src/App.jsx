@@ -2,7 +2,6 @@ import React from "react";
 import MenuPage from "./pages/landingPage/MenuPage";
 import MapPage from "./pages/mapPage/MapPage";
 import DemosPage from "./pages/demosPage/DemosPage";
-import ResultsPage from "./pages/resultsPage/ResultsPage";
 import LandingPage from "./pages/destinationPage/LandingPage";
 import { Route, Routes } from "react-router-dom";
 import { DemosProvider } from "./pages/demosPage/context/GraphContext";
@@ -39,7 +38,6 @@ function App() {
             </DemosProvider>
           }
         />
-        <Route path="/results" element={<ResultsPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
       </Routes>

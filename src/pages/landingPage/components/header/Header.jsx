@@ -4,12 +4,14 @@ import { Menu } from "lucide-react";
 import Sidebar from "../sidebar/Sidebar";
 import { doSignOut } from "../../../../firebase/auth";
 import { useAuth } from "../../../../auth/authContext";
+import { useTranslation } from "react-i18next";
 
 export default function Header() {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [borderAnimation, setBorderAnimation] = useState(false);
   const { userLoggedIn } = useAuth();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -37,7 +39,7 @@ export default function Header() {
                 borderAnimation ? "before:w-full" : "before:w-0"
               }`}
             >
-              Log out
+              {t("Log_out")}
             </button>
           ) : (
             <button
@@ -48,7 +50,7 @@ export default function Header() {
                 borderAnimation ? "before:w-full" : "before:w-0"
               }`}
             >
-              Log in
+              {t("Log_in")}
             </button>
           )}
 

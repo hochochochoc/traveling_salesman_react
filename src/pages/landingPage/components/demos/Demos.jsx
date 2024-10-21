@@ -1,17 +1,18 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function Demos() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   return (
     <div className="flex flex-col border-b border-black text-black">
       <div className="bg-landing2 pt-4 text-white">
-        <p className="ml-3 pb-10 text-5xl font-bold uppercase">How it works</p>
-        <p className="mx-3 pb-2 text-sm">
-          Understand the logic behind the algorithms for solving the TSP and
-          their validation.
+        <p className="ml-3 pb-10 text-5xl font-bold uppercase">
+          {t("how_it_works")}
         </p>
+        <p className="mx-3 pb-2 text-sm">{t("demos_text")}</p>
       </div>
 
       <img
