@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Header from "./components/header/Header";
 import CountryMapsCarousel from "./components/maps/Maps";
 import Demos from "./components/demos/Demos";
-import MobileMenu from "../components/menu";
+import MobileMenu from "../components/Menu";
 
 export default function MenuPage() {
   const [mapState, setMapState] = useState("countries");

@@ -8,7 +8,7 @@ import { DemosProvider } from "./pages/demosPage/context/GraphContext";
 import "./index.css";
 import { MapPageProvider } from "./pages/mapPage/context/MapPageContext";
 import { MapPageTSPProvider } from "./pages/mapPage/context/MapPageTSPContext";
-
+import TutorialPage from "./pages/tutorialPage/TutorialPage";
 import { AuthProvider } from "./auth/authContext";
 import Login from "./auth/login/login";
 import Register from "./auth/register/register";
@@ -20,6 +20,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/menu" element={<MenuPage />} />
+        <Route path="/tutorial" element={<TutorialPage />} />
         <Route
           path="/map"
           element={

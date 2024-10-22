@@ -7,7 +7,12 @@ const MobileMenu = () => {
   return (
     <div className="fixed bottom-0 left-0 w-full rounded-lg bg-landing2 shadow-lg">
       <div className="flex items-center justify-around rounded-full p-2">
-        <button className="flex flex-col items-center text-gray-600">
+        <button
+          className="flex flex-col items-center text-gray-600"
+          onClick={() => {
+            navigate("/tutorial", {});
+          }}
+        >
           <Presentation className="h-6 w-6" />
           <span className="mt-1 text-xs">Tutorial</span>
         </button>
