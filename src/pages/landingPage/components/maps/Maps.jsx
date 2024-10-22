@@ -154,7 +154,7 @@ export default function CountryMapsCarousel() {
 
   return (
     <div className="border-b border-black">
-      <div className="px-3 pt-2 text-white">
+      <div className="px-8 pt-2 text-white">
         <div className="text-2xl font-bold uppercase">
           {t("Chooseacountry")}
         </div>

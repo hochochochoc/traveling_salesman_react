@@ -1,9 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function Header() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <>
@@ -13,11 +15,11 @@ export default function Header() {
             navigate("/menu");
           }}
         >
-          <ArrowLeft className="text-black" />
+          <ArrowLeft className="text-white" />
         </button>
       </div>
       <div className="flex items-center text-lg font-extrabold text-white">
-        How It Works
+        {t("how_it_works")}
       </div>
       <div></div>
     </>

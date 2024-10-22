@@ -140,170 +140,170 @@ export default function MapPage() {
 
       <div className="flex-grow overflow-y-auto">
         {mapStep === 0 && (
-          <div className="m-3 p-4">
-            <p className="text-lg font-bold text-white">{t("step_1")}</p>
-            <div className="mb-3 mr-1 flex items-center justify-between">
-              <label
-                htmlFor="citiesSlider"
-                className="text-xl font-light text-white"
-              >
-                Number to be added:
-              </label>
-              <span className="text-lg text-white">{citiesToBeAdded}</span>
-            </div>
+          <div className="mx-3 flex min-h-[200px] flex-col">
+            <div className="flex flex-col p-2">
+              <p className="mb-2 text-lg font-bold text-white">{t("step_1")}</p>
+              <div className="mb-1 flex items-center justify-between">
+                <label
+                  htmlFor="citiesSlider"
+                  className="mb-2 text-sm text-white"
+                >
+                  {t("number_added")}
+                </label>
+                <span className="text-sm text-white">{citiesToBeAdded}</span>
+              </div>
 
-            <div className="relative pb-1 pt-14" ref={sliderRef}>
-              <div className="absolute left-0 top-0 h-6 w-full rounded-full border border-landing3"></div>
-              <div
-                className="absolute left-0 top-0 h-6 rounded-l-full bg-landing3"
-                style={{ width: `${(citiesToBeAdded / 30) * 100}%` }}
-              ></div>
-              <div
-                className="absolute top-[-4px] h-8 w-8 rounded-full border-2 border-landing3 bg-white shadow-md"
-                style={{ left: `${getThumbPosition()}px` }}
-              ></div>
-              <input
-                className="absolute left-0 top-0 h-6 w-full cursor-pointer opacity-0"
-                type="range"
-                id="citiesSlider"
-                min="4"
-                max="30"
-                value={citiesToBeAdded}
-                onChange={handleSliderChange}
-              />
+              <div className="relative pb-1 pt-8" ref={sliderRef}>
+                <div className="absolute left-0 top-0 h-6 w-full rounded-full border border-landing3"></div>
+                <div
+                  className="absolute left-0 top-0 h-6 rounded-l-full bg-landing3"
+                  style={{ width: `${(citiesToBeAdded / 30) * 100}%` }}
+                ></div>
+                <div
+                  className="absolute top-[-4px] h-8 w-8 rounded-full border-2 border-landing3 bg-white shadow-md"
+                  style={{ left: `${getThumbPosition()}px` }}
+                ></div>
+                <input
+                  className="absolute left-0 top-0 h-4 w-full cursor-pointer opacity-0"
+                  type="range"
+                  id="citiesSlider"
+                  min="4"
+                  max="30"
+                  value={citiesToBeAdded}
+                  onChange={handleSliderChange}
+                />
+              </div>
 
               <button
-                className="mt-1 flex w-full items-center justify-center rounded-lg border border-gray-500 bg-landing2 px-4 py-3 text-sm font-medium tracking-wide text-white"
+                className="mx-auto mt-2 rounded-full border border-gray-500 bg-landing2 px-3 py-1.5 text-sm text-white"
                 onClick={() => {
                   fetchCities(country, citiesToBeAdded);
                   setMapStep(1);
                 }}
               >
-                <MapPin className="mr-2 h-4 w-4" />
-                Add Cities to Map
+                <MapPin className="mr-1 inline h-3 w-3" />
+                {t("add_to_map")}
               </button>
-              <div>
-                <StepIndicator currentStep={mapStep} />
-              </div>
+            </div>
+
+            <div className="mt-auto px-2 pb-2">
+              <StepIndicator currentStep={mapStep} />
             </div>
           </div>
         )}
+
         {mapStep === 1 && (
-          <div>
-            <div className="mx-3 mt-3 flex flex-col items-center px-4 pt-4">
-              <p className="mr-auto text-lg font-bold text-white">
-                {t("step_2")}
-              </p>
-              <div className="mt-4 flex space-x-3">
+          <div className="mx-3 flex min-h-[200px] flex-col">
+            <div className="p-2">
+              <p className="mb-2 text-lg font-bold text-white">{t("step_2")}</p>
+              <div className="flex gap-2">
                 <button
-                  className="text-md flex w-full flex-col items-start justify-center space-y-1 rounded-lg border border-gray-500 bg-landing2 px-4 py-3 text-white shadow-md"
+                  className="flex-1 rounded-lg border border-gray-500 bg-landing2 p-2 text-sm text-white"
                   onClick={() => {
                     toggleTryItYourselfMode();
                     setMapStep(3);
                   }}
                 >
-                  <MousePointerClick className="h-8 w-8 rounded-xl border border-landing3 bg-landing3 p-1" />
-                  <div className="flex items-center justify-between space-x-3">
-                    <span className="text-start text-sm font-medium">
+                  <MousePointerClick className="mb-1 h-6 w-6 rounded-lg border border-landing3 bg-landing3 p-1" />
+                  <div className="flex items-center justify-between">
+                    <span className="text-start text-sm">
                       {t("try_it_yourself")}
                     </span>
-                    <ArrowRight className="h-4 w-4" />
+                    <ArrowRight className="h-3 w-3" />
                   </div>
                 </button>
 
                 <button
-                  className="text-md flex w-full flex-col items-start justify-center space-y-1 rounded-lg border border-gray-500 bg-landing2 px-4 py-3 text-white shadow-md"
-                  onClick={() => {
-                    setMapStep(2);
-                  }}
+                  className="flex-1 rounded-lg border border-gray-500 bg-landing2 p-2 text-sm text-white"
+                  onClick={() => setMapStep(2)}
                 >
-                  <Cpu className="h-8 w-8 rounded-xl border border-landing3 bg-landing3 p-1" />
-                  <div className="flex items-center justify-between space-x-3">
-                    <span className="text-start text-sm font-medium">
+                  <Cpu className="mb-1 h-6 w-6 rounded-lg border border-landing3 bg-landing3 p-1" />
+                  <div className="flex items-center justify-between">
+                    <span className="text-start text-sm">
                       {t("choose_algorithm")}
                     </span>
-                    <ArrowRight className="h-5 w-5" />
+                    <ArrowRight className="h-3 w-3" />
                   </div>
                 </button>
               </div>
+            </div>
+
+            <div className="mt-auto px-2 pb-2">
+              <button
+                className="mb-2 flex items-center rounded-lg border border-gray-500 bg-landing2 px-2 py-1 text-sm text-white"
+                onClick={() => setMapStep(mapStep - 1)}
+              >
+                <ArrowLeft className="h-3 w-3" />
+                <span className="ml-1">{t("Back")}</span>
+              </button>
+              <StepIndicator currentStep={mapStep} />
+            </div>
+          </div>
+        )}
+
+        {mapStep === 2 && (
+          <div className="mx-3 flex min-h-[200px] flex-col">
+            <div className="flex flex-col p-2">
+              <p className="mb-2 text-lg font-bold text-white">
+                {t("step_3_algorithm")}
+              </p>
+
+              <select
+                className="mx-auto mb-2 rounded-lg border border-gray-500 px-2 py-1 text-sm text-gray-700"
+                value={selectedAlgorithm}
+                onChange={handleAlgorithmChange}
+              >
+                <option value="alg1">{t("nearest_neighbor")}</option>
+                <option value="alg2">{t("greedy")}</option>
+                <option value="alg3">2-Opt</option>
+                <option value="alg4">Christofides</option>
+              </select>
 
               <button
-                className="relative my-3 mr-auto flex w-36 items-center rounded-lg border border-gray-500 bg-landing2 p-1 pr-2 font-medium text-white"
-                onClick={() => {
-                  setMapStep(mapStep - 1);
-                }}
+                className="mx-auto rounded-full border border-gray-500 bg-landing2 px-3 py-1.5 text-sm text-white"
+                onClick={handleCalculateRoute}
+                disabled={isCalculatingRoute}
               >
-                <ArrowLeft className="ml-1 h-4 w-4" />
-                <span className="text-landing-2 mx-auto ml-2 flex-shrink">
-                  {t("Back")}
-                </span>
+                {t("calculate")}
               </button>
             </div>
-            <div>
+
+            <div className="mt-auto px-2 pb-2">
+              <button
+                onClick={() => {
+                  handleMapStepChange(mapStep - 1);
+                  setIsAlgorithmChosen(false);
+                }}
+                className="mb-2 flex items-center rounded-lg border border-gray-500 bg-landing2 px-2 py-1 text-sm text-white"
+              >
+                <ArrowLeft className="h-3 w-3" />
+                <span className="ml-1">{t("Back")}</span>
+              </button>
               <StepIndicator currentStep={mapStep} />
             </div>
           </div>
         )}
-        {mapStep === 2 && (
-          <div className="m-3 space-y-3 p-4">
-            <p className="text-lg font-bold text-white">
-              {t("step_3_algorithm")}
-            </p>
 
-            <select
-              className="w-full rounded-lg border border-gray-500 px-4 py-2 text-gray-700"
-              value={selectedAlgorithm}
-              onChange={handleAlgorithmChange}
-            >
-              <option value="alg1">Nearest Neighbor Method</option>
-              <option value="alg2">Greedy Heuristic</option>
-              <option value="alg3">2-Opt</option>
-              <option value="alg4">Christofides</option>
-            </select>
-
-            <button
-              className="w-full rounded-lg border border-gray-500 bg-landing2 px-4 py-3 font-medium text-white shadow-md"
-              onClick={handleCalculateRoute}
-              disable={isCalculatingRoute}
-            >
-              Choose the algorithm
-            </button>
-
-            <button
-              onClick={() => {
-                handleMapStepChange(mapStep - 1);
-                setIsAlgorithmChosen(false);
-              }}
-              className="relative my-3 mr-auto mt-8 flex w-36 items-center rounded-lg border border-gray-500 bg-landing2 p-1 pr-2 font-medium"
-            >
-              <ArrowLeft className="ml-1 h-4 w-4 text-white" />
-              <span className="text-landing-2 mx-auto ml-2 flex-shrink text-white">
-                {t("Back")}
-              </span>
-            </button>
-            <div>
-              <StepIndicator currentStep={mapStep} />
-            </div>
-          </div>
-        )}
         {mapStep === 3 && (
-          <div className="m-3 p-4 text-white">
-            <p className="text-lg font-bold text-white">{t("step_3_diy")}</p>
+          <div className="mx-3 flex min-h-[200px] flex-col">
+            <div className="p-2">
+              <p className="mb-2 text-lg font-bold text-white">
+                {t("step_3_diy")}
+              </p>
+              <p className="text-sm text-white">{t("connect_the_cities")}</p>
+            </div>
 
-            <p className="mb-6">{t("connect_the_cities")}</p>
-            <button
-              className="relative my-3 mr-auto mt-8 flex w-36 items-center rounded-lg border border-gray-500 bg-landing2 p-1 pr-2 font-medium"
-              onClick={() => {
-                toggleTryItYourselfMode();
-                setMapStep(mapStep - 2);
-              }}
-            >
-              <ArrowLeft className="ml-1 h-4 w-4" />
-              <span className="text-landing-2 mx-auto ml-2 flex-shrink">
-                {t("Back")}
-              </span>
-            </button>
-            <div>
+            <div className="mt-auto px-2 pb-2">
+              <button
+                className="mb-2 flex items-center rounded-lg border border-gray-500 bg-landing2 px-2 py-1 text-sm text-white"
+                onClick={() => {
+                  toggleTryItYourselfMode();
+                  setMapStep(mapStep - 2);
+                }}
+              >
+                <ArrowLeft className="h-3 w-3" />
+                <span className="ml-1">{t("Back")}</span>
+              </button>
               <StepIndicator currentStep={mapStep} />
             </div>
           </div>

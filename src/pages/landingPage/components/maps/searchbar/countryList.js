@@ -47,7 +47,7 @@ const countryList = [
   "Turkey",
   "Ukraine",
   "United States",
-  "Uruguay",
+  // "Uruguay",
   "Venezuela",
   "Vietnam",
   "United Kingdom",
