@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import { DemosContext } from "./context/GraphContext";
 import RenderOptions from "./components/options/RenderOptions";
 import Intro from "./components/intro/Intro";
-import MobileMenu from "../components/menu";
+import MobileMenu from "../components/Menu";
 
 export default function DemosPage() {
   const {
