@@ -55,7 +55,7 @@ export default function Searchbar({ onSearch }) {
               placeholder={t("search_country")}
               value={searchTerm}
               onChange={handleSearchChange}
-              className={`w-[270px] py-2 pl-4 pr-4 outline-none transition-all duration-200 ease-in-out ${
+              className={`w-[250px] py-2 pl-4 pr-4 outline-none transition-all duration-200 ease-in-out ${
                 isExpanded ? "opacity-100" : "w-0 opacity-0"
               }`}
             />
@@ -75,7 +75,7 @@ export default function Searchbar({ onSearch }) {
         onClick={getRandomCountries}
         aria-label="Get random countries"
       >
-        <RefreshCcw className="h-5 w-5 text-gray-300" />
+        <RefreshCcw className="mr-4 h-5 w-5 text-gray-300" />
       </button>
     </div>
   );

@@ -47,7 +47,7 @@ export default function LandingPage() {
       />
 
       <div className="fixed left-0 right-0 top-0 z-30 flex justify-center pt-6">
-        <h1 className="font-semibold text-egg">TSP EXPLORER</h1>
+        <h1 className="font-semibold text-white">TSP EXPLORER</h1>
       </div>
 
       <div className="relative z-10 min-h-[125vh] w-auto py-4 pt-16">
@@ -78,16 +78,16 @@ export default function LandingPage() {
         }}
       >
         <button
-          onClick={() => navigate("/menu")}
-          className="text-md w-64 cursor-pointer border-4 border-blue-400 bg-blue-400 px-4 py-2 font-bold text-white transition-colors hover:bg-white hover:text-black"
+          onClick={() => navigate("/tutorial")}
+          className="text-md bg--400 w-64 cursor-pointer rounded-full bg-gradient-to-br from-teal-400 to-blue-500 px-4 py-3 font-bold uppercase text-gray-200 transition-colors hover:bg-white hover:text-black"
         >
-          JUMP IN!
+          {t("jump_in")}
         </button>
         <button
           onClick={() => navigate("/menu")}
-          className="text-md w-64 cursor-pointer border-4 border-blue-400 px-9 py-2 font-bold text-blue-400 transition-colors hover:bg-black hover:text-white"
+          className="text-md w-64 cursor-pointer rounded-full bg-gradient-to-br from-blue-500 to-landing2 px-9 py-3 font-bold uppercase text-landing1 transition-colors hover:text-white"
         >
-          SIGN UP
+          {t("sign_up")}
         </button>
       </div>
     </div>

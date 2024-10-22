@@ -17,10 +17,10 @@ const RenderOptions = ({ items, activeItem, setActiveItem }) => {
       {items.map((item) => (
         <button
           key={item}
-          className={`mx-1 flex flex-shrink-0 flex-col items-center justify-center py-3 text-xs font-medium transition-all duration-300 ${
+          className={`mx-1 flex flex-shrink-0 flex-col items-center justify-center rounded-lg py-3 text-xs font-medium transition-all duration-300 ${
             activeItem === item
-              ? "rounded-sm bg-gradient-to-br from-teal-400 to-blue-500 text-white shadow-lg"
-              : "text-teal-300 hover:bg-gray-700 hover:text-white"
+              ? "bg-gradient-to-br from-teal-400 to-blue-500 text-white shadow-lg"
+              : "bg-gray-800 text-teal-300 hover:text-white"
           }`}
           onClick={() => setActiveItem(item)}
           style={{

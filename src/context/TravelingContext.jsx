@@ -51,7 +51,10 @@ const TravelingProvider = ({ children }) => {
     Norway: { zoom: 3.5, center: { lat: 65.472, lng: 14.4689 } },
     Guatemala: { zoom: 6.5, center: { lat: 15.7835, lng: -90.2308 } },
     Finland: { zoom: 4.1, center: { lat: 65.5241, lng: 25.7482 } },
-    Benin: { zoom: 6.2, center: { lat: 9.3077, lng: 2.3158 } },
+    Benin: { zoom: 6.1, center: { lat: 9.3077, lng: 2.3158 } },
+    Netherlands: { zoom: 6.4, center: { lat: 52.1326, lng: 5.2913 } },
+    Nepal: { zoom: 5.6, center: { lat: 28.3949, lng: 84.124 } },
+    Hungary: { zoom: 5.8, center: { lat: 47.1625, lng: 19.5033 } },
   };
 
   const fetchCountryData = async (countryName) => {

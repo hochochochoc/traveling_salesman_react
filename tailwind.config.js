@@ -24,7 +24,7 @@ export default {
         quaternary: "#D4C5A8",
         quinary: "#C9B997",
 
-        landing1: "#E6F3F7",
+        landing1: "#3A9DFF",
         landing2: "#1C1C20",
         landing3: "#35363E",
       },
