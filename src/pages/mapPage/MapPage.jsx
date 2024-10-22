@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Menu, MapPin, MousePointerClick } from "lucide-react";
+import { ArrowLeft, MapPin, MousePointerClick } from "lucide-react";
 import { useMapPageContext } from "./context/MapPageContext";
 import { useMapPageTSPContext } from "./context/MapPageTSPContext";
 import CountryMap from "./components/CountryMap";
@@ -84,11 +84,7 @@ export default function MapPage() {
             </button>
           </div>
           <div className="text-2xl font-extrabold text-white">{country}</div>
-          <div className="w-16"></div>
-          <Menu
-            className="cursor-pointer text-white"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-          />
+          <div className="w-6"></div>
         </div>
         <div className="relative mx-3 h-[25rem] w-auto">
           {center && zoom && cities && (
@@ -124,7 +120,7 @@ export default function MapPage() {
                   <p className="mt-3 text-3xl font-bold text-landing2">
                     Tour Completed!
                   </p>
-                  <p className="mt-1 text-lg text-white">
+                  <p className="mt-1 text-lg text-gray-500">
                     Total distance: {totalDistance.toFixed(0)} km
                   </p>
                 </div>
@@ -138,26 +134,28 @@ export default function MapPage() {
 
       <div className="flex-grow overflow-y-auto">
         {mapStep === 0 && (
-          <div className="m-3 px-5 pt-12">
-            <p className="text-white">Step 1: Choose amount of cities</p>
+          <div className="m-3 p-4">
+            <p className="text-lg font-bold text-white">
+              Step 1: Choose amount of cities
+            </p>
             <div className="mb-3 mr-1 flex items-center justify-between">
               <label
                 htmlFor="citiesSlider"
-                className="text-xl font-light text-gray-600"
+                className="text-xl font-light text-white"
               >
                 Number to be added:
               </label>
-              <span className="text-lg text-landing2">{citiesToBeAdded}</span>
+              <span className="text-lg text-white">{citiesToBeAdded}</span>
             </div>
 
             <div className="relative pb-1 pt-14" ref={sliderRef}>
-              <div className="absolute left-0 top-0 h-6 w-full rounded-full border border-black"></div>
+              <div className="absolute left-0 top-0 h-6 w-full rounded-full border border-landing3"></div>
               <div
-                className="absolute left-0 top-0 h-6 rounded-l-full bg-landing2"
+                className="absolute left-0 top-0 h-6 rounded-l-full bg-landing3"
                 style={{ width: `${(citiesToBeAdded / 30) * 100}%` }}
               ></div>
               <div
-                className="absolute top-[-4px] h-8 w-8 rounded-full border-2 border-landing2 bg-white shadow-md"
+                className="absolute top-[-4px] h-8 w-8 rounded-full border-2 border-landing3 bg-white shadow-md"
                 style={{ left: `${getThumbPosition()}px` }}
               ></div>
               <input
@@ -171,7 +169,7 @@ export default function MapPage() {
               />
 
               <button
-                className="mt-1 flex w-full items-center justify-center rounded-lg border border-black bg-landing2 px-4 py-3 text-sm font-medium uppercase tracking-wide text-white"
+                className="mt-1 flex w-full items-center justify-center rounded-lg border border-gray-500 bg-landing2 px-4 py-3 text-sm font-medium tracking-wide text-white"
                 onClick={() => {
                   fetchCities(country, citiesToBeAdded);
                   setMapStep(1);
@@ -189,7 +187,9 @@ export default function MapPage() {
         {mapStep === 1 && (
           <div>
             <div className="m-3 flex flex-col items-center p-4">
-              <p className="text-white">Step 2: Choose a method</p>
+              <p className="mr-auto text-lg font-bold text-white">
+                Step 2: Choose a method
+              </p>
               <div className="mt-4 flex space-x-3">
                 <button
                   className={`text-md flex w-full flex-col items-center justify-center rounded-lg border border-gray-500 px-4 py-3 shadow-md ${
@@ -234,22 +234,24 @@ export default function MapPage() {
           </div>
         )}
         {mapStep === 2 && (
-          <div className="mx-8 mt-10 space-y-3">
-            <p className="text-white">Step 3: Choose an algorithm</p>
+          <div className="m-3 space-y-3 p-4">
+            <p className="text-lg font-bold text-white">
+              Step 3: Choose an algorithm
+            </p>
 
             <select
-              className="w-full border-2 border-gray-200 px-4 py-2 text-gray-700 transition duration-200 focus:border-landing2 focus:outline-none"
+              className="w-full rounded-lg border border-gray-500 px-4 py-2 text-gray-700"
               value={selectedAlgorithm}
               onChange={handleAlgorithmChange}
             >
-              <option value="alg1">Nearest Neighbor</option>
-              <option value="alg2">Greedy</option>
+              <option value="alg1">Nearest Neighbor Method</option>
+              <option value="alg2">Greedy Heuristic</option>
               <option value="alg3">2-Opt</option>
               <option value="alg4">Christofides</option>
             </select>
 
             <button
-              className="w-full rounded-lg bg-landing2 px-4 py-3 font-medium uppercase text-white shadow-md"
+              className="w-full rounded-lg border border-gray-500 bg-landing2 px-4 py-3 font-medium text-white shadow-md"
               onClick={handleCalculateRoute}
               disable={isCalculatingRoute}
             >
@@ -274,8 +276,10 @@ export default function MapPage() {
           </div>
         )}
         {mapStep === 3 && (
-          <div className="mx-8 mt-10 text-white">
-            <p className="text-white">Step 3: Connect the cities</p>
+          <div className="m-3 p-4 text-white">
+            <p className="text-lg font-bold text-white">
+              Step 3: Connect the cities
+            </p>
 
             <p className="mb-6">{t("connect_the_cities")}</p>
             <button

@@ -25,8 +25,8 @@ export default {
         quinary: "#C9B997",
 
         landing1: "#E6F3F7",
-        landing2: "#35363E",
-        landing3: "#393941",
+        landing2: "#1C1C20",
+        landing3: "#35363E",
       },
     },
   },
