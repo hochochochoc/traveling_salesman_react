@@ -22,8 +22,11 @@ export default function Header() {
 
   return (
     <>
-      <div className="flex w-full items-center justify-between border-b border-black px-4 py-4">
-        <div onClick={() => navigate("/")} className="text-lg font-extrabold">
+      <div className="flex w-full items-center justify-between px-4 py-4">
+        <div
+          onClick={() => navigate("/")}
+          className="text-lg font-extrabold text-white"
+        >
           TSP Explorer
         </div>
 
@@ -35,7 +38,7 @@ export default function Header() {
                   navigate("/menu");
                 });
               }}
-              className={`relative my-1 mr-8 flex max-h-9 justify-center px-1 before:absolute before:bottom-0 before:left-0 before:h-[2px] before:bg-landing2 before:transition-all before:duration-500 before:ease-out hover:bg-gray-200 active:scale-95 ${
+              className={`relative my-1 mr-8 flex max-h-9 justify-center px-1 text-white before:absolute before:bottom-0 before:left-0 before:h-[2px] before:bg-blue-200 before:transition-all before:duration-500 before:ease-out hover:bg-gray-200 active:scale-95 ${
                 borderAnimation ? "before:w-full" : "before:w-0"
               }`}
             >
@@ -55,7 +58,7 @@ export default function Header() {
           )}
 
           <Menu
-            className="cursor-pointer"
+            className="cursor-pointer text-white"
             onClick={() => setSidebarOpen(!sidebarOpen)}
           />
         </div>

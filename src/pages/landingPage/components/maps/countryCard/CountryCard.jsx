@@ -62,7 +62,7 @@ const CountryCard = ({
           />
         </div>
         <div
-          className="relative flex h-full w-full items-center justify-center bg-white shadow-lg"
+          className="relative flex h-full w-full items-center justify-center bg-landing3 shadow-lg"
           style={{
             backfaceVisibility: "hidden",
             transform: "rotateY(180deg)",
@@ -88,18 +88,18 @@ const CountryCard = ({
                   className="flex-grow"
                 />
               )}
-              <div className="w-full border-t border-black bg-white pl-3">
+              <div className="w-full border-t border-black bg-landing3 pl-3">
                 <div className="flex justify-between">
-                  <h3 className="text-2xl font-bold text-black">{country}</h3>
+                  <h3 className="text-2xl font-bold text-white">{country}</h3>
                   <div className="mx-2 self-center shadow-lg">
                     <img
                       src={countryFlags[country]}
                       alt={`${country} flag`}
-                      className="h-5 w-auto rounded-sm border border-black"
+                      className="h-5 w-auto rounded-sm border border-white"
                     />
                   </div>
                 </div>
-                <p className="mt-1 text-sm text-black">
+                <p className="mt-1 text-sm text-white">
                   {countryAreas[country]} km²
                 </p>
               </div>

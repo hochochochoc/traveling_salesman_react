@@ -29,7 +29,7 @@ const LanguagesButton = () => {
     <div className="relative w-full">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full items-center p-2 text-gray-900"
+        className="flex w-full items-center p-2 text-gray-200"
       >
         <span className="text-2xl font-semibold">
           {selectedLanguage ? selectedLanguage.name : "Loading..."}

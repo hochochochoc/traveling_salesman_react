@@ -45,7 +45,7 @@ export default function Searchbar({ onSearch }) {
           className="flex items-center justify-center"
         >
           <div
-            className={`mx-2 flex items-center overflow-hidden border border-gray-300 bg-egg transition-all duration-300 ease-in-out ${
+            className={`mx-2 flex items-center overflow-hidden rounded-lg bg-egg transition-all duration-300 ease-in-out ${
               isExpanded ? "w-full" : "border-white"
             }`}
           >
@@ -65,7 +65,7 @@ export default function Searchbar({ onSearch }) {
               className="absolute right-0 p-2 focus:outline-none"
               aria-label={isExpanded ? "Close search" : "Open search"}
             >
-              <Search className="mr-2 h-5 w-5 text-gray-500" />
+              <Search className="mr-2 h-5 w-5 text-gray-300" />
             </button>
           </div>
         </form>
@@ -75,7 +75,7 @@ export default function Searchbar({ onSearch }) {
         onClick={getRandomCountries}
         aria-label="Get random countries"
       >
-        <RefreshCcw className="h-5 w-5 text-gray-500" />
+        <RefreshCcw className="h-5 w-5 text-gray-300" />
       </button>
     </div>
   );

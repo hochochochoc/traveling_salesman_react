@@ -16,7 +16,7 @@ export default function Header() {
           <ArrowLeft className="text-black" />
         </button>
       </div>
-      <div className="flex items-center text-lg font-extrabold text-black">
+      <div className="flex items-center text-lg font-extrabold text-white">
         How It Works
       </div>
       <div></div>

@@ -58,13 +58,13 @@ export default function LandingPage() {
               className="absolute inset-0 bg-landing2 bg-opacity-80"
               style={{ top: "8%" }}
             ></div>
-            <h3 className="relative z-10 px-2 text-4xl text-egg">
+            <h3 className="relative z-10 px-2 text-4xl text-white">
               {t("VISUALIZINGOPTIMIZATION")}
             </h3>
 
-            <div className="relative z-10 px-4 text-egg">
+            <div className="relative z-10 px-4 text-white">
               <p className="mt-4">{t("welcome_message_1")}</p>
-              <p className="mt-2 pb-12 text-egg">{t("welcome_message_2")}</p>
+              <p className="mt-2 pb-12 text-white">{t("welcome_message_2")}</p>
             </div>
           </div>
         </div>
@@ -74,18 +74,18 @@ export default function LandingPage() {
         className="fixed bottom-0 left-0 right-0 z-20 flex flex-col items-center space-y-4 pb-8 pt-20"
         style={{
           background:
-            "linear-gradient(to top, rgba(44, 95, 124,1) 80%, rgba(44, 95, 124,0.85) 85%, rgba(44, 95, 124,0.6) 90%, rgba(255,255,255,0) 100%)",
+            "linear-gradient(to top, rgba(28, 28, 32, 1) 80%, rgba(28, 28, 32, 0.85) 85%, rgba(28, 28, 32, 0.6) 90%, rgba(255,255,255,0) 100%)",
         }}
       >
         <button
           onClick={() => navigate("/menu")}
-          className="text-md w-64 cursor-pointer border-4 border-black bg-black px-4 py-2 font-bold text-white transition-colors hover:bg-white hover:text-black"
+          className="text-md w-64 cursor-pointer border-4 border-blue-400 bg-blue-400 px-4 py-2 font-bold text-white transition-colors hover:bg-white hover:text-black"
         >
           JUMP IN!
         </button>
         <button
           onClick={() => navigate("/menu")}
-          className="text-md w-64 cursor-pointer border-4 border-black px-9 py-2 font-bold text-black transition-colors hover:bg-black hover:text-white"
+          className="text-md w-64 cursor-pointer border-4 border-blue-400 px-9 py-2 font-bold text-blue-400 transition-colors hover:bg-black hover:text-white"
         >
           SIGN UP
         </button>

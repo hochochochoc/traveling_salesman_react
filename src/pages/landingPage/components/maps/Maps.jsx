@@ -154,13 +154,13 @@ export default function CountryMapsCarousel() {
 
   return (
     <div className="border-b border-black">
-      <div className="bg-landing2 px-3 pt-4 text-white">
-        <div className="pb-10 text-5xl font-bold uppercase">
+      <div className="px-3 pt-4 text-white">
+        <div className="text-2xl font-bold uppercase">
           {t("Chooseacountry")}
         </div>
-        <div className="pb-2 text-sm">{t("Selectacountry")}</div>
+        <div className="pb-10 text-sm">{t("Selectacountry")}</div>
       </div>
-      <div className="bg-egg px-6 py-1">
+      <div className="bg-egg px-6 py-1 pb-4">
         <Searchbar onSearch={handleSearch} />
       </div>
       <div
@@ -194,9 +194,8 @@ export default function CountryMapsCarousel() {
                   userLoggedIn={userLoggedIn}
                 />
               ) : (
-                <div className="flex h-[400px] w-[300px] items-center justify-center border border-black bg-white">
+                <div className="flex h-[400px] w-[300px] items-center justify-center rounded-lg bg-white">
                   <div className="text-center">
-                    <div className="mb-2 animate-spin text-2xl">⌛</div>
                     <p>Loading country data...</p>
                   </div>
                 </div>
@@ -204,6 +203,7 @@ export default function CountryMapsCarousel() {
             </div>
           ))}
         </div>
+        <div className="h-10"></div>
       </div>
     </div>
   );

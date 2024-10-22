@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import { DemosContext } from "./context/GraphContext";
 import RenderOptions from "./components/options/RenderOptions";
 import Intro from "./components/intro/Intro";
+import MobileMenu from "../components/menu";
 
 export default function DemosPage() {
   const {
@@ -52,12 +53,12 @@ export default function DemosPage() {
 
       {intro === 1 && (
         <div>
-          <div className="mx-auto flex max-w-sm flex-col justify-center bg-gray-900 p-2 shadow-lg backdrop-blur-lg backdrop-filter">
+          <div className="mx-auto flex max-w-sm flex-col justify-center p-2 shadow-lg backdrop-blur-lg backdrop-filter">
             <div className="flex justify-center gap-6">
               <button
                 className={`text-sm font-medium transition-all duration-200 ${
                   activeSection === "algorithms"
-                    ? "font-bold text-egg"
+                    ? "font-bold text-white"
                     : "text-teal-600 hover:text-teal-500"
                 }`}
                 onClick={() => setActiveSection("algorithms")}
@@ -67,7 +68,7 @@ export default function DemosPage() {
               <button
                 className={`text-sm font-medium transition-all duration-200 ${
                   activeSection === "validation"
-                    ? "font-bold text-egg"
+                    ? "font-bold text-white"
                     : "text-teal-600 hover:text-teal-500"
                 }`}
                 onClick={() => setActiveSection("validation")}
@@ -98,6 +99,7 @@ export default function DemosPage() {
           </div>
         </div>
       )}
+      <MobileMenu />
     </div>
   );
 }

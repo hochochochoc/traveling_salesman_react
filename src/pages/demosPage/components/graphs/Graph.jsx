@@ -307,7 +307,7 @@ const Graph = () => {
         <svg
           ref={svgRef}
           width="100%"
-          className="mb-5 border border-gray-500 bg-gray-900 shadow-lg shadow-inherit lg:my-0 lg:mb-5"
+          className="mb-5 border border-gray-500 bg-landing3 shadow-lg shadow-inherit lg:my-0 lg:mb-5"
           style={{ maxHeight: "400px", height: "100%" }}
         ></svg>
         <p
@@ -339,7 +339,7 @@ const Graph = () => {
         <div className="items-center justify-center lg:flex lg:space-x-10">
           <div className="flex items-center justify-center space-x-2">
             <button
-              className="rounded-md border border-egg px-3 py-2 text-egg active:scale-95 active:bg-gray-50"
+              className="rounded-md border border-gray-500 px-3 py-2 text-white active:scale-95 active:bg-gray-50"
               onClick={() => {
                 setIsPlaying(true);
                 playAnimation();
@@ -349,7 +349,7 @@ const Graph = () => {
             </button>
 
             <button
-              className="rounded-md border border-egg px-3 py-2 text-egg active:scale-95 active:bg-gray-50"
+              className="rounded-md border border-gray-500 px-3 py-2 text-white active:scale-95 active:bg-gray-50"
               onClick={() => {
                 setIsPlaying(false);
               }}
@@ -357,7 +357,7 @@ const Graph = () => {
               <Pause />
             </button>
             <button
-              className="rounded-md border border-egg px-3 py-2 text-egg active:scale-95 active:bg-gray-50"
+              className="rounded-md border border-gray-500 px-3 py-2 text-white active:scale-95 active:bg-gray-50"
               onClick={resetVisualization}
             >
               <Square />
@@ -378,7 +378,7 @@ const Graph = () => {
               ].map((paragraph, i) => (
                 <p
                   key={i}
-                  className={`text-md absolute inset-0 mx-4 flex items-center justify-center text-center text-egg transition-all duration-500 ease-in-out lg:text-sm ${
+                  className={`text-md absolute inset-0 mx-4 flex items-center justify-center text-center text-white transition-all duration-500 ease-in-out lg:text-sm ${
                     i === currentStep
                       ? `translate-x-0 opacity-100`
                       : i < currentStep
