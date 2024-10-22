@@ -336,7 +336,7 @@ const CountryMap = React.memo(({ center, zoom, cities }) => {
   };
 
   return (
-    <div className="relative h-full w-full overflow-hidden">
+    <div className="relative h-full w-full overflow-hidden rounded-xl">
       <div
         ref={mapRef}
         className="absolute inset-[-50px]"

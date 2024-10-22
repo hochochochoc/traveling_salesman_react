@@ -9,7 +9,7 @@ const StepIndicator = ({ currentStep }) => {
         <div
           key={step}
           className={`h-2 w-2 rounded-full transition-colors duration-200 ${
-            step === displayPosition ? "bg-landing2" : "bg-gray-300"
+            step === displayPosition ? "bg-gray-300" : "bg-landing2"
           }`}
         />
       ))}

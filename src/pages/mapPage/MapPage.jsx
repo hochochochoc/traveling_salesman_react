@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Menu, MapPin, Globe, RefreshCcw } from "lucide-react";
+import { ArrowLeft, Menu, MapPin, MousePointerClick } from "lucide-react";
 import { useMapPageContext } from "./context/MapPageContext";
 import { useMapPageTSPContext } from "./context/MapPageTSPContext";
 import CountryMap from "./components/CountryMap";
@@ -80,13 +80,13 @@ export default function MapPage() {
                 navigate("/menu");
               }}
             >
-              <ArrowLeft className="text-black" />
+              <ArrowLeft className="text-white" />
             </button>
           </div>
-          <div className="text-2xl font-extrabold">{country}</div>
+          <div className="text-2xl font-extrabold text-white">{country}</div>
           <div className="w-16"></div>
           <Menu
-            className="cursor-pointer"
+            className="cursor-pointer text-white"
             onClick={() => setSidebarOpen(!sidebarOpen)}
           />
         </div>
@@ -118,13 +118,13 @@ export default function MapPage() {
 
               {isTourCompleted && (
                 <div
-                  className="absolute left-0 right-0 bg-white bg-opacity-50 py-40 text-center font-bold text-white"
+                  className="absolute left-0 right-0 bg-opacity-50 py-40 text-center font-bold text-white"
                   style={{ top: "0px" }}
                 >
                   <p className="mt-3 text-3xl font-bold text-landing2">
                     Tour Completed!
                   </p>
-                  <p className="mt-1 text-lg text-black">
+                  <p className="mt-1 text-lg text-white">
                     Total distance: {totalDistance.toFixed(0)} km
                   </p>
                 </div>
@@ -138,7 +138,8 @@ export default function MapPage() {
 
       <div className="flex-grow overflow-y-auto">
         {mapStep === 0 && (
-          <div className="m-3 bg-gray-50 px-5 pt-12">
+          <div className="m-3 px-5 pt-12">
+            <p className="text-white">Step 1: Choose amount of cities</p>
             <div className="mb-3 mr-1 flex items-center justify-between">
               <label
                 htmlFor="citiesSlider"
@@ -170,7 +171,7 @@ export default function MapPage() {
               />
 
               <button
-                className="mt-1 flex w-full items-center justify-center border border-black bg-black px-4 py-3 text-sm font-medium uppercase tracking-wide text-white"
+                className="mt-1 flex w-full items-center justify-center rounded-lg border border-black bg-landing2 px-4 py-3 text-sm font-medium uppercase tracking-wide text-white"
                 onClick={() => {
                   fetchCities(country, citiesToBeAdded);
                   setMapStep(1);
@@ -187,10 +188,11 @@ export default function MapPage() {
         )}
         {mapStep === 1 && (
           <div>
-            <div className="m-3 flex flex-col items-center bg-gray-50 p-4">
-              <div className="mt-10 flex space-x-3">
+            <div className="m-3 flex flex-col items-center p-4">
+              <p className="text-white">Step 2: Choose a method</p>
+              <div className="mt-4 flex space-x-3">
                 <button
-                  className={`text-md flex w-full flex-col items-center justify-center px-4 py-3 uppercase shadow-md ${
+                  className={`text-md flex w-full flex-col items-center justify-center rounded-lg border border-gray-500 px-4 py-3 shadow-md ${
                     isTryItYourselfMode
                       ? "bg-white text-landing2"
                       : "bg-landing2 text-white"
@@ -200,12 +202,12 @@ export default function MapPage() {
                     setMapStep(3);
                   }}
                 >
-                  {/* <MousePointerClick className="h-5 w-5" /> */}
+                  <MousePointerClick className="h-5 w-5" />
                   <span className="font-medium">{t("try_it_yourself")}</span>
                 </button>
 
                 <button
-                  className="text-md w-full bg-landing2 px-4 py-3 font-medium uppercase text-white shadow-md transition duration-200 hover:bg-white hover:text-landing2"
+                  className="text-md w-full rounded-lg border border-gray-500 bg-landing2 px-4 py-3 font-medium text-white shadow-md"
                   onClick={() => {
                     setMapStep(2);
                   }}
@@ -215,12 +217,12 @@ export default function MapPage() {
               </div>
 
               <button
-                className="w-18 relative my-3 mr-auto flex items-center border-2 border-landing2 p-1 pr-2 font-medium"
+                className="w-18 relative my-3 mr-auto flex items-center rounded-lg border border-gray-500 bg-landing2 p-1 pr-2 font-medium text-white"
                 onClick={() => {
                   setMapStep(mapStep - 1);
                 }}
               >
-                <ArrowLeft />
+                <ArrowLeft className="h-4 w-4" />
                 <span className="text-landing-2 mx-auto ml-1 flex-shrink">
                   {t("Back")}
                 </span>
@@ -233,6 +235,8 @@ export default function MapPage() {
         )}
         {mapStep === 2 && (
           <div className="mx-8 mt-10 space-y-3">
+            <p className="text-white">Step 3: Choose an algorithm</p>
+
             <select
               className="w-full border-2 border-gray-200 px-4 py-2 text-gray-700 transition duration-200 focus:border-landing2 focus:outline-none"
               value={selectedAlgorithm}
@@ -245,7 +249,7 @@ export default function MapPage() {
             </select>
 
             <button
-              className="w-full bg-landing2 px-4 py-3 font-medium uppercase text-white shadow-md"
+              className="w-full rounded-lg bg-landing2 px-4 py-3 font-medium uppercase text-white shadow-md"
               onClick={handleCalculateRoute}
               disable={isCalculatingRoute}
             >
@@ -257,10 +261,10 @@ export default function MapPage() {
                 handleMapStepChange(mapStep - 1);
                 setIsAlgorithmChosen(false);
               }}
-              className="w-18 relative my-3 mr-auto mt-8 flex items-center border-2 border-landing2 p-1 pr-2 font-medium"
+              className="w-18 relative my-3 mr-auto mt-8 flex items-center rounded-lg border border-gray-500 bg-landing2 p-1 pr-2 font-medium"
             >
-              <ArrowLeft />
-              <span className="text-landing-2 mx-auto ml-1 flex-shrink">
+              <ArrowLeft className="h-4 w-4 text-white" />
+              <span className="text-landing-2 mx-auto ml-1 flex-shrink text-white">
                 {t("Back")}
               </span>
             </button>
@@ -270,16 +274,18 @@ export default function MapPage() {
           </div>
         )}
         {mapStep === 3 && (
-          <div className="mx-8 mt-10">
+          <div className="mx-8 mt-10 text-white">
+            <p className="text-white">Step 3: Connect the cities</p>
+
             <p className="mb-6">{t("connect_the_cities")}</p>
             <button
-              className="w-18 relative mr-auto mt-10 flex border-2 border-landing2 p-1 pr-2 font-medium"
+              className="w-18 relative my-3 mr-auto mt-8 flex items-center rounded-lg border border-gray-500 bg-landing2 p-1 pr-2 font-medium"
               onClick={() => {
                 toggleTryItYourselfMode();
                 setMapStep(mapStep - 2);
               }}
             >
-              <ArrowLeft />
+              <ArrowLeft className="h-4 w-4" />
               <span className="text-landing-2 mx-auto ml-1 flex-shrink">
                 {t("Back")}
               </span>
