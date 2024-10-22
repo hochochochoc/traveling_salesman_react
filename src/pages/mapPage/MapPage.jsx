@@ -140,7 +140,7 @@ export default function MapPage() {
 
       <div className="flex-grow overflow-y-auto">
         {mapStep === 0 && (
-          <div className="mx-3 flex min-h-[200px] flex-col">
+          <div className="mx-3 flex min-h-[230px] flex-col">
             <div className="flex flex-col p-2">
               <p className="mb-2 text-lg font-bold text-white">{t("step_1")}</p>
               <div className="mb-1 flex items-center justify-between">
@@ -193,7 +193,7 @@ export default function MapPage() {
         )}
 
         {mapStep === 1 && (
-          <div className="mx-3 flex min-h-[200px] flex-col">
+          <div className="mx-3 flex min-h-[230px] flex-col">
             <div className="p-2">
               <p className="mb-2 text-lg font-bold text-white">{t("step_2")}</p>
               <div className="flex gap-2">
@@ -242,7 +242,7 @@ export default function MapPage() {
         )}
 
         {mapStep === 2 && (
-          <div className="mx-3 flex min-h-[200px] flex-col">
+          <div className="mx-3 flex min-h-[230px] flex-col">
             <div className="flex flex-col p-2">
               <p className="mb-2 text-lg font-bold text-white">
                 {t("step_3_algorithm")}
@@ -285,7 +285,7 @@ export default function MapPage() {
         )}
 
         {mapStep === 3 && (
-          <div className="mx-3 flex min-h-[200px] flex-col">
+          <div className="mx-3 flex min-h-[230px] flex-col">
             <div className="p-2">
               <p className="mb-2 text-lg font-bold text-white">
                 {t("step_3_diy")}
