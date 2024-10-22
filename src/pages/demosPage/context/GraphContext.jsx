@@ -24,7 +24,7 @@ const DemosProvider = ({ children }) => {
   const [activeSection, setActiveSection] = useState("validation");
   const [algorithmSelection, setAlgorithmSelection] = useState("Nearest");
   const [validationSelection, setValidationSelection] = useState("Prims");
-  const [intro, setIntro] = useState(0);
+  const [intro, setIntro] = useState(1);
 
   const value = {
     activeSection,
