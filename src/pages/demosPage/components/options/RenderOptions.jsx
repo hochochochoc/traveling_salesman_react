@@ -40,7 +40,24 @@ const RenderOptions = ({ items, activeItem, setActiveItem }) => {
               className="h-10 w-10"
             />
           </div>
-          <span className="text-center">{item}</span>
+          <span className="w-32 whitespace-normal break-words px-2 text-center">
+            {(() => {
+              switch (item) {
+                case "Nearest":
+                  return "Nearest Neighbor";
+                case "Greedy":
+                  return "Greedy Heuristic";
+                case "TwoOpt":
+                  return "2-Opt Method";
+                case "Prims":
+                  return "Prim's Algorithm";
+                case "Kruskals":
+                  return "Kruskal's Algorithm";
+                default:
+                  return item;
+              }
+            })()}
+          </span>
         </button>
       ))}
     </div>

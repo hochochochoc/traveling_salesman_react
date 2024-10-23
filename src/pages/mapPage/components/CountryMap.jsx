@@ -76,9 +76,7 @@ const CountryMap = React.memo(({ center, zoom, cities }) => {
 
     initializeMap();
 
-    return () => {
-      // Cleanup function to reset anything if needed
-    };
+    return () => {};
   }, []);
 
   useEffect(() => {

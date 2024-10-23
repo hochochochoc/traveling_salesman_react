@@ -111,24 +111,30 @@ export default function MapPage() {
               )}
               {isAlgorithmChosen && totalDistanceTSP > 0 && (
                 <div
-                  className="absolute left-0 right-0 z-10 ml-40 bg-black bg-opacity-50 py-1 text-center font-bold text-white"
-                  style={{ top: "368px" }} // Adjust this to control height under the top screen border
+                  className="absolute left-0 right-0 py-44 text-center font-bold text-white"
+                  style={{ top: "0px" }} // Adjust this to control height under the top screen border
                 >
-                  Distance: {totalDistanceTSP.toFixed(0)} km
+                  <div className="bg-white/50 py-2">
+                    <span className="px-5 text-2xl text-blue-500">
+                      {t("total_distance")} {totalDistanceTSP.toFixed(0)} km
+                    </span>
+                  </div>
                 </div>
               )}
 
               {isTourCompleted && (
                 <div
-                  className="absolute left-0 right-0 bg-opacity-50 py-40 text-center font-bold text-white"
+                  className="absolute left-0 right-0 py-40 text-center font-bold text-white"
                   style={{ top: "0px" }}
                 >
-                  <p className="mt-3 text-3xl font-bold text-landing2">
-                    {t("tour_completed")}
-                  </p>
-                  <p className="mt-1 text-lg text-gray-500">
-                    {t("total_distance")} {totalDistance.toFixed(0)} km
-                  </p>
+                  <div className="bg-white/50">
+                    <p className="z-10 mt-3 text-3xl font-bold text-blue-500">
+                      {t("tour_completed")}
+                    </p>
+                    <p className="mt-1 text-2xl text-landing2">
+                      {t("total_distance")} {totalDistance.toFixed(0)} km
+                    </p>
+                  </div>
                 </div>
               )}
             </>

@@ -10,9 +10,9 @@ i18n.use(initReactI18next).init({
         Selectacountry: "Select a country to try out the algorithms.",
         search_country: "Search for a country...",
         welcome_message_1:
-          "Welcome to TSP Explorer, where we bring the Traveling Salesman Problem to life through interactive demos, visual maps, and algorithm codes. Explore optimization solutions and learn at your own pace.",
+          "Explore visual solutions and algorithms for the Traveling Salesman Problem through interactive maps and demonstrations.",
         welcome_message_2:
-          "Try your hand at solving the problem, discover new algorithms, and deepen your understanding of route optimization in a fun, visual way.",
+          "Learn route optimization through hands-on examples and algorithm visualizations.",
         About: "About",
         Contact: "Contact",
         Log_in: "Log in",
@@ -44,19 +44,19 @@ i18n.use(initReactI18next).init({
         distance: "Distance: ",
         total_distance: "Total Distance: ",
         tour_completed: "Tour Completed!",
-        read_tutorial: "read tutorial",
+        read_tutorial: "show tutorial",
       },
     },
     es: {
       translation: {
-        VISUALIZINGOPTIMIZATION: "OPTIMIZACIÓN",
+        VISUALIZINGOPTIMIZATION: "VISUALIZANDO OPTIMIZACIÓN",
         Chooseacountry: "Elige un país",
         Selectacountry: "Selecciona un país para probar los algoritmos.",
         search_country: "Busca un país...",
         welcome_message_1:
-          "Bienvenido a TSP Explorer, donde damos vida al Problema del Viajante mediante demostraciones interactivas, mapas visuales y códigos de algoritmos. Explora soluciones de optimización y aprende a tu propio ritmo.",
+          "Explora soluciones visuales y algoritmos para el Problema del Viajante a través de mapas y demostraciones interactivas.",
         welcome_message_2:
-          "Ponte a prueba resolviendo el problema, descubre nuevos algoritmos y profundiza en tu comprensión de la optimización de rutas de forma divertida y visual.",
+          "Aprende optimización de rutas mediante ejemplos prácticos y visualizaciones de algoritmos.",
         About: "Sobre",
         Contact: "Contacto",
         Log_in: "Iniciar sesión",
@@ -88,19 +88,19 @@ i18n.use(initReactI18next).init({
         distance: "Distancia: ",
         total_distance: "Distancia Total: ",
         tour_completed: "Recorrido completado!",
-        read_tutorial: "leer tutorial",
+        read_tutorial: "ver tutorial",
       },
     },
     ca: {
       translation: {
-        VISUALIZINGOPTIMIZATION: "OPTIMIZACIÓ",
+        VISUALIZINGOPTIMIZATION: "VISUALITZANT OPTIMIZACIÓ",
         Chooseacountry: " tria un país",
         Selectacountry: "Selecciona un país per provar els algorismes.",
         search_country: "Busca un país...",
         welcome_message_1:
-          "Benvingut a TSP Explorer, on el Problema del Viatjant pren vida amb demostracions interactives, mapes visuals i codis d'algorismes. Descobreix solucions d'optimització i aprèn al teu propi ritme.",
+          "Explora solucions visuals i algoritmes per al Problema del Viatjant mitjançant mapes i demostracions interactives.",
         welcome_message_2:
-          "Posa't a prova resolent el problema, descobreix nous algorismes i aprofundeix en la teva comprensió de l'optimització de rutes de manera divertida i visual.",
+          "Aprèn optimització de rutes a través d'exemples pràctics i visualitzacions d'algoritmes.",
         About: "Sobre",
         Contact: "Contacte",
         Log_in: "Iniciar sessió",
@@ -132,7 +132,7 @@ i18n.use(initReactI18next).init({
         distance: "Distància: ",
         total_distance: "Distància Total: ",
         tour_completed: "Recorregut completat!",
-        read_tutorial: "llegir tutorial",
+        read_tutorial: "veure tutorial",
       },
     },
   },
