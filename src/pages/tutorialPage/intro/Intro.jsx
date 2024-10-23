@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState, useContext } from "react";
 import BigO from "./bigO/bigO";
 import { ArrowRight, ArrowLeft, X } from "lucide-react";
 
-export default function Intro() {
+export default function Intro({ setIntro }) {
   const videoRef = useRef(null);
   const [step, setStep] = useState(0);
 
@@ -108,9 +108,9 @@ export default function Intro() {
                 </p>
                 <p className="text-lg font-semibold">
                   The TSP has exponential time complexity (O(n!)), meaning
-                  computation time grows rapidly as the number of points
-                  increases. Therefore, algorithms are used to find efficient
-                  near-optimal solutions instead.
+                  computation time grows rapidly as input size increases.
+                  Therefore, algorithms are used to find efficient near-optimal
+                  solutions instead.
                 </p>
                 <BigO />
                 <div className="mt-1 flex justify-end">

@@ -78,16 +78,16 @@ export default function LandingPage() {
         }}
       >
         <button
-          onClick={() => navigate("/tutorial")}
+          onClick={() => navigate("/menu")}
           className="text-md bg--400 w-64 cursor-pointer rounded-full bg-gradient-to-br from-teal-400 to-blue-500 px-4 py-3 font-bold uppercase text-gray-200 transition-colors hover:bg-white hover:text-black"
         >
           {t("jump_in")}
         </button>
         <button
-          onClick={() => navigate("/menu")}
+          onClick={() => navigate("/tutorial")}
           className="text-md w-64 cursor-pointer rounded-full bg-gradient-to-br from-blue-500 to-landing2 px-9 py-3 font-bold uppercase text-landing1 transition-colors hover:text-white"
         >
-          {t("sign_up")}
+          {t("read_tutorial")}
         </button>
       </div>
     </div>

@@ -1,16 +1,33 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Presentation, Cog, Earth, User } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 const MobileMenu = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation();
+
+  // Helper function to determine if a path is active
+  const isActive = (path) => {
+    if (path === "/tutorial" && location.pathname === "/") {
+      return true; // For initial state
+    }
+    return location.pathname === path;
+  };
+
+  // Button style generator
+  const getButtonStyle = (path) => {
+    return `flex flex-col items-center ${
+      isActive(path) ? "text-white" : "text-gray-500"
+    }`;
+  };
+
   return (
-    <div className="fixed bottom-0 left-0 w-full rounded-lg bg-landing2 shadow-lg">
+    <div className="fixed bottom-0 left-0 w-full rounded-t-lg bg-landing2 shadow-lg">
       <div className="flex items-center justify-around rounded-full p-2">
         <button
-          className="flex flex-col items-center text-gray-500"
+          className={getButtonStyle("/tutorial")}
           onClick={() => {
             navigate("/tutorial", {});
           }}
@@ -20,7 +37,7 @@ const MobileMenu = () => {
         </button>
 
         <button
-          className="flex flex-col items-center text-gray-500"
+          className={getButtonStyle("/menu")}
           onClick={() => {
             navigate("/menu", {});
           }}
@@ -28,8 +45,9 @@ const MobileMenu = () => {
           <Earth className="h-6 w-6" />
           <span className="mt-1 text-xs">{t("countries")}</span>
         </button>
+
         <button
-          className="flex flex-col items-center text-gray-500"
+          className={getButtonStyle("/demos")}
           onClick={() => {
             navigate("/demos", {
               state: {
@@ -43,7 +61,8 @@ const MobileMenu = () => {
           <Cog className="h-6 w-6" />
           <span className="mt-1 text-xs">{t("algorithms")}</span>
         </button>
-        <button className="flex flex-col items-center text-gray-500">
+
+        <button className={getButtonStyle("/profile")}>
           <User className="h-6 w-6" />
           <span className="mt-1 text-xs">{t("profile")}</span>
         </button>

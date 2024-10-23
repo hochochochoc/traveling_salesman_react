@@ -154,13 +154,13 @@ export default function CountryMapsCarousel() {
 
   return (
     <div className="border-b border-black">
-      <div className="px-8 pt-2 text-white">
+      <div className="px-8 py-2 text-white">
         <div className="text-2xl font-bold uppercase">
           {t("Chooseacountry")}
         </div>
-        <div className="pb-3 text-sm">{t("Selectacountry")}</div>
+        <div className="pb-4 text-sm">{t("Selectacountry")}</div>
       </div>
-      <div className="bg-egg px-6 py-1 pb-4">
+      <div className="bg-egg px-6 pb-3">
         <Searchbar onSearch={handleSearch} />
       </div>
       <div

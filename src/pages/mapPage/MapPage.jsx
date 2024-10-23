@@ -104,9 +104,9 @@ export default function MapPage() {
               {isTryItYourselfMode && !isTourCompleted && totalDistance > 0 && (
                 <div
                   className="absolute left-0 right-0 z-10 ml-40 bg-black bg-opacity-50 py-1 text-center font-bold text-white"
-                  style={{ top: "368px" }} // Adjust this to control height under the top screen border
+                  style={{ top: "368px" }} // Adjust to control height under the top screen border
                 >
-                  Distance: {totalDistance.toFixed(0)} km
+                  {t("distance")} {totalDistance.toFixed(0)} km
                 </div>
               )}
               {isAlgorithmChosen && totalDistanceTSP > 0 && (
@@ -124,10 +124,10 @@ export default function MapPage() {
                   style={{ top: "0px" }}
                 >
                   <p className="mt-3 text-3xl font-bold text-landing2">
-                    Tour Completed!
+                    {t("tour_completed")}
                   </p>
                   <p className="mt-1 text-lg text-gray-500">
-                    Total distance: {totalDistance.toFixed(0)} km
+                    {t("total_distance")} {totalDistance.toFixed(0)} km
                   </p>
                 </div>
               )}
@@ -142,7 +142,7 @@ export default function MapPage() {
         {mapStep === 0 && (
           <div className="mx-3 flex min-h-[230px] flex-col">
             <div className="flex flex-col p-2">
-              <p className="mb-2 text-lg font-bold text-white">{t("step_1")}</p>
+              <p className="mb-5 text-lg font-bold text-white">{t("step_1")}</p>
               <div className="mb-1 flex items-center justify-between">
                 <label
                   htmlFor="citiesSlider"
@@ -195,7 +195,7 @@ export default function MapPage() {
         {mapStep === 1 && (
           <div className="mx-3 flex min-h-[230px] flex-col">
             <div className="p-2">
-              <p className="mb-2 text-lg font-bold text-white">{t("step_2")}</p>
+              <p className="mb-5 text-lg font-bold text-white">{t("step_2")}</p>
               <div className="flex gap-2">
                 <button
                   className="flex-1 rounded-lg border border-gray-500 bg-landing2 p-2 text-sm text-white"
@@ -244,12 +244,12 @@ export default function MapPage() {
         {mapStep === 2 && (
           <div className="mx-3 flex min-h-[230px] flex-col">
             <div className="flex flex-col p-2">
-              <p className="mb-2 text-lg font-bold text-white">
+              <p className="mb-8 text-lg font-bold text-white">
                 {t("step_3_algorithm")}
               </p>
 
               <select
-                className="mx-auto mb-2 rounded-lg border border-gray-500 px-2 py-1 text-sm text-gray-700"
+                className="text-md mx-auto mb-2 rounded-lg border border-gray-500 px-2 py-1 text-gray-700"
                 value={selectedAlgorithm}
                 onChange={handleAlgorithmChange}
               >
@@ -287,10 +287,10 @@ export default function MapPage() {
         {mapStep === 3 && (
           <div className="mx-3 flex min-h-[230px] flex-col">
             <div className="p-2">
-              <p className="mb-2 text-lg font-bold text-white">
+              <p className="mb-5 text-lg font-bold text-white">
                 {t("step_3_diy")}
               </p>
-              <p className="text-sm text-white">{t("connect_the_cities")}</p>
+              <p className="text-md text-white">{t("connect_the_cities")}</p>
             </div>
 
             <div className="mt-auto px-2 pb-2">

@@ -121,7 +121,7 @@ export default function BigO() {
         .attr("stroke-dasharray", totalLength + " " + totalLength)
         .attr("stroke-dashoffset", totalLength)
         .transition()
-        .duration(5000)
+        .duration(2000)
         .ease(d3.easeLinear)
         .attr("stroke-dashoffset", 0);
 

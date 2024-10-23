@@ -11,7 +11,7 @@ export default function Sidebar({ onClose }) {
     <div className="fixed -left-10 top-16 z-50 -ml-10 h-full w-screen bg-egg bg-opacity-95">
       <div className="flex h-full flex-col py-4 pl-6 pr-3">
         <div className="mr-1 flex items-center justify-end">
-          <X onClick={onClose} />
+          <X onClick={onClose} className="text-white" />
         </div>
 
         <div className="mt-12 space-y-1.5">
