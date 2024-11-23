@@ -1,0 +1,77 @@
+// TODO:
+
+    // For v.1:
+        // finish header -- done
+        // responsive tutorial -- done
+        // landing page
+        // responsive demos -- done
+        // implement profile
+        // upload to website! -- done
+        // Readme
+
+        // what do I even want to add to my landing page?
+            // features
+            // q&a
+            // bottom menu
+
+        // change tab logo and description
+
+    // Priorities:
+
+        // stupid error with landing page ruining vercel
+        // implement algorithms in mappage
+        // implement login, lock other countries in menu
+        // when logged in, enable country search, search by continent
+        // fix the ui design
+        // language toggle
+    
+    // Menu
+        // open secrets alert? Gmail
+        // search function for maps
+        // sort by continent 
+        // make some maps only accessible through login
+        // issue where scrolling through maps doesn't work when loading that page but it does when coming from other page...
+        // maps not loading properly
+        // correct scrolling width adapted based on number of cards   
+
+    // Landing
+        // copy crewlineapp for landing page minimum
+
+    // Map
+        // if possible, prevent loading maps in sandbox automatically too while testing
+        // actually implement the stupid map and algorithms!!!
+        // why cities not working for e.g. Spain? something wrong with cities count, increase limit to 10?
+        // edge case china/taipei
+        // when it can't load enough cities it should just say so.
+        // I only want to add the cities once, or at least just replace the current ones on repeat click
+        // Make popup actually work
+
+    // Graph            
+        // priorities:
+            // actually apply react component logic
+            // fix christofides bug when moving vertices
+        
+        // secondary edges, or actually show all the steps
+        // clean up to use components, context etc.
+        // fix stupid sidebar
+        // fix loading problem with isMobile
+        // make it look halfway decent in large screen too
+        // adapt a bit to apps e.g. glovo with sliding menu option
+        // add a selection menu at the bottom? like in hellofresh; Home, Algorithms, Validation      
+        // fix christofides so it works perfectly
+        // renderAlgorithm superfluous
+        // put the paragraphs somewhere else
+        // don't have the time appear for a milisecond when switching algorithms
+
+
+         // optional: show how vertices move from unconnected set to connected one
+         // optional: make it so when I change from one algorithm to the next the changed vertices stay in the same location
+         // optional: make it so numbers and edges aren't blocking each other (mobile too)
+        // optional: look up import.meta.hot in graph and demoscontext again
+        // optional: when moving the vertices: [Intervention] Ignored attempt to cancel a touchmove event with cancelable=false, for example because scrolling is in progress and cannot be interrupted.
+
+// MISCELLANEOUS
+    // add a cookies warning
+    // add ads
+
+
