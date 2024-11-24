@@ -109,7 +109,8 @@ const ProfilePage = () => {
 
   // Calculate stats from userRounds
   const userStats = {
-    completedMaps: userRounds.length,
+    completedMaps: [...new Set(userRounds.map((round) => round.country))]
+      .length,
     averageScore:
       userRounds.length > 0
         ? `${Math.round(userRounds.reduce((acc, round) => acc + round.distance, 0) / userRounds.length)} km`

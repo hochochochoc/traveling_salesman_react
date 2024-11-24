@@ -71,6 +71,7 @@ const TravelingProvider = ({ children }) => {
     Cuba: { zoom: 5.25, center: { lat: 21.5218, lng: -79.3812 } },
     Russia: { zoom: 1.35, center: { lat: 61.524, lng: 105.3188 } },
     Greece: { zoom: 5.35, center: { lat: 38.5742, lng: 23.5243 } },
+    Madagascar: { zoom: 4.75, center: { lat: -18.7669, lng: 46.8691 } },
   };
 
   const fetchCountryData = async (countryName) => {
