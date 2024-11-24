@@ -68,6 +68,9 @@ const TravelingProvider = ({ children }) => {
     Morocco: { zoom: 4.75, center: { lat: 32.7917, lng: -7.0926 } },
     Ethiopia: { zoom: 4.55, center: { lat: 9.145, lng: 40.4897 } },
     Somalia: { zoom: 4.75, center: { lat: 5.1521, lng: 46.1996 } },
+    Cuba: { zoom: 5.25, center: { lat: 21.5218, lng: -79.3812 } },
+    Russia: { zoom: 1.35, center: { lat: 61.524, lng: 105.3188 } },
+    Greece: { zoom: 5.35, center: { lat: 38.5742, lng: 23.5243 } },
   };
 
   const fetchCountryData = async (countryName) => {

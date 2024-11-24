@@ -15,6 +15,7 @@ import LoadingPopup from "./components/LoadingPopup";
 import StepIndicator from "./components/StepIndicator";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/auth/authContext";
+import { catalanCountryNames } from "../profilePage/catalanCountryNames/catalanCountryNames";
 
 export default function MapPage() {
   const [searchParams] = useSearchParams();
@@ -51,6 +52,36 @@ export default function MapPage() {
   } = useMapPageTSPContext();
 
   const { t } = useTranslation();
+
+  const { i18n } = useTranslation();
+  const [translatedName, setTranslatedName] = useState(country);
+
+  useEffect(() => {
+    const translateName = async () => {
+      // For Catalan, check our custom list first
+      if (i18n.language === "ca" && catalanCountryNames[country]) {
+        setTranslatedName(catalanCountryNames[country]);
+        return;
+      }
+
+      // For Spanish or Catalan without custom translation, use REST Countries API
+      if (i18n.language === "es" || i18n.language === "ca") {
+        try {
+          const response = await fetch(
+            `https://restcountries.com/v3.1/name/${country}?fullText=true`,
+          );
+          const [countryData] = await response.json();
+          setTranslatedName(countryData.translations.spa.common);
+        } catch (error) {
+          setTranslatedName(country); // Fallback to original name
+        }
+      } else {
+        setTranslatedName(country); // For other languages, use original name
+      }
+    };
+
+    translateName();
+  }, [country, i18n.language]);
 
   const center = countryCenters[country];
   const zoom =
@@ -99,7 +130,9 @@ export default function MapPage() {
               <ArrowLeft className="text-white" />
             </button>
           </div>
-          <div className="text-2xl font-extrabold text-white">{country}</div>
+          <div className="text-2xl font-extrabold text-white">
+            {translatedName}
+          </div>
           <div className="w-6"></div>
         </div>
         <div className="relative mx-3 h-[25rem] w-auto md:mx-auto md:h-[30rem] md:w-1/2">

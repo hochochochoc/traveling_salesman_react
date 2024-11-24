@@ -17,7 +17,7 @@ export default function Sidebar({ onClose }) {
           <GitHubButton />
           <ContactButton />
         </div>
-        <div className="h-72"></div>
+        <div className="h-28"></div>
         <UserButton />
       </div>
     </div>

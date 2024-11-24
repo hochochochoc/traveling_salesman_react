@@ -70,4 +70,32 @@ export const catalanCountryNames = {
   "Guinea-Bissau": "Guinea Bissau",
   Liberia: "Libèria",
   "Ivory Coast": "Costa d'Ivori",
+
+  // North Africa
+  Morocco: "Marroc",
+  Algeria: "Algèria",
+  Tunisia: "Tunísia",
+  Libya: "Líbia",
+  Egypt: "Egipte",
+  Sudan: "Sudan",
+
+  // East Africa
+  "South Sudan": "Sudan del Sud",
+  Ethiopia: "Etiòpia",
+  Somalia: "Somàlia",
+  Kenya: "Kenya",
+  Tanzania: "Tanzània",
+
+  // Central Africa
+  Cameroon: "Camerun",
+  Chad: "Txad",
+  Gabon: "Gabon",
+
+  // Southern Africa
+  Zambia: "Zàmbia",
+  Malawi: "Malawi",
+  Mozambique: "Moçambic",
+  Zimbabwe: "Zimbàbue",
+  Namibia: "Namíbia",
+  "South Africa": "Sud-àfrica",
 };
