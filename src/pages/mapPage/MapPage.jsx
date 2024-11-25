@@ -16,12 +16,14 @@ import StepIndicator from "./components/StepIndicator";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/auth/authContext";
 import { catalanCountryNames } from "../profilePage/catalanCountryNames/catalanCountryNames";
+import ResultsOverlay from "./components/ResultsLayover";
 
 export default function MapPage() {
   const [searchParams] = useSearchParams();
   const country = searchParams.get("country");
   const { countryCenters, zoomLevels } = useTravelingData();
   const navigate = useNavigate();
+  const [showResults, setShowResults] = useState(false);
   const [isAlgorithmChosen, setIsAlgorithmChosen] = useState(false);
   const { currentUser } = useAuth();
 
@@ -55,6 +57,12 @@ export default function MapPage() {
 
   const { i18n } = useTranslation();
   const [translatedName, setTranslatedName] = useState(country);
+
+  useEffect(() => {
+    if (isTourCompleted) {
+      setShowResults(true);
+    }
+  }, [isTourCompleted]);
 
   useEffect(() => {
     const translateName = async () => {
@@ -144,14 +152,12 @@ export default function MapPage() {
                 country={country}
                 cities={cities}
               />
-              {isTryItYourselfMode && !isTourCompleted && totalDistance > 0 && (
-                <div
-                  className="absolute left-0 right-0 z-10 ml-40 bg-black bg-opacity-50 py-1 text-center font-bold text-white md:ml-0 md:mt-20 md:pr-10 md:text-end"
-                  style={{ top: "368px" }} // Adjust to control height under the top screen border
-                >
+              {isTryItYourselfMode && !showResults && totalDistance > 0 && (
+                <div className="absolute bottom-4 right-4 z-10 rounded-lg bg-black/50 px-4 py-2 font-bold text-white">
                   {t("distance")} {totalDistance.toFixed(0)} km
                 </div>
               )}
+
               {isAlgorithmChosen && totalDistanceTSP > 0 && (
                 <div
                   className="absolute left-0 right-0 py-44 text-center font-bold text-white"
@@ -166,19 +172,26 @@ export default function MapPage() {
               )}
 
               {isTourCompleted && (
-                <div
-                  className="absolute left-0 right-0 py-40 text-center font-bold text-white"
-                  style={{ top: "0px" }}
-                >
-                  <div className="bg-white/50">
-                    <p className="z-10 mt-3 text-3xl font-bold text-blue-800">
-                      {t("tour_completed")}
-                    </p>
-                    <p className="mt-1 text-2xl text-landing2">
-                      {t("total_distance")} {totalDistance.toFixed(0)} km
-                    </p>
-                  </div>
-                </div>
+                <>
+                  {!showResults && (
+                    <button
+                      onClick={() => setShowResults(true)}
+                      className="absolute right-4 top-4 rounded-lg bg-black px-4 py-2 text-white"
+                    >
+                      Show Results
+                    </button>
+                  )}
+                  <ResultsOverlay
+                    visible={showResults}
+                    distance={totalDistance}
+                    timeInSeconds={12}
+                    onTryAgain={() => {
+                      setMapStep(1);
+                      setShowResults(false);
+                    }}
+                    onClose={() => setShowResults(false)}
+                  />
+                </>
               )}
             </>
           )}
