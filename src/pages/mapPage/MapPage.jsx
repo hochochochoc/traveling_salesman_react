@@ -62,9 +62,17 @@ export default function MapPage() {
     if (isTourCompleted) {
       setTimeout(() => {
         setShowResults(true);
-      }, 1100);
+      }, 800);
     }
   }, [isTourCompleted]);
+
+  useEffect(() => {
+    if (isAlgorithmChosen && totalDistanceTSP > 0) {
+      setTimeout(() => {
+        setShowResults(true);
+      }, 500);
+    }
+  }, [isAlgorithmChosen, totalDistanceTSP]);
 
   useEffect(() => {
     const translateName = async () => {
@@ -159,18 +167,29 @@ export default function MapPage() {
                   {t("distance")} {totalDistance.toFixed(0)} km
                 </div>
               )}
+              {isAlgorithmChosen && totalDistanceTSP > 0 && !showResults && (
+                <div className="absolute bottom-4 right-4 z-10 rounded-lg bg-black/50 px-4 py-2 font-bold text-white">
+                  {t("distance")} {totalDistanceTSP.toFixed(0)} km
+                </div>
+              )}
 
               {isAlgorithmChosen && totalDistanceTSP > 0 && (
-                <div
-                  className="absolute left-0 right-0 py-44 text-center font-bold text-white"
-                  style={{ top: "0px" }} // Adjust to control height under the top screen border
-                >
-                  <div className="bg-white/50 py-2">
-                    <span className="px-5 text-2xl text-blue-800">
-                      {t("total_distance")} {totalDistanceTSP.toFixed(0)} km
-                    </span>
-                  </div>
-                </div>
+                <>
+                  {!showResults && (
+                    <button
+                      onClick={() => setShowResults(true)}
+                      className="absolute right-4 top-4 rounded-lg bg-black px-4 py-2 text-white"
+                    >
+                      Show Results
+                    </button>
+                  )}
+                  <ResultsOverlay
+                    visible={showResults}
+                    distance={totalDistanceTSP}
+                    timeInSeconds={0.12}
+                    onClose={() => setShowResults(false)}
+                  />
+                </>
               )}
 
               {isTourCompleted && (
@@ -186,7 +205,7 @@ export default function MapPage() {
                   <ResultsOverlay
                     visible={showResults}
                     distance={totalDistance}
-                    timeInSeconds={12}
+                    timeInSeconds={0.12}
                     onTryAgain={() => {
                       setMapStep(1);
                       setShowResults(false);
