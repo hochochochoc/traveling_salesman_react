@@ -60,7 +60,9 @@ export default function MapPage() {
 
   useEffect(() => {
     if (isTourCompleted) {
-      setShowResults(true);
+      setTimeout(() => {
+        setShowResults(true);
+      }, 1100);
     }
   }, [isTourCompleted]);
 

@@ -340,7 +340,8 @@ const CountryMap = React.memo(({ center, zoom, cities }) => {
       selectedCities.length > 1 &&
       window.google &&
       window.google.maps &&
-      window.google.maps.geometry
+      window.google.maps.geometry &&
+      selectedCities[0]?.latitude !== undefined // Add this check
     ) {
       clearPolylines();
 
