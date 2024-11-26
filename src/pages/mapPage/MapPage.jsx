@@ -185,9 +185,9 @@ export default function MapPage() {
                   {!showResults && (
                     <button
                       onClick={() => setShowResults(true)}
-                      className="absolute right-4 top-4 rounded-lg bg-black px-4 py-2 text-white"
+                      className="absolute right-4 top-4 rounded-lg bg-maps_buttons/80 px-4 py-2 text-white"
                     >
-                      Show Results
+                      {t("show_results")}
                     </button>
                   )}
                   <ResultsOverlay
@@ -206,7 +206,7 @@ export default function MapPage() {
                       onClick={() => setShowResults(true)}
                       className="absolute right-4 top-4 rounded-lg bg-black px-4 py-2 text-white"
                     >
-                      Show Results
+                      {t("show_results")}
                     </button>
                   )}
                   <ResultsOverlay
