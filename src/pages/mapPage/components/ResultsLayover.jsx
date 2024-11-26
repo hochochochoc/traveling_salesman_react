@@ -15,6 +15,7 @@ const ResultsOverlay = ({
   const seconds = Math.floor(timeInSeconds);
   const ms = Math.floor((timeInSeconds % 1) * 1000);
   const formattedTime = `${seconds}.${ms.toString().padStart(3, "0")}s`;
+  
   return (
     <div className="absolute inset-0 flex items-center justify-center bg-black/40">
       <div className="mx-4 w-full max-w-md space-y-6 rounded-lg bg-white p-6 text-center shadow-xl">

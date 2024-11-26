@@ -390,27 +390,36 @@ const CountryMap = React.memo(({ center, zoom, cities }) => {
 
       // Add polyline for the complete route, including return to start
       const routeWithReturn = [...tspRoute, tspRoute[0]];
+      const totalAnimationTime = (routeWithReturn.length - 1) * 100 + 300;
 
-      for (let i = 1; i < routeWithReturn.length; i++) {
-        const start = routeWithReturn[i - 1];
-        const end = routeWithReturn[i];
+      routeWithReturn.slice(1).forEach((_, index) => {
+        setTimeout(() => {
+          const start = routeWithReturn[index];
+          const end = routeWithReturn[index + 1];
 
-        const path = [
-          { lat: start.latitude, lng: start.longitude },
-          { lat: end.latitude, lng: end.longitude },
-        ];
+          const path = [
+            { lat: start.latitude, lng: start.longitude },
+            { lat: end.latitude, lng: end.longitude },
+          ];
 
-        const polyline = new window.google.maps.Polyline({
-          path: path,
-          geodesic: true,
-          strokeColor: "#FF1111",
-          strokeOpacity: 1.0,
-          strokeWeight: 2,
-          map: mapInstance.current,
-        });
+          const polyline = new window.google.maps.Polyline({
+            path: path,
+            geodesic: true,
+            strokeColor: "#FF1111",
+            strokeOpacity: 1.0,
+            strokeWeight: 2,
+            map: mapInstance.current,
+          });
 
-        mapInstance.current.polylines.push(polyline);
-      }
+          mapInstance.current.polylines.push(polyline);
+        }, index * 100);
+      });
+
+      // Single timeout for the completion event, after all animations plus delay
+      setTimeout(() => {
+        const event = new CustomEvent("tspAnimationComplete");
+        window.dispatchEvent(event);
+      }, totalAnimationTime);
     }
   };
 

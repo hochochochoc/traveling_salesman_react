@@ -59,20 +59,27 @@ export default function MapPage() {
   const [translatedName, setTranslatedName] = useState(country);
 
   useEffect(() => {
+    const handleAnimationComplete = () => {
+      if (isAlgorithmChosen && !showResults) {
+        setShowResults(true);
+      }
+    };
+
+    window.addEventListener("tspAnimationComplete", handleAnimationComplete);
+    return () =>
+      window.removeEventListener(
+        "tspAnimationComplete",
+        handleAnimationComplete,
+      );
+  }, [isAlgorithmChosen, showResults]);
+
+  useEffect(() => {
     if (isTourCompleted) {
       setTimeout(() => {
         setShowResults(true);
       }, 800);
     }
   }, [isTourCompleted]);
-
-  useEffect(() => {
-    if (isAlgorithmChosen && totalDistanceTSP > 0) {
-      setTimeout(() => {
-        setShowResults(true);
-      }, 500);
-    }
-  }, [isAlgorithmChosen, totalDistanceTSP]);
 
   useEffect(() => {
     const translateName = async () => {
