@@ -170,12 +170,12 @@ export default function MapPage() {
                 cities={cities}
               />
               {isTryItYourselfMode && !showResults && totalDistance > 0 && (
-                <div className="absolute bottom-4 right-4 z-10 rounded-lg bg-black/50 px-4 py-2 font-bold text-white">
+                <div className="absolute bottom-4 right-4 z-10 rounded-lg bg-maps_buttons/80 px-4 py-2 font-bold text-white">
                   {t("distance")} {totalDistance.toFixed(0)} km
                 </div>
               )}
               {isAlgorithmChosen && totalDistanceTSP > 0 && !showResults && (
-                <div className="absolute bottom-4 right-4 z-10 rounded-lg bg-black/50 px-4 py-2 font-bold text-white">
+                <div className="absolute bottom-4 right-4 z-10 rounded-lg bg-maps_buttons/80 px-4 py-2 font-bold text-white">
                   {t("distance")} {totalDistanceTSP.toFixed(0)} km
                 </div>
               )}
@@ -204,7 +204,7 @@ export default function MapPage() {
                   {!showResults && (
                     <button
                       onClick={() => setShowResults(true)}
-                      className="absolute right-4 top-4 rounded-lg bg-black px-4 py-2 text-white"
+                      className="absolute right-4 top-4 rounded-lg bg-maps_buttons/80 px-4 py-2 text-white"
                     >
                       {t("show_results")}
                     </button>
@@ -249,7 +249,9 @@ export default function MapPage() {
                 <div className="absolute left-0 top-0 h-6 w-full rounded-full border border-landing3"></div>
                 <div
                   className="absolute left-0 top-0 h-6 rounded-l-full bg-landing3"
-                  style={{ width: `${(citiesToBeAdded / 30) * 100}%` }}
+                  style={{
+                    width: `${Math.max((citiesToBeAdded / 30) * 100, (4 / 30) * 100)}%`,
+                  }}
                 ></div>
                 <div
                   className="absolute top-[-4px] h-8 w-8 rounded-full border-2 border-landing3 bg-white shadow-md"
@@ -259,7 +261,7 @@ export default function MapPage() {
                   className="absolute left-0 top-0 h-4 w-full cursor-pointer opacity-0"
                   type="range"
                   id="citiesSlider"
-                  min="4"
+                  min="0"
                   max="30"
                   value={citiesToBeAdded}
                   onChange={handleSliderChange}

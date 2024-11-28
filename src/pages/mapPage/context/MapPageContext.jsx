@@ -344,11 +344,12 @@ export const MapPageProvider = ({ children }) => {
   };
 
   const handleSliderChange = (event) => {
-    setCitiesToBeAdded(parseInt(event.target.value, 10));
+    const value = parseInt(event.target.value, 10);
+    setCitiesToBeAdded(Math.max(4, value));
   };
 
   const getThumbPosition = () => {
-    return ((citiesToBeAdded - 1) / 29) * (sliderWidth - 20);
+    return (citiesToBeAdded / 30) * sliderWidth - 12;
   };
 
   const saveRound = async (userId) => {

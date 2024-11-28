@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 const ResultsOverlay = ({
   distance = 0,
   timeInSeconds = 0,
-  onTryAgain,
+
   onClose,
   visible,
 }) => {

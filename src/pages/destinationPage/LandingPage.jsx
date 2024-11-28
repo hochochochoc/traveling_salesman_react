@@ -122,7 +122,7 @@ export default function LandingPage() {
               <div className="pb-0"></div>
               <div className="relative">
                 <div className="absolute inset-0 bottom-[-22%] top-[8%] bg-egg/80 md:bottom-[-34%] md:top-[12%]"></div>
-                <h3 className="relative z-10 px-2 text-4xl text-white md:text-center md:font-semibold">
+                <h3 className="relative z-10 px-2 text-5xl text-white md:text-center md:font-semibold">
                   {t("VISUALIZINGOPTIMIZATION")}
                 </h3>
 
