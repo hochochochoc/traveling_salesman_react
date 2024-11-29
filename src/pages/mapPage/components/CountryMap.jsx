@@ -222,6 +222,7 @@ const CountryMap = React.memo(({ center, zoom, cities }) => {
         // Create pin div (existing code)
         this.div = document.createElement("div");
         this.div.style.position = "absolute";
+        this.div.style.transform = "translate(-0%, -6px)";
         this.div.style.width = "12px";
         this.div.style.height = "14px";
         this.div.style.backgroundImage = "url('/pin_icon.png')";
@@ -234,7 +235,7 @@ const CountryMap = React.memo(({ center, zoom, cities }) => {
         this.labelDiv = document.createElement("div");
         this.labelDiv.style.position = "absolute";
         this.labelDiv.style.left = "0%";
-        this.labelDiv.style.transform = "translate(-40%, -14px)";
+        this.labelDiv.style.transform = "translate(-40%, -18px)";
         this.labelDiv.style.backgroundColor = "";
         this.labelDiv.style.padding = "";
         this.labelDiv.style.borderRadius = "2px";
