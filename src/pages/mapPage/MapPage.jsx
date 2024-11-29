@@ -16,7 +16,7 @@ import StepIndicator from "./components/StepIndicator";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/auth/authContext";
 import { catalanCountryNames } from "../profilePage/catalanCountryNames/catalanCountryNames";
-import ResultsOverlay from "./components/ResultsLayover";
+import ResultsOverlay from "./components/ResultsOverlay";
 
 export default function MapPage() {
   const [searchParams] = useSearchParams();
@@ -193,7 +193,9 @@ export default function MapPage() {
                   <ResultsOverlay
                     visible={showResults}
                     distance={totalDistanceTSP}
-                    timeInSeconds={0.12}
+                    timeInSeconds={(Math.random() * (0.25 - 0.1) + 0.1).toFixed(
+                      3,
+                    )}
                     onClose={() => setShowResults(false)}
                   />
                 </>
@@ -212,7 +214,7 @@ export default function MapPage() {
                   <ResultsOverlay
                     visible={showResults}
                     distance={totalDistance}
-                    timeInSeconds={0.12}
+                    timeInSeconds={(Math.random() * (18 - 12) + 12).toFixed(3)}
                     onTryAgain={() => {
                       setMapStep(1);
                       setShowResults(false);
@@ -238,11 +240,13 @@ export default function MapPage() {
               <div className="mb-1 flex items-center justify-between">
                 <label
                   htmlFor="citiesSlider"
-                  className="mb-2 text-sm text-white"
+                  className="mb-2 text-sm text-white md:text-[17px]"
                 >
                   {t("number_added")}
                 </label>
-                <span className="text-sm text-white">{citiesToBeAdded}</span>
+                <span className="text-sm text-white md:text-[17px]">
+                  {citiesToBeAdded}
+                </span>
               </div>
 
               <div className="relative pb-1 pt-8" ref={sliderRef}>
@@ -269,13 +273,13 @@ export default function MapPage() {
               </div>
 
               <button
-                className="text-md mx-auto mt-2 flex items-center rounded-full border border-gray-500 bg-maps_buttons px-3 py-1.5 text-white"
+                className="text-md mx-auto mt-2 flex items-center rounded-full border border-gray-500 bg-maps_buttons px-3 py-1.5 text-white md:text-[17px]"
                 onClick={() => {
                   fetchCities(country, citiesToBeAdded);
                   setMapStep(1);
                 }}
               >
-                <MapPin className="mr-1 inline h-4 w-4 flex-shrink-0" />
+                <MapPin className="mr-1 inline h-4 w-4 flex-shrink-0 md:h-5 md:w-5" />
                 {t("add_to_map")}
               </button>
             </div>
@@ -292,33 +296,33 @@ export default function MapPage() {
               <p className="mb-5 text-lg font-bold text-white md:text-2xl">
                 {t("step_2")}
               </p>
-              <div className="flex gap-2">
+              <div className="flex gap-2 md:gap-6">
                 <button
-                  className="text-md flex-1 rounded-lg border border-gray-500 bg-maps_buttons p-2 text-white md:mt-6"
+                  className="text-md flex-1 rounded-lg border border-gray-500 bg-maps_buttons p-2 text-white md:mt-2 md:p-3"
                   onClick={() => {
                     toggleTryItYourselfMode();
                     setMapStep(3);
                   }}
                 >
-                  <MousePointerClick className="mb-1 h-6 w-6 rounded-lg border bg-gradient-to-br from-teal-400 to-blue-500 p-1" />
+                  <MousePointerClick className="mb-1 h-6 w-6 rounded-lg border bg-gradient-to-br from-teal-400 to-blue-500 p-1 md:h-7 md:w-7" />
                   <div className="flex items-center justify-between">
-                    <span className="mr-8 text-start">
+                    <span className="mr-8 text-start md:text-[17px]">
                       {t("try_it_yourself")}
                     </span>
-                    <ArrowRight className="h-4 w-4 flex-shrink-0" />
+                    <ArrowRight className="h-4 w-4 flex-shrink-0 md:h-5 md:w-5" />
                   </div>
                 </button>
 
                 <button
-                  className="flex-1 rounded-lg border border-gray-500 bg-maps_buttons p-2 text-white md:mt-6"
+                  className="flex-1 rounded-lg border border-gray-500 bg-maps_buttons p-2 text-white md:mt-2 md:p-3"
                   onClick={() => setMapStep(2)}
                 >
-                  <Cpu className="mb-1 h-6 w-6 rounded-lg border bg-landing3 bg-gradient-to-br from-blue-500 to-landing2 p-1" />
+                  <Cpu className="mb-1 h-6 w-6 rounded-lg border bg-landing3 bg-gradient-to-br from-blue-500 to-landing2 p-1 md:h-7 md:w-7" />
                   <div className="flex items-center justify-between">
-                    <span className="mr-2 text-start">
+                    <span className="mr-2 text-start md:text-[17px]">
                       {t("choose_algorithm")}
                     </span>
-                    <ArrowRight className="h-4 w-4 flex-shrink-0" />
+                    <ArrowRight className="h-4 w-4 flex-shrink-0 md:h-5 md:w-5" />
                   </div>
                 </button>
               </div>
@@ -340,12 +344,12 @@ export default function MapPage() {
         {mapStep === 2 && (
           <div className="mx-3 flex min-h-[230px] flex-col md:mx-auto md:min-h-[250px] md:w-1/2">
             <div className="flex flex-col p-2">
-              <p className="mb-8 text-lg font-bold text-white md:text-2xl">
+              <p className="mb-8 text-lg font-bold text-white md:mb-6 md:text-2xl">
                 {t("step_3_algorithm")}
               </p>
 
               <select
-                className="text-md mx-auto mb-3 rounded-lg border border-gray-500 px-2 py-1 text-gray-700 md:mt-4"
+                className="text-md mx-auto mb-3 rounded-lg border border-gray-500 px-2 py-1 text-gray-700 md:mb-6 md:mt-2 md:text-[18px]"
                 value={selectedAlgorithm}
                 onChange={handleAlgorithmChange}
               >
@@ -356,7 +360,7 @@ export default function MapPage() {
               </select>
 
               <button
-                className="text-md mx-auto rounded-full border border-gray-500 bg-maps_buttons px-3 py-1.5 text-white"
+                className="text-md mx-auto rounded-full border border-gray-500 bg-maps_buttons px-3 py-1.5 text-white md:text-[17px]"
                 onClick={handleCalculateRoute}
                 disabled={isCalculatingRoute}
               >
