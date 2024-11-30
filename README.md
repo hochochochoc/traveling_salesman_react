@@ -1,7 +1,5 @@
 # Traveling Salesman Problem Visualizer
 
-https://raw.githubusercontent.com/hochochochoc/traveling_salesman_react/main/public/readme_video.mp4
-
 The traveling salesman problem (TSP) asks the question, "Given a list of cities and the distances between each pair of cities, what is the shortest possible route that visits each city and returns to the origin city?".
 
 ### This project

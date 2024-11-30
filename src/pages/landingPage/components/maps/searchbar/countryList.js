@@ -86,3 +86,42 @@ const countryList = [
 ];
 
 export default countryList;
+
+// Kazakhstan
+// have already:
+// Astana
+// Almaty
+// Shymkent
+// Taraz
+// Aktobe
+// Pavlodar
+// Karaganda
+
+// To add:
+// Kyzylorda
+// Semey
+// Oskemen
+
+// Petropavl
+// Kokshetau
+// Atyrau
+// Aktau
+// Zhanaozen
+
+// Boranqul
+// Shalkar
+// Turkistan
+// Shu
+// Arkalyk
+
+// Stepnogorsk
+// Ekibastuz
+// Kachiry
+// Altai
+// Zaysan
+
+// Aksuat
+// Usharal
+// Zharkent
+// Balkhash
+// Zezqazghan

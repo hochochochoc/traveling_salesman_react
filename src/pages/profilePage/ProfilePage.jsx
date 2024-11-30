@@ -6,6 +6,7 @@ import { useAuth } from "@/auth/authContext";
 import { doc, collection, getDocs, orderBy, query } from "firebase/firestore";
 import { db } from "../../../firebaseConfig";
 import { catalanCountryNames } from "./catalanCountryNames/catalanCountryNames";
+import WorldMap from "./worldMap/WorldMap";
 
 const StatCard = ({ icon: Icon, title, value, bgColor = "text-blue-400" }) => (
   <div className="rounded-lg bg-gray-800/50 p-6 shadow-lg">
@@ -235,6 +236,9 @@ const ProfilePage = () => {
             value={t("nearest_neighbor")}
             bgColor="text-red-400"
           />
+        </div>
+        <div className="mb-8 rounded-xl bg-gray-800/50 shadow-2xl">
+          <WorldMap userRounds={userRounds} />
         </div>
 
         {/* Favorite Routes and Recent Scores */}
