@@ -23,24 +23,6 @@ export default function Searchbar({ onSearch }) {
     onSearch(defaultCountries);
   }, []);
 
-  const handleSearchClick = () => {
-    setIsExpanded(!isExpanded);
-  };
-
-  const handleSearchChange = (e) => {
-    const value = e.target.value;
-    setSearchTerm(value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (searchTerm.trim()) {
-      onSearch(searchTerm);
-    } else {
-      onSearch(defaultCountries);
-    }
-  };
-
   const getRandomCountries = () => {
     const shuffled = [...countryList].sort(() => 0.5 - Math.random());
     const randomCountries = shuffled.slice(0, 3);
@@ -79,7 +61,7 @@ export default function Searchbar({ onSearch }) {
         onClick={getRandomCountries}
         aria-label="Get random countries"
       >
-        <RefreshCcw className="mr-4 h-5 w-5 text-gray-300" />
+        <RefreshCcw className="ml-3 h-5 w-5 text-gray-300" />
       </button>
     </div>
   );

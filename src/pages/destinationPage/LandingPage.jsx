@@ -5,6 +5,7 @@ import Header from "../landingPage/components/header/Header";
 import QASection from "./components/QandASection";
 import Footer from "./components/Footer";
 import FeaturesShowcase from "./components/Features";
+import { Button } from "@/components/ui/moving-border";
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -145,15 +146,19 @@ export default function LandingPage() {
               background: `linear-gradient(to top, #13141A 80%, rgba(19, 20, 26, 0.85) 85%, rgba(19, 20, 26, 0.6) 90%, rgba(255,255,255,0) 100%)`,
             }}
           >
-            <button
+            <Button
+              duration={8000}
               onClick={() => navigate("/menu")}
-              className="text-md bg--400 w-64 cursor-pointer rounded-full border border-gray-700/50 bg-gradient-to-br from-teal-400 to-blue-500 px-4 py-3 font-bold uppercase text-gray-200 transition-colors hover:bg-white hover:text-black md:text-xl"
+              borderRadius="6rem"
+              containerClassName="w-64"
+              className="text-md cursor-pointer rounded-full border border-gray-700/50 bg-gradient-to-br from-teal-400 to-blue-500 px-4 py-3 font-bold uppercase text-gray-200 transition-colors hover:bg-white hover:text-black md:text-xl"
             >
               {t("jump_in")}
-            </button>
+            </Button>
+
             <button
               onClick={() => navigate("/tutorial")}
-              className="text-md w-64 cursor-pointer rounded-full border border-gray-700/50 bg-gradient-to-br from-blue-500 to-landing2 px-9 py-3 font-bold uppercase text-landing1 transition-colors hover:text-white md:text-xl"
+              className="w-64 cursor-pointer rounded-full border border-gray-700/50 bg-gradient-to-br from-blue-500 to-landing2 px-9 py-4 text-xl font-bold uppercase text-landing1 transition-colors hover:text-white md:text-xl"
             >
               {t("read_tutorial")}
             </button>
