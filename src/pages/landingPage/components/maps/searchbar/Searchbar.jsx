@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Search, RefreshCcw } from "lucide-react";
 import countryList from "./countryList";
 import { useTranslation } from "react-i18next";
+import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
 
 export default function Searchbar({ onSearch }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -46,39 +47,33 @@ export default function Searchbar({ onSearch }) {
     onSearch(randomCountries);
   };
 
+  const searchPlaceholders = [
+    "Spain",
+    "France",
+    "Vietnam",
+    "Japan",
+    "Egypt",
+    "India",
+    "Brazil",
+    "Argentina",
+  ];
+
   return (
     <div className="flex justify-start space-x-2 md:justify-center">
-      <div className="relative flex">
-        <form
-          onSubmit={handleSubmit}
-          className="flex items-center justify-center"
-        >
-          <div
-            className={`mx-2 flex items-center overflow-hidden transition-all duration-300 ease-in-out ${
-              isExpanded ? "w-full" : "border-white"
-            }`}
-          >
-            <input
-              ref={inputRef}
-              type="text"
-              placeholder={t("search_country")}
-              value={searchTerm}
-              onChange={handleSearchChange}
-              className={`w-[250px] py-2 pl-4 pr-4 outline-none transition-all duration-200 ease-in-out ${
-                isExpanded ? "opacity-100" : "w-0 opacity-0"
-              }`}
-            />
-            <button
-              type="button"
-              onClick={handleSearchClick}
-              className="absolute right-0 p-2 focus:outline-none"
-              aria-label={isExpanded ? "Close search" : "Open search"}
-            >
-              <Search className="mr-2 h-5 w-5 text-gray-300" />
-            </button>
-          </div>
-        </form>
+      <div>
+        <PlaceholdersAndVanishInput
+          placeholders={searchPlaceholders}
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (e.target[0].value.trim()) {
+              onSearch(e.target[0].value);
+            } else {
+              onSearch(defaultCountries);
+            }
+          }}
+        />
       </div>
+
       <button
         className="z-40 ml-0"
         onClick={getRandomCountries}

@@ -6,6 +6,7 @@ import { doSignOut } from "../../../../firebase/auth";
 import { useAuth } from "../../../../auth/authContext";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
+import LanguageOption from "./languageOption/LanguageOption";
 
 export default function Header() {
   const navigate = useNavigate();
@@ -31,7 +32,8 @@ export default function Header() {
         >
           TSP Explorer
         </div>
-        <div className="ml-auto mr-8 hidden space-x-3 text-white md:flex md:text-lg">
+
+        <div className="ml-auto hidden space-x-3 text-white md:flex md:text-lg">
           <button
             className={` ${location.pathname === "/tutorial" ? "font-semibold drop-shadow-[0_0_5px_rgba(255,255,255,0.5)]" : ""}`}
             onClick={() => {
@@ -70,6 +72,9 @@ export default function Header() {
           >
             {t("profile")}
           </button>
+          <div className="px-4">
+            <LanguageOption />
+          </div>
         </div>
 
         <div className="flex items-center md:text-lg">
