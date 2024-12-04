@@ -149,16 +149,16 @@ export default function LandingPage() {
             <Button
               duration={8000}
               onClick={() => navigate("/menu")}
-              borderRadius="6rem"
+              borderRadius="3rem"
               containerClassName="w-64"
-              className="text-md cursor-pointer rounded-full border border-gray-700/50 bg-gradient-to-br from-teal-400 to-blue-500 px-4 py-3 font-bold uppercase text-gray-200 transition-colors hover:bg-white hover:text-black md:text-xl"
+              className="text-md cursor-pointer rounded-full bg-gradient-to-br from-teal-400 to-blue-500 px-4 py-3 font-bold uppercase text-gray-200 transition-colors hover:bg-white hover:text-black md:text-xl"
             >
               {t("jump_in")}
             </Button>
 
             <button
               onClick={() => navigate("/tutorial")}
-              className="w-64 cursor-pointer rounded-full border border-gray-700/50 bg-gradient-to-br from-blue-500 to-landing2 px-9 py-4 text-xl font-bold uppercase text-landing1 transition-colors hover:text-white md:text-xl"
+              className="w-64 cursor-pointer rounded-full border border-gray-700 bg-gradient-to-br from-blue-500 to-landing2 px-9 py-4 text-xl font-bold uppercase text-landing1 transition-colors hover:text-white md:text-xl"
             >
               {t("read_tutorial")}
             </button>

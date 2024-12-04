@@ -1,22 +1,13 @@
 import { useState, useRef, useEffect } from "react";
-import { Search, RefreshCcw } from "lucide-react";
+import { RefreshCcw } from "lucide-react";
 import countryList from "./countryList";
 import { useTranslation } from "react-i18next";
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
 
 export default function Searchbar({ onSearch }) {
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const inputRef = useRef(null);
   const { t } = useTranslation();
 
   const defaultCountries = ["Brazil", "Spain", "Bangladesh", "Vietnam"];
-
-  useEffect(() => {
-    if (isExpanded && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [isExpanded]);
 
   // Show default countries when component mounts
   useEffect(() => {
@@ -30,13 +21,13 @@ export default function Searchbar({ onSearch }) {
   };
 
   const searchPlaceholders = [
-    "Spain",
-    "France",
+    "España",
+    "Francia",
     "Vietnam",
-    "Japan",
-    "Egypt",
+    "Japón",
+    "Egipto",
     "India",
-    "Brazil",
+    "Brasil",
     "Argentina",
   ];
 
