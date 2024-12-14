@@ -158,7 +158,7 @@ export default function LandingPage() {
 
             <button
               onClick={() => navigate("/tutorial")}
-              className="w-64 cursor-pointer rounded-full border border-gray-700 bg-gradient-to-br from-blue-500 to-landing2 px-9 py-4 text-xl font-bold uppercase text-landing1 transition-colors hover:text-white md:text-xl"
+              className="w-64 cursor-pointer rounded-full border border-gray-700 bg-gradient-to-br from-blue-500 to-landing2 px-9 py-3 text-xl font-bold uppercase text-landing1 transition-colors hover:text-white md:text-xl"
             >
               {t("read_tutorial")}
             </button>
