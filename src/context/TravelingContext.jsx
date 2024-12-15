@@ -56,7 +56,7 @@ const TravelingProvider = ({ children }) => {
     Netherlands: { zoom: 6.4, center: { lat: 52.1326, lng: 5.2913 } },
     Nepal: { zoom: 5.2, center: { lat: 28.3949, lng: 84.124 } },
     Hungary: { zoom: 5.8, center: { lat: 47.1625, lng: 19.5033 } },
-    Cambodia: { zoom: 5.8, center: { lat: 12.5657, lng: 104.991 } },
+    Cambodia: { zoom: 6.2, center: { lat: 12.5657, lng: 104.991 } },
     Malawi: { zoom: 5.6, center: { lat: -13.2543, lng: 34.3015 } },
     Ireland: { zoom: 5.8, center: { lat: 53.2798, lng: -7.5055 } },
     Ecuador: { zoom: 5.6, center: { lat: -1.8312, lng: -78.1834 } },
@@ -74,6 +74,9 @@ const TravelingProvider = ({ children }) => {
     Madagascar: { zoom: 4.75, center: { lat: -18.7669, lng: 46.8691 } },
     Ukraine: { zoom: 4.25, center: { lat: 48.3794, lng: 31.1656 } },
     Tanzania: { zoom: 4.85, center: { lat: -6.369, lng: 34.8888 } },
+    Sweden: { zoom: 3.8, center: { lat: 63.1282, lng: 16.6435 } },
+    "South Korea": { zoom: 5.8, center: { lat: 35.9078, lng: 127.7669 } },
+    "North Korea": { zoom: 5.8, center: { lat: 40.3399, lng: 127.5101 } },
   };
 
   const fetchCountryData = async (countryName) => {

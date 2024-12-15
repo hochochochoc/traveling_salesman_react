@@ -7,7 +7,7 @@ const countryList = [
   "Benin",
   "Bolivia",
   "Brazil",
-  // "Cambodia",
+  "Cambodia",
   "Canada",
   "Chad",
   "Chile",
@@ -30,7 +30,7 @@ const countryList = [
   "Ivory Coast",
   "Japan",
   "Kazakhstan",
-  // "Laos",
+  "Laos",
   "Libya",
   // "Malawi",
   "Malaysia",
@@ -50,12 +50,13 @@ const countryList = [
   // "Somalia",
   "Spain",
   "Sudan",
+  "Sweden",
   "Tanzania",
   "Thailand",
   "Turkey",
   "Ukraine",
   "United States",
-  // "Uruguay",
+  "Uruguay",
   "Venezuela",
   "Vietnam",
   "United Kingdom",
@@ -83,45 +84,8 @@ const countryList = [
   "South Africa",
   // "South Sudan",
   "Mozambique",
+  "South Korea",
+  "North Korea",
 ];
 
 export default countryList;
-
-// Kazakhstan
-// have already:
-// Astana
-// Almaty
-// Shymkent
-// Taraz
-// Aktobe
-// Pavlodar
-// Karaganda
-
-// To add:
-// Kyzylorda
-// Semey
-// Oskemen
-
-// Petropavl
-// Kokshetau
-// Atyrau
-// Aktau
-// Zhanaozen
-
-// Boranqul
-// Shalkar
-// Turkistan
-// Shu
-// Arkalyk
-
-// Stepnogorsk
-// Ekibastuz
-// Kachiry
-// Altai
-// Zaysan
-
-// Aksuat
-// Usharal
-// Zharkent
-// Balkhash
-// Zezqazghan
